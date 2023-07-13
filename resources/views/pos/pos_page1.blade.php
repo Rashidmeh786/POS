@@ -396,7 +396,7 @@ function updateValues() {
     var subtotal = parseFloat($(this).text());
     totalAmount += subtotal;
   });
-
+// this is change
   $('.discount-input').each(function() {
     var discount = parseFloat($(this).val() || 0);
     totalDiscount += discount;
