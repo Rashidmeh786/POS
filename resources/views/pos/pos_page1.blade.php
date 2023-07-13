@@ -391,7 +391,7 @@ function updateValues() {
     var quantity = parseInt($(this).val());
     totalQuantity += quantity;
   });
-
+// new commint cdsdsd  dfdfd
   $('.subtotal').each(function() {
     var subtotal = parseFloat($(this).text());
     totalAmount += subtotal;
