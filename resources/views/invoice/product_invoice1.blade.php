@@ -21,15 +21,13 @@
           <div class="col-xl-9">
             <p style="color: #7e8d9f;font-size: 20px;">Invoice >> <strong>ID: #123-123</strong></p>
           </div>
-          <div class="col-xl-3 float-end">
-            {{-- <a class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark"><i
-                class="fas fa-print text-primary"></i> Print</a> --}}
-            <a href="javascript:window.print()" class="btn btn-light text-capitalize border-0"
-              data-mdb-ripple-color="dark"><i class="fas fa-print text-primary"></i> Print</a>
-
+    <div class="col-xl-3 float-end">
+            <a class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark"><i
+                class="fas fa-print text-primary"></i> Print</a> 
+           
             <a class="btn btn-light text-capitalize" data-mdb-ripple-color="dark"><i
                 class="far fa-file-pdf text-danger"></i> Export</a>
-          </div>
+          </div> 
           <hr>
         </div>
 
@@ -49,7 +47,7 @@
                 <li class="text-bold">To: <span style="color:#041824 ; font-weight: bold">{{ $customer->name ?? 'WalkIn
                     Customer' }}</span></li>
                 <li class="text-muted "> <i class="fas fa-address-book"></i> {{ $customer->address ?? 'NA'}} , {{
-                  $customer->city }},</li>
+                  $customer->city ?? ''}},</li>
                 <li class="text-muted "> &nbsp; &nbsp; &nbsp;Pakistan .</li>
                 <li class="text-muted "><i class="fas fa-envelope"></i> {{ $customer->email ?? 'NA' }}</li>
 
@@ -99,7 +97,7 @@
                   </td>
                   <td>{{ $item->qty }}</td>
                   <td>{{ $item->price }}</td>
-                  <td></td>
+                  <td>{{ $item->options->discount ?? '0'}}</td>
                   <td class="">${{ $item->price*$item->qty }}</td>
                 </tr>
                 @endforeach
@@ -114,15 +112,26 @@
             </div>
             <div class="col-xl-3">
               <ul class="list-unstyled">
-                <li class="text-muted ms-3"><span class="text-black me-4">SubTotal</span>Rs. {{ $item->price*$item->qty
-                  }}</li>
+                {{-- <li class="text-muted ms-3"><span class="text-black me-4">SubTotal</span>Rs. {{ $item->price*$item->qty
+                  }}</li> --}}
+                   {{-- pos_page1 code --}}
+                  <li class="text-muted ms-3 mt-2"><span class="text-black me-4">SubTotal</span>Rs.{{Cart::priceTotal()}}</li>
                 <li class="text-muted ms-3 mt-2"><span class="text-black me-4">Tax(%)</span>&nbsp;&nbsp; &nbsp;0.00</li>
-                <li class="text-muted ms-3 mt-1"><span class="text-black me-4">Discount</span>Rs. {{ Cart::discount() ??
+                <li class="text-muted ms-3 mt-1"><span class="text-black me-4">Discount</span>Rs. {{ $totaldiscountv ??
                   0}}</li>
 
               </ul>
-              <p class="text-black float-start"><span class="text-black me-3"> Total Amount</span><span
-                  style="font-size: 20px; font-weight: bold">RS. {{ Cart::total() }}</span></p>
+              {{-- <p class="text-black float-start"><span class="text-black me-3"> Total Amount</span>
+                <span
+                  style="font-size: 20px; font-weight: bold">RS. {{ Cart::total() }}
+                </span>
+              </p> --}}
+                                      {{-- pos_page1 code--}}
+              <p class="text-black float-start"><span class="text-black me-3"> Total Amount</span>
+                <span
+                  style="font-size: 20px; font-weight: bold">RS. {{ Cart::total() - $totaldiscountv}}
+                </span>
+              </p>
             </div>
           </div>
           <hr>
@@ -169,7 +178,7 @@
         <div class="text-center mt-2 mb-4">
           <div class="auth-logo">
             <h3>Invoice Of {{ $customer->name ?? 'WalkIn Customer'}}</h3>
-            <h3 id="total">Amount RS :{{ Cart::total() }}</h3>
+            <h3 id="total">Amount RS :{{ Cart::total()- $totaldiscountv }}</h3>
           </div>
         </div>
         <form class="px-3" method="post" action="{{ url('/final-invoice') }}">
@@ -213,7 +222,7 @@
             <input type="hidden" name="total_products" value="{{ Cart::count() }}">
             <input type="hidden" name="sub_total" value="{{ Cart::subtotal() }}">
             {{-- <input type="hidden" name="vat" value="{{ Cart::tax() }}"> --}}
-            <input type="hidden" name="total" value="{{ Cart::total() }}">
+            <input type="hidden" name="total" value="{{ Cart::total()-$totaldiscountv }}">
 
             <div class="col-md-4">
               <div class="mb-3">

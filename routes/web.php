@@ -29,11 +29,11 @@ use App\Http\Controllers\Attendance\AttendenceController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('admin.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -193,7 +193,8 @@ Route::controller(EmployeeController::class)->group(function(){
         Route::post('/create-invoice','CreateInvoice');
         Route::get('print/invoice','invoiceprint')->name('printInvoice');
         Route::get('/product-details/{rowId}','getProductDetails');      //pos_page1 code
-
+        Route::post('create-sale-invoice','CreatesaleInvoice');  //pos_page1 code
+        
 
        });
        

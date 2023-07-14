@@ -34,10 +34,10 @@ $today=Carbon::now();
         $category = Category::latest()->get();
         $brand = Brand::latest()->get();
 
-       // return view('pos.pos_page',compact('product','customer','category','brand'));
+    //    return view('pos.pos_page',compact('product','customer','category','brand'));
 
                             //  pos_page1        
-       return view('pos.pos_page1',compact('product','customer','category','brand'));
+     return view('pos.pos_page1',compact('product','customer','category','brand'));
 
 
     }
@@ -160,6 +160,84 @@ public function getProductDetails($productId)
 }
 
 
+                //pos_page1 code
+public function CreatesaleInvoice(Request $request){
+   
+    // $discount = $request->discount;
+    // dd($discount);
+    
+    $validator = Validator::make($request->all(), [
+        'customerid' => 'required',
+        'product_id' => 'required',
+    ], [
+        'product_id.required' => 'At Least One Product is required in cart.',
+    ]);
+    
+    if ($validator->fails()) {
+        toast()->error('Wait.. something is missing...');
+    
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
+    }
+    
+
+     $cust_id=$request->customerid;
+     $totalamountv=$request->totalamountv;
+     $totalqty=$request->totalqty;
+    
+
+     $products = [];
+
+     for ($i = 0; $i < count($request->product_id); $i++) {
+         $productId = $request->product_id[$i];
+         $name = $request->name[$i];
+         $qty = $request->qty[$i];
+         $price = $request->price[$i];
+         $discount = $request->discount[$i];
+     
+         // Calculate the total price with discount
+         $totalPrice = $price - $discount;
+     
+         $productDetails = [
+             'id' => $productId,
+             'name' => $name,
+             'qty' => $qty,
+             'price' => $price, // Use the discounted price
+             'weight' => 20, 
+             'options' => [
+                 'size' => 'large',
+                 'discount' => $discount // Store the discount value separately in options
+             ]
+         ];
+     
+         $products[] = $productDetails;
+     }
+     
+     // Add the products to the cart
+     Cart::add($products);
+     
+if (Cart::count() != 0) {
+
+    cart::destroy();
+}
+ Cart::add($products);
+//cart::destroy();
+
+
+
+
+
+    $contents = Cart::content();
+    $cust_id = $request->customerid;
+    $customer = Customer::where('id',$cust_id)->first();
+    $totaldiscountv=$request->totaldiscountv;
+        $invoiceView = View::make('invoice.thermal', compact('customer', 'contents','totaldiscountv'))->render();
+        session(['invoiceView' => $invoiceView]);
+
+    return view('invoice.product_invoice1',compact('contents','customer','totaldiscountv'));
+
+}
 
 
 }

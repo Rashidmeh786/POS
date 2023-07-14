@@ -36,10 +36,19 @@
          
           
           
-            @error('cart')
+             @error('cart')
             <span class="alert alert-danger">{{ $message }}</span>
-        @enderror
+        @enderror 
+        
+        <form id="myForm" method="post" action="{{ url('/create-sale-invoice') }}">
+          @csrf
             <div class="table-responsive table-sm">
+              @if ($errors->has('product_id'))
+    <p class="text text-danger">
+        {{ $errors->first('product_id') }}
+    </p>
+@endif
+
               <table class="table table-borderless table-nowrap table-centered mb-0" id="basic2-table">
                 <thead class="table-dark">
                   <tr>
@@ -48,7 +57,7 @@
                     <th>Quantity</th>
                     <th> Discount </th>
 
-                    <th>Price</th>
+                    <th>Total</th>
                     <th style="width: 50px;"></th>
                   </tr>
                 </thead>
@@ -61,12 +70,10 @@
            <div class=" " style="margin-top: 40px position: fixed;">
 
 
-            <form id="myForm" method="post" action="{{ url('/create-invoice') }}">
-              @csrf
               <div class="mb-2">
                 <div class="d-flex">
                 
-                    <select name="customer" class="form-select  @error('customer') is-invalid @enderror " id="example-select">
+                    <select name="customerid" class="form-select  @error('customerid') is-invalid @enderror " id="example-select">
                         <option value="">Select Customer</option>
                         @foreach ($customer as $item)
                       
@@ -81,11 +88,14 @@
                    
                 </div>
                 
-                @error('customer')
+                @error('customerid')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <input type="hidden" value="{{ Cart::count() }}">
+            <input type="hidden" name="totalqty">
+            <input type="hidden" name="totalamountv" >
+            <input type="hidden" name="totaldiscountv" >
+            
 
               <button type="submit" class="btn btn-primary form-control">Create Invoice</button>
             
@@ -104,6 +114,7 @@
                   <tr>
                     <td id="lqty">0</td>
                     <td id="ltotal">0</td>
+
                     <td id="ldiscount">0</td>
                     <td id="lgrandtotal">0</td>
                   </tr>
@@ -168,8 +179,10 @@
               </div>
               <div class="datatable-container" style="padding: 20px; background-color: #f8f9fa; overflow-y: auto; max-height:590px; min-height:590px;">
                 <table id="basic-datatable1" class="table table-sm dt-responsive nowrap w-100">
-                    <input type="text" style="height: 42px;" class="form-control mb-2" name="search" id="search" placeholder="Enter Product Name to search..">
-            
+                    <input type="text" style="height: 42px;" class="form-control mb-2 " name="search" id="search" placeholder="Enter Product Name to search..">
+                    {{-- @error('product_id')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror --}}
                     <thead>
                         <tr style="background-color: #f8f9fa; color: #212529;">
                             <th>Image</th>
@@ -183,10 +196,10 @@
                         @foreach($product as $key => $item)
                         <tr>
                            
-                                <input type="hidden" name="id" value="{{ $item->id }}">
+                               <input type="hidden" name="id" value="{{ $item->id }}">
                                 <input type="hidden" name="name" value="{{ $item->product_name }}">
                                 <input type="hidden" name="qty" value="1">
-                                <input type="hidden" name="price" value="{{ $item->selling_price }}">
+                                <input type="hidden" name="price" value="{{ $item->selling_price }}"> 
             
                                 <td style="padding: 5px;">
                                     <div class="product-image">
@@ -272,13 +285,13 @@ function updateProductTable(productData) {
       '<td>' +
       '<div class="d-flex align-items-center">' +
       '<button type="button" class="btn btn-sm btn-success p-1 increase-quantity" style="margin-top: -2px;"><i class="fas fa-plus"></i></button>' +
-      '<input type="text" min="1" value="1" name="qty" class="form-control quantity-input" placeholder="Qty" style="width: 70px; height: 35px; margin-bottom: 3px">' +
+      '<input type="text" min="1" value="1" name="qty[]" class="form-control quantity-input" placeholder="Qty" style="width: 70px; height: 35px; margin-bottom: 3px">' +
       '<button type="button" class="btn btn-sm btn-success p-1 decrease-quantity" style="margin-top: -2px;"><i class="fas fa-minus"></i></button>' +
       '</div>' +
       '</td>' +
       '<td>' +
       '<div class="d-flex align-items-center">' +
-        '<input type="text" value="" name="discount" class="form-control discount-input" toolti placeholder="e.g 5 .. " style="width: 70px; height: 34px;" data-row-id="' + productData.rowId + '">' +
+        '<input type="text" value="" name="discount[]" class="form-control discount-input" toolti placeholder=" Enter .. " style="width: 80px; height: 34px;" data-row-id="' + productData.rowId + '">' +
 
        '</div>' +
       '</td>' +
@@ -288,6 +301,9 @@ function updateProductTable(productData) {
       '<i class="mdi mdi-delete"></i>' +
       '</a>' +
       '</td>' +
+      '<input type="hidden" name="product_id[]" value="' + productData.rowId + '">' +
+                                              '<input type="hidden" name="name[]" value="' + productData.name + '">' +
+                                              '<input type="hidden" name="price[]" value="' + productData.price + '">' +
       '</tr>' +
       '<tr class="row-separator">' +
       '<td colspan="6"></td>' +
@@ -410,6 +426,9 @@ function updateValues() {
   $('#ltotal').text((totalAmount + totalDiscount).toFixed(2));
   $('#ldiscount').text(totalDiscount.toFixed(2));
   $('#lgrandtotal').text(grandTotal.toFixed(2));
+  $('input[name="totalamountv"]').val((totalAmount + totalDiscount).toFixed(2));
+  $('input[name="totalqty"]').val(totalQuantity);
+  $('input[name="totaldiscountv"]').val(totalDiscount);
 }
 
 
@@ -653,5 +672,15 @@ $(document).ready(function() {
 });
 
 </script>
- 
+
+
+
+<script>
+  
+</script>
+
+
+
+
+
 @endsection

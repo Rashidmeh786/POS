@@ -11,7 +11,7 @@
 
         @page {
             size: 80mm 297mm; /* Thermal paper size */
-            margin: 0;
+            margin: 2px;
         }
 
         table {
@@ -161,10 +161,13 @@
     <table class="items">
         <thead>
             <tr>
+                <th class="heading qty">Sno.</th>
                 <th class="heading name">Item</th>
                 <th class="heading qty">Qty</th>
                 <th class="heading rate">Rate</th>
-                <th class="heading amount">Amount</th>
+                <th class="heading amount">Price</th>
+                <th class="heading rate">Discount</th>
+
             </tr>
         </thead>
 
@@ -175,50 +178,62 @@
 
             @foreach($contents as $key=> $item)
             <tr>
+                <td>{{ $loop->iteration  }}</td>
                 <td>{{ $item->name }}</td>
                 <td>{{ $item->qty }}</td>
                 <td class="price">{{ $item->price }}</td>
+
                 <td class="price">{{ $item->price * $item->qty }}</td>
+                <td class="price">{{ $item->options->discount  ?? 0 }}</td>
+
             </tr>
             @endforeach
             <tr>
-                <td colspan="3" class="sum-up line">Subtotal</td>
-                <td class="line price">{{ Cart::priceTotal() }}</td>
+                <td colspan="5"  class="sum-up line">Subtotal</td>
+                <td class="line price">{{ Cart::priceTotal() - 0 }}</td>
             </tr>
             <tr>
-                <td colspan="3" class="sum-up">Discount</td>
-                <td class="price">{{ Cart::discount() ?? 0.00 }}</td>
+                <td colspan="5"  class="sum-up">Discount</td>
+                <td class="price">{{ $totaldiscountv ?? 0 }}</td>
             </tr>
             <tr>
-                <td colspan="3" class="sum-up">Tax</td>
+                <td colspan="5"  class="sum-up">Tax</td>
                 <td class="price">0.00</td>
             </tr>
             <tr>
-                <th colspan="3" class="total text">Total</th>
-                <th class="total price">{{ Cart::total() }}</th>
+                <td colspan="5"  class="sum-up">Other Charges</td>
+                <td class="price">0.00</td>
             </tr>
             <tr>
-                <td colspan="3" class="sum-up">Paid
+                <th colspan="5"  class="total text">Total</th>
+                <th class="total price">{{ Cart::total()-$totaldiscountv }}</th>
+            </tr>
+            <tr>
+                <td colspan="5"  class="sum-up">Paid
             </td>
             <td class="price">0</td>
         </tr>
         <tr>
-            <td colspan="3" class="sum-up">Due</td>
+            <td colspan="5"  class="sum-up">Due</td>
             <td class="price">0</td>
         </tr>
     </tbody>
+   
+  
 </table>
 <section>
     <p>
-        Paid by: <span>CASH</span>
+        Paid by: <span>CASH</span> 
+
     </p>
     <p style="text-align:center">
         Thank you for your visit!
     </p>
 </section>
 <footer style="text-align:center">
-    <p>Technology Partner Dotworld Technologies</p>
-    <p>www.dotworld.in</p>
+    <p>Technology Partner Isoft Technologies</p>
+    <p>www.isoft.com</p>
+    Operator <span>{{ Auth::user()->name }}</span>- {{ now()->format('Y-m-d H:i:s') }}
 </footer>
 </body>
 
