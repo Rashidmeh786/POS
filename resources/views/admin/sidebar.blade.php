@@ -162,7 +162,7 @@
                 <li>
                     <a href="#sidebarCrm" data-bs-toggle="collapse">
                         <i class="mdi mdi-account-multiple-outline"></i>
-                        <span> CRM </span>
+                        <span> Customers </span>
                         <span class="menu-arrow"></span>
                     </a>
                     <div class="collapse" id="sidebarCrm">
@@ -253,7 +253,7 @@
                 <li>
                     <a href="#orders" data-bs-toggle="collapse">
                         <i class="mdi mdi-email-multiple-outline"></i>
-                        <span>  SaleOrders  </span>
+                        <span>  Sale  </span>
                         <span class="menu-arrow"></span>
                     </a>
                     <div class="collapse" id="orders">

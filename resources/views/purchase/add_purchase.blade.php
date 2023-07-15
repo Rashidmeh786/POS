@@ -316,7 +316,7 @@
                                                 '<td>' +
                                                 '<div class="d-flex align-items-center">' +
                                                 '<button type="button" class="btn btn-sm btn-primary increase-quantity" id="increaseqty"><i class="fas fa-plus"></i></button>' +
-                                                '<input type="text" min="1" value="1" name="qty[]" class="form-control quantity-input" placeholder="Qty" style="width: 55px; height: 31px;">' +
+                                                '<input type="text" min="1" value="1" name="qty[]" class="form-control quantity-input update-quantity" placeholder="Qty" style="width: 55px; height: 31px;">' +
                                                 '<button type="button" class="btn btn-sm btn-primary decrease-quantity" id="decreaseqty"><i class="fas fa-minus"></i></button>' +
                                                 '</div>' +
                                                 '</td>' +
@@ -353,7 +353,16 @@
                 });
                 
                 
-                
+                tableBody.on('input', '.update-quantity', function() {
+  var quantity = parseInt($(this).val(), 10);
+
+  // Update subtotal
+  var price = parseFloat($(this).closest('tr').find('td:eq(2)').text());
+  var subtotal = quantity * price;
+  $(this).closest('tr').find('td#subtotal').text(subtotal.toFixed(2));
+
+  updateGrandTotal();
+}); 
                 tableBody.on('click', '.increase-quantity', function() {
                   var input = $(this).siblings('.quantity-input');
                   var quantity = parseInt(input.val(), 10);
@@ -385,6 +394,12 @@
                 tableBody.on('click', '.deleterow', function() {
                   $(this).closest('tr').next('.row-separator').remove();
                   $(this).closest('tr').remove();
+                  $('#tax').val('');
+  $('#discount').val('');
+  $('#shippingcharges').val('');
+  $('#taxvalue').text(0);
+  $('#discountvalue').text(0);
+  $('#shippingvalue').text(0);
                   updateGrandTotal();
                 });
                 

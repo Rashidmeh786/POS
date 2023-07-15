@@ -18,6 +18,9 @@
   .row-separator td[colspan="6"] {
     padding: 0;
   }
+  .product-image img:hover {
+    transform: scale(1.2);
+}
 
 
 </style>
@@ -49,7 +52,7 @@
     </p>
 @endif
 
-              <table class="table table-borderless table-nowrap table-centered mb-0" id="basic2-table">
+              <table class="table table-borderless table-hover table-nowrap table-centered mb-0" id="basic2-table">
                 <thead class="table-dark">
                   <tr>
                     <th>Product</th>
@@ -75,7 +78,7 @@
                 
                     <select name="customerid" class="form-select  @error('customerid') is-invalid @enderror " id="example-select">
                         <option value="">Select Customer</option>
-                        @foreach ($customer as $item)
+                        @foreach ($customers as $item)
                       
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
@@ -178,16 +181,16 @@
 
               </div>
               <div class="datatable-container" style="padding: 20px; background-color: #f8f9fa; overflow-y: auto; max-height:590px; min-height:590px;">
-                <table id="basic-datatable1" class="table table-sm dt-responsive nowrap w-100">
+                <table id="basic-datatable1" class="table table-sm table-hover dt-responsive  nowrap w-100">
                     <input type="text" style="height: 42px;" class="form-control mb-2 " name="search" id="search" placeholder="Enter Product Name to search..">
                     {{-- @error('product_id')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror --}}
                     <thead>
                         <tr style="background-color: #f8f9fa; color: #212529;">
-                            <th>Image</th>
-                            <th>Name</th>
-                           <th> Price</th>
+                            <th style="font-weight: bold">Image</th>
+                            <th style="font-weight: bold">Name</th>
+                           <th style="font-weight: bold"> Price</th>
                             <th hidden>Category</th>
                             <th hidden>Brand</th>
                         </tr>
@@ -202,22 +205,22 @@
                                 <input type="hidden" name="price" value="{{ $item->selling_price }}"> 
             
                                 <td style="padding: 5px;">
-                                    <div class="product-image">
+                                  <div class="product-image">
                                       <button style="background: none; border: none; " type="submit" id="product-image-btn" data-product-id="{{ $item->id }}">
-                                        <img src="{{ (!empty($item->product_image)) ? url('upload/product/'.$item->product_image) : url('upload/no_image.jpg') }}" alt="{{ $item->product_name }}" class="img img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
-                                    </button>
-                                    
-                                    </div>
-                                </td>
+                                          <img src="{{ (!empty($item->product_image)) ? url('upload/product/'.$item->product_image) : url('upload/no_image.jpg') }}" alt="{{ $item->product_name }}" class="img img-thumbnail" style="width: 80px; height: 80px; object-fit: cover; transition: transform 0.3s;">
+                                      </button>
+                                  </div>
+                              </td>
+                              
                                 <td style="padding: 5px;">
                                     <div class="product-details">
-                                        <h5 class="product-name" style="margin: 0; font-size: 16px; font-weight: bold; color: #212529;">{{ $item->product_name }}</h5>
+                                        <p class="product-name" style="margin: 0; font-size: 16px; font-weight: ; color: #212529;">{{ $item->product_name }}</p>
                                     </div>
                                     <div class="product-details">
                                    
                                 </td>
                                 <td>
-                                  <h5 class="product-name" style="margin: 0; font-size: 16px; font-weight: bold; color: #212529;">{{ $item->selling_price }}</h5>
+                                  <p class="product-name" style="margin: 0; font-size: 16px; font-weight: ; color: #212529;">{{ $item->selling_price }}</p>
                                 </div>
                                 </td>
                           
@@ -463,7 +466,7 @@ function updateValues() {
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="username" class="form-label mt-2">Customer Name <span class="text text-danger">*</span></label>
-                <input id="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror " type="text" name="name" placeholder="Add New Customer Name">
+                <input id="name" value="" class="form-control @error('name') is-invalid @enderror " type="text" name="name" placeholder="Add New Customer Name">
                 @error('name')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
