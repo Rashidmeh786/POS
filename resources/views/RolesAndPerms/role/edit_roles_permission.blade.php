@@ -15,17 +15,17 @@
     <form id="myForm" method="post" action="{{ route('role.permission.store') }}" enctype="multipart/form-data">
         @csrf
     <div class="row">
+        
         <div class="col-md-6 d-flex align-items-center">
-          <a class="btn btn-outline-primary " href="{{ route('all.roles.permission') }}">Back</a> &nbsp; &nbsp; &nbsp; 
+            <a class="btn btn-outline-primary " href="{{ route('all.roles.permission') }}">Back</a> &nbsp; &nbsp; &nbsp; 
 
-          <select class="form-select  @error('role_id') is-invalid @enderror " style="margin-right: 1rem;" id="roles"  name="role_id">
-            <option selected disabled>-Select Roles-</option>
-            @foreach($roles as $role)
-              <option value="{{ $role->id }}">{{ $role->name }}</option>
-            @endforeach
+          <select class="form-select" style="margin-right: 1rem; height: 40px;" id="roles"  name="role_id">
+            <option selected disabled>{{ $role->name }}</option>
+           
           </select>
-          <button class="btn btn-success px-3 text-bold"> <span class="fas fa-check-circle">Save</span></button>
-        </div>
+          <button class="btn btn-success px-3 text-bold"> <span class="fas fa-save">&nbsp;Update</span></button>
+          
+        </div> 
       
         <div class="col-md-6 d-flex align-items-end justify-content-end">
           <div class="form-check">
@@ -47,7 +47,8 @@
             
                     @foreach($permissions as $permission)
                 <div class="form-check my-2">
-                    <input class="form-check-input  @error('permission') is-invalid @enderror" type="checkbox" name="permission[]" value="{{ $permission->id }}" id="customckeck{{ $permission->id }}" >
+                    <input class="form-check-input" type="checkbox" name="permission[]" value="{{ $permission->id }}"  {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }} id="customckeck{{ $permission->id }}" >
+                   
                     <label class="form-check-label" for="customckeck{{ $permission->id }}">{{ $permission->name }}</label>
                 </div>
                 @endforeach

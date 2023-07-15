@@ -15,7 +15,7 @@
                                 <div class="page-title-box">
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
-      <a href="{{ route('add.roles.permission') }}" class="btn btn-primary rounded-pill waves-effect waves-light">Add Role in Permission </a>  
+      <a href="{{ route('add.roles.permission') }}" class="btn btn-outline-primary">Assign new Permission to role </a>  
                                         </ol>
                                     </div>
                                     <h4 class="page-title">All Roles Permission</h4>
@@ -53,7 +53,7 @@
 
                 </td> 
                 <td width="18%">
-<a href="{{ route('edit.permission',$item->id) }}" class="btn btn-blue rounded -pill waves-effect waves-light btn-sm"><span class="fas fa-pencil-alt"></span></a>
+<a href="{{ route('admin.edit.roles',$item->id) }}" class="btn btn-blue rounded -pill waves-effect waves-light btn-sm"><span class="fas fa-pencil-alt"></span></a>
 <a href="{{ route('delete.permission',$item->id) }}" class="btn btn-danger rounded- pill waves-effect waves-light btn-sm" id="delete"><span class="fas fa-trash"></span></a>
 
                 </td>

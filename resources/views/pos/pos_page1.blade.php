@@ -255,6 +255,7 @@
               type: 'GET',
               dataType: 'json',
               success: function(response) {
+                console.log(response);
                   // Update the second table with the fetched data
                   updateProductTable(response);
                   updateValues();
@@ -288,7 +289,7 @@ function updateProductTable(productData) {
       '<td>' +
       '<div class="d-flex align-items-center">' +
       '<button type="button" class="btn btn-sm btn-success p-1 increase-quantity" style="margin-top: -2px;"><i class="fas fa-plus"></i></button>' +
-      '<input type="text" min="1" value="1" name="qty[]" class="form-control quantity-input" placeholder="Qty" style="width: 70px; height: 35px; margin-bottom: 3px">' +
+      '<input type="text" min="1" value="1" max="productData.stock" name="qty[]" class="form-control quantity-input" placeholder="Qty" style="width: 70px; height: 35px; margin-bottom: 3px">' +
       '<button type="button" class="btn btn-sm btn-success p-1 decrease-quantity" style="margin-top: -2px;"><i class="fas fa-minus"></i></button>' +
       '</div>' +
       '</td>' +
@@ -315,6 +316,13 @@ function updateProductTable(productData) {
     tableBody.append(newRow);
   }
   
+
+  
+  var stockValue = productData.stock; // Replace with your actual stock value
+  var quantityInput = $('.quantity-input');
+  quantityInput.attr('max', stockValue);
+
+
 
   tableBody.find('tr').each(function() {
   var row = $(this);
@@ -358,6 +366,20 @@ function updateProductTable(productData) {
 // });
 tableBody.find('.quantity-input').off('input').on('input', function() {
   var row = $(this).closest('tr');
+  var quantityInput = row.find('.quantity-input');
+  var currentQuantity = parseInt(quantityInput.val());
+
+  var maxQuantity = parseInt($('.quantity-input').attr('max'));
+//console.log(maxQuantity); // Output the value of the max attribute
+if (currentQuantity >= maxQuantity) {
+   // alert('The quantity exceeds the available stock.');
+    Swal.fire(
+  'Warning!',
+  'The quantity exceeds the available stock.',
+  'Warning'
+)
+    $('.quantity-input').val(maxQuantity); // Reset the input value to the stockValue
+  }
   updateSubtotal(row);
   updateValues();
 });
@@ -367,6 +389,17 @@ tableBody.find('.quantity-input').off('input').on('input', function() {
     var quantityInput = row.find('.quantity-input');
     var currentQuantity = parseInt(quantityInput.val());
     quantityInput.val(currentQuantity + 1);
+    var maxQuantity = parseInt($('.quantity-input').attr('max'));
+//console.log(maxQuantity); // Output the value of the max attribute
+if (currentQuantity >= maxQuantity) {
+   // alert('The quantity exceeds the available stock.');
+    Swal.fire(
+  'Alert!',
+  'The quantity exceeds the available stock.',
+  'error'
+)
+    $('.quantity-input').val(maxQuantity); // Reset the input value to the stockValue
+  }
     updateSubtotal(row);
     updateValues();
   });

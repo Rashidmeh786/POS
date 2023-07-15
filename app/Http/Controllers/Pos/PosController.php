@@ -154,6 +154,8 @@ public function getProductDetails($productId)
         'discount' => 0, // Assuming a default discount of 0 for simplicity
         'rowId' => $product->id, // Assuming the row ID is the product ID for simplicity
         'total' => $product->selling_price, // Assuming the total is the selling price for simplicity
+        'stock' => $product->stock, // Assuming the total is the selling price for simplicity
+
     ];
 
     return response()->json($productData);

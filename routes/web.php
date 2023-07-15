@@ -29,11 +29,11 @@ use App\Http\Controllers\Attendance\AttendenceController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
     return view('admin.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -262,6 +262,7 @@ Route::controller(EmployeeController::class)->group(function(){
                  Route::post('/role/permission/store','StoreRolesPermission')->name('role.permission.store');
                  
                     Route::get('/all/roles/permission','AllRolesPermission')->name('all.roles.permission');
+                    Route::get('/admin/edit/roles/{id}','AdminEditRoles')->name('admin.edit.roles');
                });
 
 
