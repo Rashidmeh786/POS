@@ -13,6 +13,8 @@
                             <div class="col-12">
                                 <div class="page-title-box">
                                     <div class="page-title-right">
+                                        <a href="{{ route('pos') }}" class="btn btn-outline-primary rounded- pill btn-lg waves-effect waves-light">Add New </a>  
+
                                         <ol class="breadcrumb m-0">
 
                                         </ol>

@@ -221,6 +221,8 @@
             <input type="hidden" name="order_status" value="pending">
             <input type="hidden" name="total_products" value="{{ Cart::count() }}">
             <input type="hidden" name="sub_total" value="{{ Cart::subtotal() }}">
+            <input type="hidden" name="totaldiscountv" value="{{ $totaldiscountv }}">
+
             {{-- <input type="hidden" name="vat" value="{{ Cart::tax() }}"> --}}
             <input type="hidden" name="total" value="{{ Cart::total()-$totaldiscountv }}">
 

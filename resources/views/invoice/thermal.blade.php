@@ -211,11 +211,11 @@
             <tr>
                 <td colspan="5"  class="sum-up">Paid
             </td>
-            <td class="price">0</td>
+            <td class="price">{{ $order_id->pay ?? 0 }}</td>
         </tr>
         <tr>
             <td colspan="5"  class="sum-up">Due</td>
-            <td class="price">0</td>
+            <td class="price">{{ $order_id->due ?? 0 }}</td>
         </tr>
     </tbody>
    

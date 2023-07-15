@@ -191,7 +191,6 @@ Route::controller(EmployeeController::class)->group(function(){
         Route::get('/cart-remove/{rowId}','CartRemove');
        
         Route::post('/create-invoice','CreateInvoice');
-        Route::get('print/invoice','invoiceprint')->name('printInvoice');
         Route::get('/product-details/{rowId}','getProductDetails');      //pos_page1 code
         Route::post('create-sale-invoice','CreatesaleInvoice');  //pos_page1 code
         
@@ -274,6 +273,7 @@ Route::controller(EmployeeController::class)->group(function(){
                 Route::get('/order/details/{order_id}','OrderDetails')->name('order.details');
                 Route::post('/order/status/update','OrderStatusUpdate')->name('order.status.update');
                 Route::get('/complete/order','CompleteOrder')->name('complete.order');
+                Route::get('print/invoice','invoiceprint')->name('printInvoice');
 
                 Route::get('/stock','StockManage')->name('stock.manage');
                 Route::get('/order/invoice-download/{order_id}','OrderInvoice')->name('order.invoiceprint');

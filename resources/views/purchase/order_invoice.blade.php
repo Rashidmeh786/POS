@@ -149,20 +149,24 @@
             <table class="product-table">
                 <thead>
                     <tr>
+                        <th>Sl</th>
                         <th>Product Name</th>
-                        <th>Product Code</th>
+                       
                         <th>Quantity</th>
                         <th>Price</th>
+                        <th>Discount</th>
                         <th>Total </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($orderItem as $item)
+                    @foreach($orderItem as $index => $item)
                     <tr>
+                        <td>{{ $index+1 }}</td>
                         <td>{{ $item->product->product_name }}</td>
-                        <td>{{ $item->product->product_code }}</td>
+                 
                         <td>{{ $item->quantity }}</td>
                         <td>Rs. {{ $item->product->selling_price }}</td>
+                        <td></td>
                         <td>Rs. {{ $item->total }}</td>
                     </tr>
                     @endforeach
@@ -170,8 +174,10 @@
             </table>
 
             <div class="totals">
-                <h4>Subtotal: Rs{{ $order->total }}</h2>
-                <h4>Total: Rs{{ $order->total }}</h2>
+                <p>Subtotal: Rs {{ ($order->sub_total) }}</p>
+
+                <p>Discount: Rs {{ ($order->sub_total-$order->total) }}</p>
+                <h4>Total: Rs {{ $order->total }}</h2>
             </div>
 
             <div class="thanks">

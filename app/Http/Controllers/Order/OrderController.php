@@ -57,23 +57,31 @@ class OrderController extends Controller
 
         toast()->success('Invoice Generated Successfully ');
 
+        $cust_id = $request->customer_id;
+        $customer = Customer::where('id',$cust_id)->first();
+       
+        $order_id = Order::where('id',$order_id)->first();
+        $totaldiscountv=$request->totaldiscountv;
+
+        $invoiceView = View::make('invoice.thermal', compact('customer', 'contents','order_id','totaldiscountv'))->render();
+        session(['invoiceView' => $invoiceView]);
+
+
         Cart::destroy();
-
+ 
         // $invoiceView = View::make('invoice.thermal', compact('order_id', 'contents'))->render();
-
-        // Store the invoice view in a session
-      
-
-
         return redirect()->route('pos');
 // return $this->invoiceprint();
         // return redirect()->route('dashboard');
 
-
-
     } 
 
-         
+    public function invoiceprint()
+    {
+        $invoiceView = session('invoiceView');
+    
+        return $invoiceView;
+    }
 
     public function PendingOrder(){
 

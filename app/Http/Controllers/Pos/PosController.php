@@ -122,19 +122,19 @@ public function CreateInvoice(Request $request){
     $cust_id = $request->customer;
     $customer = Customer::where('id',$cust_id)->first();
 
-        $invoiceView = View::make('invoice.thermal', compact('customer', 'contents'))->render();
-        session(['invoiceView' => $invoiceView]);
+        // $invoiceView = View::make('invoice.thermal', compact('customer', 'contents'))->render();
+        // session(['invoiceView' => $invoiceView]);
 
     return view('invoice.product_invoice1',compact('contents','customer'));
 
 }
 
-public function invoiceprint()
-{
-    $invoiceView = session('invoiceView');
+// public function invoiceprint()
+// {
+//     $invoiceView = session('invoiceView');
 
-    return $invoiceView;
-}
+//     return $invoiceView;
+// }
 
                 //pos_page1 code
 
@@ -215,7 +215,7 @@ public function CreatesaleInvoice(Request $request){
      }
      
      // Add the products to the cart
-     Cart::add($products);
+    //  Cart::add($products);
      
 if (Cart::count() != 0) {
 
@@ -233,6 +233,9 @@ if (Cart::count() != 0) {
     $customer = Customer::where('id',$cust_id)->first();
     $totaldiscountv=$request->totaldiscountv;
         $invoiceView = View::make('invoice.thermal', compact('customer', 'contents','totaldiscountv'))->render();
+        // Destroy previous session data
+session()->forget('invoiceView');
+
         session(['invoiceView' => $invoiceView]);
 
     return view('invoice.product_invoice1',compact('contents','customer','totaldiscountv'));

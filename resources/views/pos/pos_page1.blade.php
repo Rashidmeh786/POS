@@ -448,7 +448,7 @@ function updateValues() {
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
-        <form class="px-3" method="post" id="form2" action="" id="customerform">
+        <form class="px-3" method="post" id="form2" action="" >
           @csrf
           <div class="mb-3">
             <ul class="nav nav-pills nav-fill navtab-bg">
