@@ -259,6 +259,9 @@
                     <div class="collapse" id="orders">
                         <ul class="nav-second-level">
                             <li>
+                                <a href="{{ route('add.sale') }}">Add Sale </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('pending.order') }}">Pending Orders </a>
                             </li>
                 

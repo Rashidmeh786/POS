@@ -13,7 +13,7 @@
                             <div class="col-12">
                                 <div class="page-title-box">
                                     <div class="page-title-right">
-                                        <a href="{{ route('all.adjustment') }}" class="btn btn-outline-primary rounded- pill btn-lg waves-effect waves-light">back </a>  
+                                        <a href="{{ route('create.adjustment') }}" class="btn btn-outline-primary rounded- pill btn-lg waves-effect waves-light">Create New </a>  
                                     </div>
                                     <h4 class="page-title">All Adjustments</h4>
                                 </div>

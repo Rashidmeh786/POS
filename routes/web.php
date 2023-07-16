@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Pos\PosController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Pos\SaleController;
 use App\Http\Controllers\Unit\UnitController;
 use App\Http\Controllers\Roles\RoleController;
 use App\Http\Controllers\Brand\BrandController;
@@ -216,6 +217,18 @@ Route::controller(EmployeeController::class)->group(function(){
 
        });
        
+       Route::controller(SaleController::class)->group(function(){
+
+        Route::get('/add/sale','addsale')->name('add.sale');
+        Route::post('/store/sale','createinvoice')->name('store.sale');
+
+        Route::get('/searchSaleProduct', 'searchproduct')->name('saleproduct.search');
+        Route::post('/final-invoice/sale','FinalInvoice');
+       
+        
+
+       });
+       
 
        Route::controller(SalaryController::class)->group(function(){
 
@@ -327,5 +340,6 @@ Route::controller(EmployeeController::class)->group(function(){
 
             //    Route::get('/product/details/{productId}',[PurchaseController::class],'searchproduct'  )->name('product.details');
                Route::get('/product/details/{productId}', [PurchaseController::class, 'productDetails'])->name('product.details');
+               Route::get('/saleproduct/details/{productId}', [SaleController::class, 'productDetails'])->name('product.details');
 
 

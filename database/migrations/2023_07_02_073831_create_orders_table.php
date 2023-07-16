@@ -22,11 +22,15 @@ return new class extends Migration
             $table->string('sub_total')->nullable();
             $table->string('vat')->nullable();
             $table->string('discount')->nullable();
+            $table->string('shipping')->nullable();
+
             $table->string('invoice_no')->nullable();
             $table->string('total')->nullable();
             $table->string('payment_status')->nullable();
             $table->string('pay')->nullable();
             $table->string('due')->nullable();
+            $table->text('note')->nullable();
+
             $table->timestamps();
         });
     }

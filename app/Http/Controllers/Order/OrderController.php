@@ -33,7 +33,7 @@ class OrderController extends Controller
         $data['sub_total'] = $request->sub_total;
         // $data['vat'] = $request->vat;
 
-        $data['invoice_no'] = 'POS'.mt_rand(10000000,99999999);
+        $data['invoice_no'] = 'INV'.mt_rand(10000000,99999999);
         $data['total'] = $request->total;
         $data['payment_status'] = $request->payment_status;
         $data['pay'] = $request->pay;

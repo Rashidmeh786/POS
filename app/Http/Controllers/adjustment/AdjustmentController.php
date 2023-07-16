@@ -61,7 +61,7 @@ class AdjustmentController extends Controller
                 ->withInput();
         }
     
-        $refcode = IdGenerator::generate(['table' => 'adjustments', 'field' => 'reference_number', 'length' => 10, 'prefix' => 'Refadj-']);
+        $refcode = IdGenerator::generate(['table' => 'adjustments', 'field' => 'reference_number', 'length' => 10, 'prefix' => 'Ref-']);
     
         // Retrieve and store the adjustment details for each product
         foreach ($request->product_id as $index => $productId) {
