@@ -27,9 +27,10 @@ $today=Carbon::now();
         // ->whereNotNull('stock')
         // ->latest()->get();
 
-        $product = Product::
-        whereNotNull('stock')
-        ->latest()->get();
+        $product = Product::where('stock', '>', 0)
+        ->latest()
+        ->get();
+        $visitor=Customer::findorFail(1);
         $customers = Customer::all();
         $category = Category::latest()->get();
         $brand = Brand::latest()->get();
@@ -37,7 +38,7 @@ $today=Carbon::now();
     //    return view('pos.pos_page',compact('product','customer','category','brand'));
 
                             //  pos_page1        
-     return view('pos.pos_page1',compact('product','customers','category','brand'));
+     return view('pos.pos_page1',compact('product','customers','category','brand','visitor'));
 
 
     }

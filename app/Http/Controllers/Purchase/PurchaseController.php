@@ -40,6 +40,7 @@ class PurchaseController extends Controller
             'price' => $product->buying_price,
             'stock' => $product->stock ?? 0,
             'id'=>$product->id,
+            'product_code'=>$product->product_code
         ];
 
         return response()->json($productDetails);
@@ -249,12 +250,28 @@ class PurchaseController extends Controller
             
                }
 
+
                public function PendingPurchaseOrder(){
 
                 $orders = PurchaseOrder::where('order_status','pending')->get();
                 return view('purchase.pending_purchase_order',compact('orders'));
         
             }
+               public function PurchaseReturn($id)
+
+               {
+                   // dd($id);
+                   $order = PurchaseOrder::where('id',$id)->first();
+            
+                   $orderItem = PurchaseDetail::with('product')->where('order_id',$id)->orderBy('id','DESC')->get();
+
+                   return view('purchase.return_purchase',compact('order','orderItem'));
+               }  
+
+              
+
+
+           
 
 
 }

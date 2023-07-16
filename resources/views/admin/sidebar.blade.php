@@ -243,7 +243,7 @@
                                 <a href="{{ route('stock.manage') }}"> Current Stock </a>
                             </li>
                             <li>
-                                <a href="#">Stock Adjustment </a>
+                                <a href="{{ route('all.adjustment') }}"> Adjustment Details </a>
                             </li>
                 
                 

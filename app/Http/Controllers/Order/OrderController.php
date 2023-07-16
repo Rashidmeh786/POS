@@ -57,6 +57,14 @@ class OrderController extends Controller
 
         toast()->success('Invoice Generated Successfully ');
 
+        
+        $product = Orderdetails::where('order_id',$order_id)->get();
+        foreach($product as $item){
+           Product::where('id',$item->product_id)
+                ->update(['stock' => DB::raw('stock-'.$item->quantity) ]);
+        }
+
+
         $cust_id = $request->customer_id;
         $customer = Customer::where('id',$cust_id)->first();
        
@@ -103,11 +111,11 @@ class OrderController extends Controller
     public function OrderStatusUpdate(Request $request){
 
         $order_id = $request->id;
-        $product = Orderdetails::where('order_id',$order_id)->get();
-        foreach($product as $item){
-           Product::where('id',$item->product_id)
-                ->update(['stock' => DB::raw('stock-'.$item->quantity) ]);
-        }
+        // $product = Orderdetails::where('order_id',$order_id)->get();
+        // foreach($product as $item){
+        //    Product::where('id',$item->product_id)
+        //         ->update(['stock' => DB::raw('stock-'.$item->quantity) ]);
+        // }
 
      Order::findOrFail($order_id)->update(['order_status' => 'complete']);
 

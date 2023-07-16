@@ -77,7 +77,7 @@
                 <div class="d-flex">
                 
                     <select name="customerid" class="form-select  @error('customerid') is-invalid @enderror " id="example-select">
-                        <option value="">Select Customer</option>
+                        <option value="{{ $visitor->id }}">{{ $visitor->name }}</option>
                         @foreach ($customers as $item)
                       
                             <option value="{{ $item->id }}">{{ $item->name }}</option>

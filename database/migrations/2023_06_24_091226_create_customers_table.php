@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -33,6 +34,14 @@ return new class extends Migration
             // $table->decimal('total_due', 8, 2)->default(0.00);
             $table->timestamps();
         });
+
+        Customer::create([
+            'name' => 'Visitor Customer',
+            'email' => 'walkin@example.com',
+            'phone' => 000000000000,
+            'address'=>'visitor',
+            'city'=>'peshawar',
+        ]);
     }
 
     /**

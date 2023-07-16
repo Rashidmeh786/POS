@@ -16,6 +16,7 @@ use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\employee\EmployeeController;
 use App\Http\Controllers\Purchase\PurchaseController;
 use App\Http\Controllers\Supplier\SupplierController;
+use App\Http\Controllers\adjustment\AdjustmentController;
 use App\Http\Controllers\Attendance\AttendenceController;
 // this is test line
 /*
@@ -138,6 +139,24 @@ Route::controller(EmployeeController::class)->group(function(){
                     Route::post('ajaxunit/store','Storeunitajax')->name('ajaxunit.store');  //--ajax request
 
                     });
+
+
+                    Route::controller(AdjustmentController::class)->group(function(){
+
+                        Route::get('/create/adjustment','addadjustment')->name('create.adjustment');
+                Route::post('/store/adjustment','createadjustment')->name('store.adjustment');
+                Route::get('/all/adjustment','alladjustment')->name('all.adjustment');
+        Route::get('/details/adjustment/{id}','DetailsAdjustment')->name('details.adjustment');
+
+        Route::get('/adjustment/details/download/{id}','PrintInvoice')->name('print.adjustment');
+
+    
+        Route::get('/adjustment/reason/{id}','AdjustmentResonAjax');
+
+
+                       
+                        });
+
 
                     Route::controller(CategoryController::class)->group(function(){
 
@@ -301,6 +320,7 @@ Route::controller(EmployeeController::class)->group(function(){
                 Route::get('/complete/purchaseorder','CompletePurchaseOrder')->name('complete.purchaseorder');
                 Route::get('/purchaseorder/invoice-download/{order_id}','OrderInvoice')->name('purchase.invoicePrint');
                 Route::get('/pending/porder','PendingPurchaseOrder')->name('pending.purchaseorder');
+                Route::get('/purchase/return/{id}','PurchaseReturn')->name('return.purchaseorder');
 
                 
                });
