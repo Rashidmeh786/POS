@@ -1,9 +1,7 @@
 @extends('admin.admin_dashboard')
 @section('admin')
 
-{{-- <script src="{{ asset('backend/assets/js/jquery-3.6.0.min.js') }}"></script> --}}
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="{{ asset('backend/assets/js/jquery-3.6.0.min.js') }}"></script>
 
  <div class="content">
 
@@ -36,6 +34,7 @@
 
 
 
+        <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-office-building me-1"></i> User Details <span class="text text-danger">*</span></h5>
 
     <!-- end timeline content-->
 
@@ -45,33 +44,39 @@
 
             <input type="hidden" name="id" value="{{ $adminuser->id }}">
 
-            <h5 class="mb-4 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Edit Admin</h5>
+            <h5 class="mb-4 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Edit User</h5>
 
             <div class="row">
 
 
     <div class="col-md-6">
         <div class="form-group mb-3">
-            <label for="firstname" class="form-label"> Name</label>
+            <label for="firstname" class="form-label"> Name<span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control" value="{{ $adminuser->name }}"   >
-
+            @error('name')
+            <span class="text-danger"> {{ $message }} </span>
+            @enderror
         </div>
     </div>
 
       <div class="col-md-6">
         <div class="form-group mb-3">
-            <label for="firstname" class="form-label"> Email</label>
+            <label for="firstname" class="form-label"> Email<span class="text-danger">*</span></label>
             <input type="email" name="email" class="form-control"  value="{{ $adminuser->email }}"   >
-
+            @error('email')
+            <span class="text-danger"> {{ $message }} </span>
+            @enderror
         </div>
     </div>
 
 
       <div class="col-md-6">
         <div class="form-group mb-3">
-            <label for="firstname" class="form-label"> Phone</label>
+            <label for="firstname" class="form-label"> Phone<span class="text-danger">*</span></label>
             <input type="text" name="phone" class="form-control"  value="{{ $adminuser->phone }}"   >
-
+            @error('phone')
+            <span class="text-danger"> {{ $message }} </span>
+            @enderror
         </div>
     </div>
 
@@ -115,66 +120,6 @@
                     </div> <!-- container -->
 
                 </div> <!-- content -->
-
-
-<script type="text/javascript">
-    $(document).ready(function (){
-        $('#myForm').validate({
-            rules: {
-                name: {
-                    required : true,
-                }, 
-                email: {
-                    required : true,
-                }, 
-                phone: {
-                    required : true,
-                }, 
-                photo: {
-                    required : true,
-                }, 
-                password: {
-                    required : true,
-                }, 
-                roles: {
-                    required : true,
-                }, 
-            },
-            messages :{
-                name: {
-                    required : 'Please Enter User Name',
-                }, 
-                email: {
-                    required : 'Please Enter User Email',
-                },
-                phone: {
-                    required : 'Please Enter User Phone',
-                }, 
-                password: {
-                    required : 'Please Enter User Password',
-                },
-                photo: {
-                    required : 'Please Select User Photo',
-                },
-                roles: {
-                    required : 'Please Select User Role',
-                }, 
-            },
-            errorElement : 'span', 
-            errorPlacement: function (error,element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight : function(element, errorClass, validClass){
-                $(element).addClass('is-invalid');
-            },
-            unhighlight : function(element, errorClass, validClass){
-                $(element).removeClass('is-invalid');
-            },
-        });
-    });
-    
-</script>
 
 
 

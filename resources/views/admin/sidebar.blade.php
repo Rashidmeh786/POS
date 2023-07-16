@@ -46,16 +46,18 @@
             <ul id="side-menu">
 
                 <li class="menu-title">Navigation</li>
+                @if(Auth::user()->can('pos.menu'))
                 <li>
                     <a href="{{ route('pos') }}">
                         <span class="badge bg-pink float-end">NEW</span>
-                    <i class="text-warning mdi mdi-cart-plus "></i>
+                    <i class="mdi mdi-cart-plus "></i>
                         <span> POS </span>
                     </a>
                 </li>
+                @endif
                 <li>
                     <a href="{{ url('dashboard') }}">
-                     <i class="text-warning mdi mdi-view-dashboard-outline"></i>
+                     <i class="mdi mdi-view-dashboard-outline"></i>
                         <span class="badge bg-success rounded-pill float-end">4</span>
                         <span> Dashboards </span>
                     </a>
@@ -66,7 +68,7 @@
 
                 <li>
                     <a href="#" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-account-arrow-left"></i>
+                     <i class="mdi mdi-account-arrow-left"></i>
 
                         <span> Manage Students </span>
                         <span class="menu-arrow"></span>
@@ -96,7 +98,7 @@
 
                 <li>
                     <a href="#sidebarEcommerce" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-account-arrow-left"></i>
+                     <i class="mdi mdi-account-arrow-left"></i>
                         <span> Employees </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -121,7 +123,7 @@
 
                 <li>
                     <a href="#salary" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-cash"></i>
+                     <i class="mdi mdi-cash"></i>
                         <span> Employee Salary </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -147,7 +149,7 @@
             
                 <li>
                     <a href="#attendence" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-account-check"></i>
+                     <i class="mdi mdi-account-check"></i>
                         <span> Employee Attendance </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -162,7 +164,7 @@
                 </li>
                 <li>
                     <a href="#sidebarCrm" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-account-multiple-outline"></i>
+                     <i class="mdi mdi-account-multiple-outline"></i>
                         <span> Customers </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -184,7 +186,7 @@
 
                 <li>
                     <a href="#sidebarEmail" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-account-cash"></i>
+                     <i class="mdi mdi-account-cash"></i>
                         <span> Manage Supplier  </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -206,7 +208,7 @@
 
                 <li>
                     <a href="#sidebarAuth" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-account-circle-outline"></i>
+                     <i class="mdi mdi-account-circle-outline"></i>
                         <span> Product </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -234,7 +236,7 @@
 
                 <li>
                     <a href="#stock" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-sticker-plus"></i>
+                     <i class="mdi mdi-sticker-plus"></i>
                         <span> Manage Stock    </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -253,7 +255,7 @@
                 </li>
                 <li>
                     <a href="#orders" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-cart-outline"></i>
+                     <i class="mdi mdi-cart-outline"></i>
 
                         <span>  Sale  </span>
                         <span class="menu-arrow"></span>
@@ -285,7 +287,7 @@
 
                 <li>
                     <a href="#purchase" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-cart-outline"></i>
+                     <i class="mdi mdi-cart-outline"></i>
 
                         <span> Purchase  </span>
                         <span class="menu-arrow"></span>
@@ -318,7 +320,7 @@
 
                 <li>
                     <a href="#" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-account-circle-outline"></i>
+                     <i class="mdi mdi-account-circle-outline"></i>
                         <span> Expenses </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -336,7 +338,7 @@
                 <li class="menu-title mt-2">User Managment</li>
                 <li>
                     <a href="#admin" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-account-cog"></i>
+                     <i class="mdi mdi-account-cog"></i>
                         <span> User Managment   </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -356,7 +358,7 @@
 
                 <li>
                     <a href="#permission" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-email-multiple-outline"></i>
+                     <i class="mdi mdi-email-multiple-outline"></i>
                         <span> Roles And Permission    </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -383,7 +385,7 @@
               
                 <li>
                     <a href="#sidebarExpages" data-bs-toggle="collapse">
-                     <i class="text-warning mdi mdi-text-box-multiple-outline"></i>
+                     <i class="mdi mdi-text-box-multiple-outline"></i>
                         <span> Extra Pages </span>
                         <span class="menu-arrow"></span>
                     </a>

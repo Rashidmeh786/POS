@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -119,6 +120,24 @@ public function AddUser(){
 
 public function StoreUser(Request $request){
 
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|max:200',
+        'email' => 'required|unique:users|max:200',
+        'phone' => 'required|max:200',
+        'password' => 'required|max:400',
+        
+    ]);
+
+    if ($validator->fails()) {
+        toast()->error('Wait.. Fill all mandatory fields heaving *');
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
+    }
+
+
+
+
     $user = new User();
     $user->name = $request->name;
     $user->email = $request->email;
@@ -150,6 +169,25 @@ public function Edituser($id){
 public function UpdateUser(Request $request){
 
     $admin_id = $request->id;
+
+    $validator = Validator::make($request->all(), [
+
+
+        'name' => 'required|max:200',
+        'email' => 'required|email|unique:users,email,'.$admin_id,
+        'phone' => 'required|max:200',
+        
+       ]);
+       
+       if ($validator->fails()) {
+           toast()->error('Wait.. Fill all mandatory fields heaving *');
+
+           return redirect()->back()
+               ->withErrors($validator)
+               ->withInput();
+             
+       }
+
 
     $user = User::findOrFail($admin_id);
     $user->name = $request->name;

@@ -214,7 +214,7 @@ Route::controller(EmployeeController::class)->group(function(){
 
      Route::controller(PosController::class)->group(function(){
 
-        Route::get('/pos','Pos')->name('pos');
+        Route::get('/pos','Pos')->name('pos')->middleware('permission:pos.menu');;
         Route::post('/add-cart','AddCart');
         Route::get('/allitem','AllItem');
        
