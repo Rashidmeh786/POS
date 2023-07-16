@@ -262,7 +262,6 @@
                 </div> <!-- content -->
 
 
-
                 <script>
                   $(document).ready(function() {
                       var searchResults = $('#searchResults');
@@ -320,7 +319,7 @@
                                                 '<td>' +
                                                 '<div class="d-flex align-items-center">' +
                                                 '<button type="button" class="btn btn-lg btn-primary increase-quantity" id="increaseqty"><i class="fas fa-plus"></i></button>' +
-                                                '<input type="text" min="1" value="1" name="qty[]" class="form-control quantity-input update-quantity" placeholder="Qty" style="width: 59px; height: 44px;">' +
+                                                '<input type="text" min="1" value="1" max="" name="qty[]" class="form-control quantity-input update-quantity" placeholder="Qty" style="width: 59px; height: 44px;">' +
                                                 '<button type="button" class="btn btn-lg btn-primary decrease-quantity" id="decreaseqty"><i class="fas fa-minus"></i></button>' +
                                                 '</div>' +
                                                 '</td>' +
@@ -343,7 +342,10 @@
                         
                                             // Append the new row to the table
                                             tableBody.append(newRow);
-                                        
+                                            var stockValue = productDetails.stock; // Replace with your actual stock value
+                                             var quantityInput = $('.quantity-input');
+                                             quantityInput.attr('max', stockValue);
+
                                             // Hide the search results container
                                             searchResults.html('');
                                             searchResults.hide();
@@ -356,10 +358,26 @@
                   });
                 });
                 
+
+
+               
+ 
+
                 
                 tableBody.on('input', '.update-quantity', function() {
-  var quantity = parseInt($(this).val(), 10);
+                var quantity = parseInt($(this).val(), 10);
 
+                  var maxQuantity = parseInt($('.quantity-input').attr('max'));
+
+                  if (quantity >= maxQuantity) {
+                  // alert('The quantity exceeds the available stock.');
+                  Swal.fire(
+                  'Alert!',
+                  'The quantity exceeds the available stock.',
+                  'error'
+                  )
+                  $('.quantity-input').val(maxQuantity); // Reset the input value to the stockValue
+                  }
   // Update subtotal
   var price = parseFloat($(this).closest('tr').find('td:eq(2)').text());
   var subtotal = quantity * price;
@@ -371,12 +389,24 @@
                   var input = $(this).siblings('.quantity-input');
                   var quantity = parseInt(input.val(), 10);
                   input.val(quantity + 1);
-                
+              
                   // Update subtotal
                   var price = parseFloat($(this).closest('tr').find('td:eq(2)').text());
                   var subtotal = (quantity + 1) * price;
                   $(this).closest('tr').find('td#subtotal').text(subtotal.toFixed(2));
                   updateGrandTotal();
+                  var maxQuantity = parseInt($('.quantity-input').attr('max'));
+
+                  if (quantity >= maxQuantity) {
+   // alert('The quantity exceeds the available stock.');
+    Swal.fire(
+  'Alert!',
+  'The quantity exceeds the available stock.',
+  'error'
+)
+    $('.quantity-input').val(maxQuantity); // Reset the input value to the stockValue
+  }
+
                 });
                 
                 // Event listener for decreasing quantity
@@ -412,6 +442,7 @@
                 $('#tax').on('input', function() {
                   var taxAmount = $(this).val();
                   $('#taxvalue').text(taxAmount);
+               
                 });
                 
                 $('#discount').on('input', function() {

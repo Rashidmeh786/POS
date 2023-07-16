@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
@@ -101,7 +102,85 @@ class AdminController extends Controller
 }// End Method 
 
 
+public function Allusers(){
+
+    
+    $alladminuser = User::latest()->get();
+    return view('admin.all_users',compact('alladminuser'));
+}// End Method 
+
+public function AddUser(){
+
+    $roles = Role::all();
+    return view('admin.add_user',compact('roles'));
+}// End Method 
+
+
+
+public function StoreUser(Request $request){
+
+    $user = new User();
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->phone = $request->phone;
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    if ($request->roles) {
+        $user->assignRole($request->roles);
+    }
+
+    toast()->success('User Added Successfully');
+    return redirect()->route('all.users');
+
+
+
+}// End Method 
+
+
+public function Edituser($id){
+
+    $roles = Role::all();
+    $adminuser = User::findOrFail($id);
+    return view('admin.edit_user',compact('roles','adminuser'));
+
+}// End Method 
+
+
+public function UpdateUser(Request $request){
+
+    $admin_id = $request->id;
+
+    $user = User::findOrFail($admin_id);
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->phone = $request->phone; 
+    $user->save();
+
+    $user->roles()->detach();
+    if ($request->roles) {
+        $user->assignRole($request->roles);
+    }
+    toast()->success('User Updated Successfully');
+    return redirect()->route('all.users');
+
+
+}// End Method 
+
+public function Deleteuser($id){
+
+    $user = User::findOrFail($id);
+    if (!is_null($user)) {
+        $user->delete();
+    }
+
+    toast()->success('User Deleted Successfully');
+    return redirect()->back();
+   
+}// End Method 
 
 
 
 }
+
+

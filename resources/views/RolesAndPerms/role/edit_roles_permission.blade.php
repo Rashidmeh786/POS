@@ -12,7 +12,7 @@
 
 <div class="container mt-4">
     
-    <form id="myForm" method="post" action="{{ route('role.permission.store') }}" enctype="multipart/form-data">
+    <form id="myForm" method="post" action="{{ route('role.permission.update',$role->id) }}" enctype="multipart/form-data">
         @csrf
     <div class="row">
         

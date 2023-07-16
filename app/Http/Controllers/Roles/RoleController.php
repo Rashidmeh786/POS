@@ -212,4 +212,44 @@ public function AdminEditRoles($id){
 } // End Method 
 
 
+
+public function RolePermissionUpdate(Request $request,$id){
+
+    $role = Role::findOrFail($id);
+    $permissions = $request->permission;
+
+    if (!empty($permissions)) {
+        $role->syncPermissions($permissions);
+    }
+
+    toast()->info('Permission assigned to Role  Successfully');
+    return redirect()->route('all.roles.permission');
+
+
+}// End Method 
+
+
+public function AdminDeleteRoles($id){
+
+    $role = Role::findOrFail($id);
+    if (!is_null($role)) {
+        $role->delete();
+    }
+
+    toast()->info('Role Permission Deleted Successfully');
+    return redirect()->route('all.roles.permission');
+
+
+
+}// End Method 
+
+
+
+public function AllAdmin(){
+
+    $alladminuser = User::latest()->get();
+    return view('admin.all_users',compact('alladminuser'));
+}//
+
+
 }

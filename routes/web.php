@@ -61,6 +61,18 @@ Route::Post('/update/password', [AdminController::class, 'UpdatePassword'])->nam
 });
 
 
+Route::controller(AdminController::class)->group(function(){
+
+    Route::get('/all/users','Allusers')->name('all.users');
+    Route::get('/add/user','AddUser')->name('add.user');
+    Route::post('/store/user','StoreUser')->name('user.store');
+    Route::get('/edit/user/{id}','EditUser')->name('edit.user');
+    Route::post('/update/user','UpdateUser')->name('update.user');
+    Route::get('/delete/user/{id}','DeleteUser')->name('delete.user');
+   
+   
+   });
+
 /// Employee All Route 
 // Route::controller(EmployeeController::class)->group(function(){
 
@@ -295,6 +307,9 @@ Route::controller(EmployeeController::class)->group(function(){
                  
                     Route::get('/all/roles/permission','AllRolesPermission')->name('all.roles.permission');
                     Route::get('/admin/edit/roles/{id}','AdminEditRoles')->name('admin.edit.roles');
+                    Route::get('/admin/delete/roles/{id}','AdminDeleteRoles')->name('admin.delete.roles');
+
+                Route::post('/role/permission/update/{id}','RolePermissionUpdate')->name('role.permission.update');
                });
 
 

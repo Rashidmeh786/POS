@@ -48,25 +48,26 @@
                 <li class="menu-title">Navigation</li>
                 <li>
                     <a href="{{ route('pos') }}">
-                        <span class="badge bg-pink float-end">Hot</span>
-                       <i class="mdi mdi-view-dashboard-outline"></i>
+                        <span class="badge bg-pink float-end">NEW</span>
+                    <i class="text-warning mdi mdi-cart-plus "></i>
                         <span> POS </span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ url('dashboard') }}">
-                        <i class="mdi mdi-view-dashboard-outline"></i>
+                     <i class="text-warning mdi mdi-view-dashboard-outline"></i>
                         <span class="badge bg-success rounded-pill float-end">4</span>
                         <span> Dashboards </span>
                     </a>
                 </li>
-                <li class="menu-title mt-2">Students</li>
+                <li class="menu-title mt-2">Organization</li>
 
                
 
                 <li>
                     <a href="#" data-bs-toggle="collapse">
-                        <i class="mdi mdi-cart-outline"></i>
+                     <i class="text-warning mdi mdi-account-arrow-left"></i>
+
                         <span> Manage Students </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -89,13 +90,13 @@
                 </li>
 
 
-                <li class="menu-title mt-2">Employees</li>
+                {{-- <li class="menu-title mt-2">Employees</li> --}}
 
                
 
                 <li>
                     <a href="#sidebarEcommerce" data-bs-toggle="collapse">
-                        <i class="mdi mdi-cart-outline"></i>
+                     <i class="text-warning mdi mdi-account-arrow-left"></i>
                         <span> Employees </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -120,7 +121,7 @@
 
                 <li>
                     <a href="#salary" data-bs-toggle="collapse">
-                        <i class="mdi mdi-email-multiple-outline"></i>
+                     <i class="text-warning mdi mdi-cash"></i>
                         <span> Employee Salary </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -146,7 +147,7 @@
             
                 <li>
                     <a href="#attendence" data-bs-toggle="collapse">
-                        <i class="mdi mdi-email-multiple-outline"></i>
+                     <i class="text-warning mdi mdi-account-check"></i>
                         <span> Employee Attendance </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -161,7 +162,7 @@
                 </li>
                 <li>
                     <a href="#sidebarCrm" data-bs-toggle="collapse">
-                        <i class="mdi mdi-account-multiple-outline"></i>
+                     <i class="text-warning mdi mdi-account-multiple-outline"></i>
                         <span> Customers </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -183,7 +184,7 @@
 
                 <li>
                     <a href="#sidebarEmail" data-bs-toggle="collapse">
-                        <i class="mdi mdi-email-multiple-outline"></i>
+                     <i class="text-warning mdi mdi-account-cash"></i>
                         <span> Manage Supplier  </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -205,7 +206,7 @@
 
                 <li>
                     <a href="#sidebarAuth" data-bs-toggle="collapse">
-                        <i class="mdi mdi-account-circle-outline"></i>
+                     <i class="text-warning mdi mdi-account-circle-outline"></i>
                         <span> Product </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -233,7 +234,7 @@
 
                 <li>
                     <a href="#stock" data-bs-toggle="collapse">
-                        <i class="mdi mdi-email-multiple-outline"></i>
+                     <i class="text-warning mdi mdi-sticker-plus"></i>
                         <span> Manage Stock    </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -252,7 +253,8 @@
                 </li>
                 <li>
                     <a href="#orders" data-bs-toggle="collapse">
-                        <i class="mdi mdi-email-multiple-outline"></i>
+                     <i class="text-warning mdi mdi-cart-outline"></i>
+
                         <span>  Sale  </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -283,7 +285,8 @@
 
                 <li>
                     <a href="#purchase" data-bs-toggle="collapse">
-                        <i class="mdi mdi-email-multiple-outline"></i>
+                     <i class="text-warning mdi mdi-cart-outline"></i>
+
                         <span> Purchase  </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -311,11 +314,11 @@
 
 
 
-                <li class="menu-title mt-2">Custom</li>
+                {{-- <li class="menu-title mt-2">Custom</li> --}}
 
                 <li>
                     <a href="#" data-bs-toggle="collapse">
-                        <i class="mdi mdi-account-circle-outline"></i>
+                     <i class="text-warning mdi mdi-account-circle-outline"></i>
                         <span> Expenses </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -330,11 +333,30 @@
                         </ul>
                     </div>
                 </li>
-                <li class="menu-title mt-2">Roles And Permissions</li>
+                <li class="menu-title mt-2">User Managment</li>
+                <li>
+                    <a href="#admin" data-bs-toggle="collapse">
+                     <i class="text-warning mdi mdi-account-cog"></i>
+                        <span> User Managment   </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="admin">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.users') }}">All Users </a>
+                            </li>
+                
+                            <li>
+                                <a href="{{ route('add.user') }}">Add User </a>
+                            </li> 
+                
+                        </ul>
+                    </div>
+                </li>
 
                 <li>
                     <a href="#permission" data-bs-toggle="collapse">
-                        <i class="mdi mdi-email-multiple-outline"></i>
+                     <i class="text-warning mdi mdi-email-multiple-outline"></i>
                         <span> Roles And Permission    </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -358,9 +380,10 @@
                     </div>
                 </li>
 
+              
                 <li>
                     <a href="#sidebarExpages" data-bs-toggle="collapse">
-                        <i class="mdi mdi-text-box-multiple-outline"></i>
+                     <i class="text-warning mdi mdi-text-box-multiple-outline"></i>
                         <span> Extra Pages </span>
                         <span class="menu-arrow"></span>
                     </a>

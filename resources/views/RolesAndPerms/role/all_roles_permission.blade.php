@@ -54,7 +54,7 @@
                 </td> 
                 <td width="18%">
 <a href="{{ route('admin.edit.roles',$item->id) }}" class="btn btn-blue rounded -pill waves-effect waves-light btn-sm"><span class="fas fa-pencil-alt"></span></a>
-<a href="{{ route('delete.permission',$item->id) }}" class="btn btn-danger rounded- pill waves-effect waves-light btn-sm" id="delete"><span class="fas fa-trash"></span></a>
+<a href="{{ route('admin.delete.roles',$item->id) }}" class="btn btn-danger rounded- pill waves-effect waves-light btn-sm" id="delete"><span class="fas fa-trash"></span></a>
 
                 </td>
             </tr>
@@ -74,6 +74,40 @@
                     </div> <!-- container -->
 
                 </div> <!-- content -->
+
+
+    <script>            
+$(function(){
+    $(document).on('click','#delete',function(e){
+        e.preventDefault();
+        var link = $(this).attr("href");
+
+
+                  Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Delete This Data?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      window.location.href = link
+                      Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                      )
+                    }
+                  }) 
+
+
+    });
+
+  });
+
+</script>
 
 
 @endsection 
