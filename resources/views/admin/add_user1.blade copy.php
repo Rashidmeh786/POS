@@ -1,6 +1,8 @@
 @extends('admin.admin_dashboard')
 
 @section('admin')
+<script src="{{ asset('backend/assets/js/jquery-3.6.0.min.js') }}"></script>
+
 
 <div class="content">
     <div class="container-fluid">
@@ -62,7 +64,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
                                             <label for="firstname" class="form-label">Password <span class="text-danger">*</span></label>
-                                            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" value="{{ old('password') }}" >
+                                            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" value="{{ old('password') }}">
                                             @error('password')
                                             <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -71,9 +73,9 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label for="firstname" class="form-label ">Assign Roles</label>
-                                            <select name="roles[]" multiple class="form-select selectmultiple " id="example-select" style="height: 100px;">
-                                                <option  disabled>Select Roles</option>
+                                            <label for="firstname" class="form-label">Assign Roles</label>
+                                            <select name="roles" multiple class="form-select" id="example-select">
+                                                <option selected disabled>Select Roles</option>
                                                 @foreach($roles as $role)
                                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                                                 @endforeach
@@ -83,7 +85,6 @@
                                 </div>
 
                                 <div class="text-end">
-                                   
                                     <button type="submit" class="btn btn-success waves-effect waves-light mt-2"><i class="mdi mdi-content-save"></i> Save</button>
                                 </div>
                             </form>
@@ -108,13 +109,3 @@
     });
 </script>
 @endsection
-<script src="{{ asset('backend/assets/js/jquery-3.6.0.min.js') }}"></script>
-
-<script>
-    $(document).ready(function() {
-$('.js-example-basic-multiple').select2();
-});
-
-  </script>
-
-<script src="{{ asset('backend/assets/libs/select2/js/select2.min.js') }}"></script>

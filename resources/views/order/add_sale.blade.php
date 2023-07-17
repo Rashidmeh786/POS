@@ -79,12 +79,16 @@
               <span class="text-danger"> {{ $message }} </span>
               @enderror
             </div>
-         
+         @php
+        $visitor=app\Models\Customer::findorFail(1);
+           
+         @endphp
 
             <div class="col-md-4">
                 <label for="customer" class="form-label">Customer:<span class="text text-danger">*</span></label>
                 <select class="form-select  @error('customer_id') is-invalid @enderror" id="customer_id" name="customer_id">
-                  <option value="" selected disabled>Select Customer</option>
+                  <option value="{{ $visitor->id }}">{{ $visitor->name }}</option>
+
                   @foreach ($customers as $customer)
                   <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                 @endforeach

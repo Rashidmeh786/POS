@@ -1,7 +1,7 @@
 @extends('admin.admin_dashboard')
 @section('admin')
 
-<script src="{{ asset('backend/assets/js/jquery-3.6.0.min.js') }}"></script>
+{{-- <script src="{{ asset('backend/assets/js/jquery-3.6.0.min.js') }}"></script> --}}
 
  <div class="content">
 
@@ -14,7 +14,7 @@
                                 <div class="page-title-box">
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Edit User</a></li>
+                                            <li class="breadcrumb-item btn btn-primary"><a href="{{ route('all.users') }}"><span class="fas fa-arrow-left"></span></a></li>
 
                                         </ol>
                                     </div>
@@ -83,16 +83,19 @@
 
 
       <div class="col-md-6">
+       
         <div class="form-group mb-3">
-            <label for="firstname" class="form-label">Asign Roles </label>
-            <select name="roles" class="form-select" id="example-select">
-                    <option selected disabled >Select Roles </option>
-                    @foreach($roles as $role)
-        <option value="{{ $role->id }}" {{ $adminuser->hasRole($role->name) ? 'selected' : '' }} >{{ $role->name }}</option>
-                     @endforeach
-                </select>
+            <label for="firstname" class="form-label ">Assign Roles</label>
+            <select name="roles[]" multiple class="form-select selectmultiple" id="example-select">
+                <option  disabled>Select Roles</option>
+                @foreach($roles as $role)
+                <option value="{{ $role->id }}" {{ $adminuser->hasRole($role->name) ? 'selected' : '' }} >{{ $role->name }}</option>
 
+                @endforeach
+            </select>
         </div>
+
+
     </div>
 
 
@@ -120,11 +123,6 @@
                     </div> <!-- container -->
 
                 </div> <!-- content -->
-
-
-
-
-
 
 
 

@@ -120,6 +120,7 @@ class PurchaseController extends Controller
         $data['discount'] = $request->discount;
         $data['shipping'] = $request->shipping;
         $data['ref_no'] =$refcode ;
+        $data['note'] = $request->note;
 
         $data['invoice_no'] = 'INV'.mt_rand(10000000,99999999);
         $data['total'] = $request->total;

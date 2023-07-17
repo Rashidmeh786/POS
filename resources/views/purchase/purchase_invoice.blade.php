@@ -208,7 +208,7 @@ $qtyCount = count($itemDetails['qty']);
          <input type="hidden" name="del_status" value="{{ $del_status }}">
          <input type="hidden" name="total_products" value="{{ $qtyCount }}">
          <input type="hidden" name="sub_total" value="{{$totalamountv }}"> 
-        
+         <input type="hidden" name="note" value="{{$note}}">
          <input type="hidden" name="tax" value="{{$taxv}}">
          <input type="hidden" name="discount" value="{{$discountv}}">
          <input type="hidden" name="invoice_no" value="{{$invoice_no}}">

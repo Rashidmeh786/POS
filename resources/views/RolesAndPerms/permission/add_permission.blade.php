@@ -47,6 +47,7 @@
                                             <label for="firstname" class="form-label">Group Name</label>
                                             <select name="group_name" class="form-select @error('group_name') is-invalid @enderror" id="example-select">
                                                 <option selected disabled>Select Group</option>
+                                                <option value="general">General</option>
                                                 <option value="pos">Pos</option>
                                                 <option value="employee">Employee</option>
                                                 <option value="customer">Customer</option>
@@ -58,7 +59,9 @@
                                                 <option value="expense">Expense</option>
                                                 <option value="orders">Orders</option>
                                                 <option value="stock">Stock</option>
-                                                <option value="roles">Roles</option>
+                                                <option value="user">User Mgt</option>
+                                                <option value="roleand perms">Role & Perm</option>
+
                                             </select>
                                             @error('group_name')
                                             <span class="text-danger"> {{ $message }} </span>

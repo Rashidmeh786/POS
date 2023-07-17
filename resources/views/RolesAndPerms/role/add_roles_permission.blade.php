@@ -30,32 +30,37 @@
         <div class="col-md-6 d-flex align-items-end justify-content-end">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="allPermissions">
-            <label class="form-check-label" for="allPermissions">Provide All Permissions</label>
+            <label class="form-check-label text text-warning" for="allPermissions">Provide All Permissions</label>
           </div>
         </div>
       </div>
       
       <div class="row mt-4">
-        @foreach($permission_groups as $group)
+        <div class="row mt-4">
+          @foreach($permission_groups as $group)
           <div class="col-md-3">
             <div class="card">
               <div class="card-body p-3">
-                <label class="form-check-label text-bold" for="all"> <span class=" "> {{ $group->group_name }}</span></label>
+                <label class="form-check-label text-bold text-center" for="all">
+                  <span><input type="checkbox" name="allgrouppermossions" class="form-check-input all-checkboxes form-check-" data-group="{{ $group->group_name }}"></span>
+                 &nbsp; &nbsp;<span class=" badge bg-primary  text-bold">{{ $group->group_name }}</span>
+                </label>
                 @php
                 $permissions = App\Models\User::getpermissionByGroupName($group->group_name);
-                @endphp            
-            
-                    @foreach($permissions as $permission)
+                @endphp
+        
+                @foreach($permissions as $permission)
                 <div class="form-check my-2">
-                    <input class="form-check-input  @error('permission') is-invalid @enderror" type="checkbox" name="permission[]" value="{{ $permission->id }}" id="customckeck{{ $permission->id }}" >
-                    <label class="form-check-label" for="customckeck{{ $permission->id }}">{{ $permission->name }}</label>
+                  <input class="form-check-input  @error('permission') is-invalid @enderror" type="checkbox" name="permission[]" value="{{ $permission->id }}" id="customckeck{{ $permission->id }}" data-group="{{ $group->group_name }}">
+                  <label class="form-check-label" for="customckeck{{ $permission->id }}">{{ $permission->name }}</label>
                 </div>
                 @endforeach
               </div>
             </div>
           </div>
-        @endforeach
-      </div>
+          @endforeach
+        </div>
+        
       <form>
     </div>
 
@@ -70,5 +75,16 @@
             } 
         });
    </script>
+
+<script type="text/javascript">
+  $('.all-checkboxes').click(function(){
+    var group = $(this).data('group');
+    $('input[type=checkbox][data-group="' + group + '"]').prop('checked', $(this).is(':checked'));
+  });
+</script>
+
+
+
+
     @endsection
  

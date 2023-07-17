@@ -12,6 +12,8 @@
         <!-- App favicon -->
         <link rel="shortcut icon" href="{{asset('backend/assets/images/favicon.ico')}}">
 
+        {{-- <link href="{{asset('backend/assets/libs/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css" /> --}}
+
         <!-- Plugins css -->
         <link href="{{asset('backend/assets/libs/flatpickr/flatpickr.min.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('backend/assets/libs/selectize/css/selectize.bootstrap3.css')}}" rel="stylesheet" type="text/css" />
@@ -24,13 +26,13 @@
         <link href="{{asset('backend/assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
         <!-- Head js -->
   
-      
+        <link href="{{asset('backend/assets/libs/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css" />
+
 <link href="{{ asset('backend/assets/libs/dropzone/min/dropzone.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('backend/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css')}}" />
 <link href="{{ asset('backend/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css')}}" />
 
-<link rel="stylesheet" href="{{ asset('vendor/select2/css/select2.min.css') }}">
- <!-- dataTables -->
+
  <link href="{{ asset('backend/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
  <link href="{{ asset('backend/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
  <link href="{{ asset('backend/assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
@@ -271,14 +273,13 @@
  <script src="{{ asset('backend/assets/libs/datatables.net-select/js/dataTables.select.min.js') }}"></script>
  <script src="{{ asset('backend/assets/libs/pdfmake/build/pdfmake.min.js') }}"></script>
  <script src="{{ asset('backend/assets/libs/pdfmake/build/vfs_fonts.js') }}"></script>
+
+
  <!-- third party js ends -->
 
 
  <script src="{{ asset('backend/assets/js/pages/datatables.init.js') }}"></script>
 <!-- Datatables Eend -->
-<script src="{{ asset('vendor/select2/js/select2.min.js') }}"></script>
-<script src="{{ asset('vendor/select2/js/select2.full.min.js') }}"></script>
-
 
 
 <!-- Dropzone file uploads-->
@@ -292,7 +293,21 @@
 
 <!-- Init js -->
 <script src="{{asset('backend/assets/js/pages/add-product.init.js')}}"></script>
-
-
+{{-- <script src="{{ asset('backend/assets/libs/select2/js/select2.min.js') }}"></script> --}}
     </body>
+
+
+<script>
+    $(document).ready(function() {
+$('.selectmultiple').select2({
+    placeholder: "Select a Role ..",
+     height: 'resolve',
+});
+
+});
+
+  </script>
+
+<script src="{{ asset('backend/assets/libs/select2/js/select2.min.js') }}"></script>
+
 </html>

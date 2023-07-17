@@ -135,7 +135,7 @@
                             <td>1</td>
                             <td>{{ $item->product->product_name }}</td>
                             <td>{{ $item->product->selling_price }}</td>
-                            <td> <span class="badge bg-primary p-2 text-lg text-bold">{{ $item->quantity }}</span></td>
+                            <td> <span class="badge bg-pink p-2 text-lg text-bold">{{ $item->quantity }}</span></td>
                             <td>
                               <div class="d-flex align-items-center">
                                 <button type="button" class="btn btn-lg btn-primary increase-quantity"><i class="fas fa-plus"></i></button>
