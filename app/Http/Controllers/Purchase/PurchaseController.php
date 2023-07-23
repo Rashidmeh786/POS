@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
@@ -121,6 +122,7 @@ class PurchaseController extends Controller
         $data['shipping'] = $request->shipping;
         $data['ref_no'] =$refcode ;
         $data['note'] = $request->note;
+        $data['user_id']= Auth::id();
 
         $data['invoice_no'] = 'INV'.mt_rand(10000000,99999999);
         $data['total'] = $request->total;
@@ -270,9 +272,5 @@ class PurchaseController extends Controller
                }  
 
               
-
-
-           
-
 
 }

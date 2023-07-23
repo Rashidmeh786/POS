@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="text-end">
-                                        <h3 class="text-dark mt-1">$<span data-plugin="counterup">{{ $total_paid }}</span></h3>
+                                        <h3 class="text-dark mt-1"><span data-plugin="counterup">{{ $total_paid }}</span></h3>
                                         <p class="text-muted mb-1 text-truncate">Total Paid </p>
                                     </div>
                                 </div>
@@ -72,7 +72,7 @@
                             </div>
                             <div class="col-6">
                                   <div class="text-end">
-                                    <h3 class="text-dark mt-1">$<span data-plugin="counterup">{{ $total_due  }}</span></h3>
+                                    <h3 class="text-dark mt-1"><span data-plugin="counterup">{{ $total_due  }}</span></h3>
                                     <p class="text-muted mb-1 text-truncate">Total Due </p>
                                 </div>
                             </div>

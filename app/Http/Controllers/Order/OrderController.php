@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -39,6 +40,7 @@ class OrderController extends Controller
         $data['pay'] = $request->pay;
         $data['due'] = $mtotal;
         $data['created_at'] = Carbon::now(); 
+        $data['user_id']= Auth::id();
 
         $order_id = Order::insertGetId($data);
         $contents = Cart::content();

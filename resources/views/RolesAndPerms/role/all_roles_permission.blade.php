@@ -63,6 +63,8 @@
                     </table>
 
                 </div> <!-- end card body-->
+        {{ $roles->links('pagination::bootstrap-4') }}
+
             </div> <!-- end card -->
         </div><!-- end col-->
     </div>

@@ -223,27 +223,29 @@
                 </a>
                 <div class="dropdown-menu">
                     <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
+                    <a href="{{ route('add.sale') }}" class="dropdown-item">
                         <i class="fe-briefcase me-1"></i>
-                        <span>New Projects</span>
-                    </a>
+                        <span> Create Sale</span>
 
+                    </a>
+                    <a href="{{ route('add.purchase') }}" class="dropdown-item">
+                        <i class="fe-briefcase me-1"></i>
+                        <span> Create Purchase</span>
+
+                    </a>
                     <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
+                    <a href="{{ route('add.user') }}" class="dropdown-item">
                         <i class="fe-user me-1"></i>
-                        <span>Create Users</span>
+                        <span> Create User</span>
                     </a>
 
                     <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        <i class="fe-bar-chart-line- me-1"></i>
-                        <span>Revenue Report</span>
-                    </a>
+                    
 
                     <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
+                    <a href="{{ route('create.adjustment') }}" class="dropdown-item">
                         <i class="fe-settings me-1"></i>
-                        <span>Settings</span>
+                        <span>Adjustment</span>
                     </a>
 
                     <div class="dropdown-divider"></div>

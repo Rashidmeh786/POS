@@ -197,8 +197,12 @@ public function StoreRolesPermission(Request $request){
 }// End Method 
 public function AllRolesPermission(){
 
-    $roles = Role::all();
-    return view('RolesAndPerms.role.all_roles_permission',compact('roles'));
+    // $roles = Role::all();
+    // return view('RolesAndPerms.role.all_roles_permission',compact('roles'));
+
+    $roles = Role::paginate(7); // Assuming 10 roles per page, you can adjust this value as per your requirement
+return view('RolesAndPerms.role.all_roles_permission', compact('roles'));
+
 
 }
 

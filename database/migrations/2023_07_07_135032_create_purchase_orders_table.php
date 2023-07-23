@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('user_id');
 
             // $table->integer('customer_id');
             $table->string('order_date')->nullable();

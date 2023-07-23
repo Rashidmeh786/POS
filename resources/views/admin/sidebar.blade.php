@@ -46,7 +46,7 @@
             <ul id="side-menu">
 
                 <li class="menu-title">Navigation</li>
-                @if(Auth::user()->can('pos.menu'))
+              {{-- @if(Auth::user()->can('pos.menu')) --}}
                 <li>
                     <a href="{{ route('pos') }}">
                         <span class="badge bg-pink float-end">NEW</span>
@@ -54,7 +54,7 @@
                         <span> POS </span>
                     </a>
                 </li>
-                @endif
+                {{-- @endif --}}
                 <li>
                     <a href="{{ url('dashboard') }}">
                      <i class="mdi mdi-view-dashboard-outline"></i>
@@ -383,25 +383,7 @@
                 </li>
 
               
-                <li>
-                    <a href="#sidebarExpages" data-bs-toggle="collapse">
-                     <i class="mdi mdi-text-box-multiple-outline"></i>
-                        <span> Extra Pages </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse" id="sidebarExpages">
-                        <ul class="nav-second-level">
-                            
-                            <li>
-                                <a href="pages-500.html">Error 500</a>
-                            </li>
-                            <li>
-                                <a href="pages-500-two.html">Error 500 Two</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-    
+           
               
             </ul>
 

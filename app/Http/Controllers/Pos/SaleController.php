@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 
@@ -88,6 +89,7 @@ class SaleController extends Controller
     $shhippingv=$request->shipping;
     $note=$request->note;
     $del_status=$request->del_status;
+    
          
     $itemDetails = [
         'id' => $request->product_id, 
@@ -125,7 +127,7 @@ class SaleController extends Controller
         $data['discount'] = $request->discount;
         $data['shipping'] = $request->shipping;
         // $data['ref_no'] =$refcode ;
-
+        $data['user_id']= Auth::id();
         $data['invoice_no'] = 'INV'.mt_rand(10000000,99999999);
         $data['total'] = $request->total;
         $data['payment_status'] = $request->payment_status;
