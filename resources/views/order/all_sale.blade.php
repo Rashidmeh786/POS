@@ -171,7 +171,7 @@
                             <div class="dropdown-divider"></div>
         
                             <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">
+                            <a href="{{ route('return.saleorder',$item->id) }}" class="dropdown-item">
                                 <i class="fe-headphones me-1 text-warning"></i>
                                 <span>Return</span>
                             </a>

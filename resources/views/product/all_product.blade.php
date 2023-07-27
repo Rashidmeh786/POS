@@ -64,7 +64,7 @@
                
                 <td>{{ $item->buying_price }}</td>
                 <td>{{ $item->selling_price }}</td>
-                <td>{{ $item->stock ?? "0"}}</td>
+                <td><span class="badge bg-warning p-1">{{ $item->stock ?? "0"}}</span></td>
                 {{-- <td> 
 
                 @if($item->expire_date>=Carbon\Carbon::now()->format('Y','m','d'))

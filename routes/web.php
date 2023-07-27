@@ -238,6 +238,7 @@ Route::controller(EmployeeController::class)->group(function(){
 
         Route::get('/searchSaleProduct', 'searchproduct')->name('saleproduct.search');
         Route::post('/final-invoice/sale','FinalInvoice');
+        Route::get('/sale/return/{id}','saleReturn')->name('return.saleorder');
        
         
 

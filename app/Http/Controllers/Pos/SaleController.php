@@ -164,4 +164,16 @@ class SaleController extends Controller
 
     } 
 
+    public function saleReturn($id)
+
+    {
+        // dd($id);
+        $order = Order::where('id',$id)->first();
+ 
+        $orderItem = Orderdetails::with('product')->where('order_id',$id)->orderBy('id','DESC')->get();
+
+        return view('order.return_sale',compact('order','orderItem'));
+    }  
+
+
 }

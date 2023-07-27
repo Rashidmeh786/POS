@@ -191,6 +191,8 @@
                             <th style="font-weight: bold">Image</th>
                             <th style="font-weight: bold">Name</th>
                            <th style="font-weight: bold"> Price</th>
+                           <th style="font-weight: bold"> Stock</th>
+
                             <th hidden>Category</th>
                             <th hidden>Brand</th>
                         </tr>
@@ -221,7 +223,11 @@
                                 </td>
                                 <td>
                                   <p class="product-name" style="margin: 0; font-size: 16px; font-weight: ; color: #212529;">{{ $item->selling_price }}</p>
-                                </div>
+                              
+                                </td>
+                                <td>
+                                  <p class="product-name badge " style="margin: 0; font-size: 16px; font-weight: ; color: #212529;">{{ $item->stock }}</p>
+                              
                                 </td>
                           
                             <td hidden>{{ $item->category->id ?? "" }}</td>
@@ -289,7 +295,7 @@ function updateProductTable(productData) {
       '<td>' +
       '<div class="d-flex align-items-center">' +
       '<button type="button" class="btn btn-sm btn-success p-1 increase-quantity" style="margin-top: -2px;"><i class="fas fa-plus"></i></button>' +
-      '<input type="text" min="1" value="1" max="productData.stock" name="qty[]" class="form-control quantity-input" placeholder="Qty" style="width: 70px; height: 35px; margin-bottom: 3px">' +
+      `<input type="text" min="1" value="1" max="`+productData.stock+`" name="qty[]" class="form-control quantity-input" placeholder="Qty" style="width: 70px; height: 35px; margin-bottom: 3px">` +
       '<button type="button" class="btn btn-sm btn-success p-1 decrease-quantity" style="margin-top: -2px;"><i class="fas fa-minus"></i></button>' +
       '</div>' +
       '</td>' +
@@ -312,18 +318,42 @@ function updateProductTable(productData) {
       '<tr class="row-separator">' +
       '<td colspan="6"></td>' +
       '</tr>';
+  
+// var stockValue = productData.stock; 
+//   var quantityInput = $('.quantity-input');
+//   quantityInput.attr('max', stockValue);
+
 
     tableBody.append(newRow);
+    
   }
   
 
+
+
+ // Bind the increase and decrease button click events to update quantity and subtotal
+ tableBody.find('.increase-quantity').off('click').on('click', function() {
+    var row = $(this).closest('tr');
+  //  console.log(row);
+    var quantityInput = row.find('.quantity-input');
+    var currentQuantity = parseInt(quantityInput.val());
+    quantityInput.val(currentQuantity + 1);
+    var maxQuantity = quantityInput.attr('max');
+    // var maxQuantity = parseInt($('.quantity-input').attr('max'));
+//console.log(maxQuantity); // Output the value of the max attribute
+if (currentQuantity >= maxQuantity) {
+   // alert('The quantity exceeds the available stock.');
+    Swal.fire(
+  'Alert!',
+  'The quantity exceeds the available stock.',
+
+)
+    quantityInput.val(maxQuantity); // Reset the input value to the stockValue
+  }
+    updateSubtotal(row);
+    updateValues();
+  });
   
-  var stockValue = productData.stock; // Replace with your actual stock value
-  var quantityInput = $('.quantity-input');
-  quantityInput.attr('max', stockValue);
-
-
-
   tableBody.find('tr').each(function() {
   var row = $(this);
   var quantityInput = row.find('.quantity-input');
@@ -332,6 +362,21 @@ function updateProductTable(productData) {
   var discountInput = row.find('.discount-input');
 
   quantityInput.on('input', function() {
+    var row = $(this).closest('tr');
+    var quantityInput = row.find('.quantity-input');
+    var currentQuantity = parseInt(quantityInput.val());
+    quantityInput.val(currentQuantity + 1);
+    var maxQuantity = quantityInput.attr('max');
+  
+if (currentQuantity >= maxQuantity) {
+  
+    Swal.fire(
+  'Alert!',
+  'The quantity exceeds the available stock.',
+
+)
+    quantityInput.val(maxQuantity); // Reset the input value to the stockValue
+  }
     updateSubtotal(row);
     updateValues();
   });
@@ -358,52 +403,7 @@ function updateProductTable(productData) {
   row.find('.subtotal').text(discountedSubtotal.toFixed(2));
 });
 
-
-// tableBody.find('.discount-input').off('input').on('input', function() {
-//   var row = $(this).closest('tr');
-//   updateSubtotal(row);
-//   updateValues();
-// });
-tableBody.find('.quantity-input').off('input').on('input', function() {
-  var row = $(this).closest('tr');
-  var quantityInput = row.find('.quantity-input');
-  var currentQuantity = parseInt(quantityInput.val());
-
-  var maxQuantity = parseInt($('.quantity-input').attr('max'));
-//console.log(maxQuantity); // Output the value of the max attribute
-if (currentQuantity >= maxQuantity) {
-   // alert('The quantity exceeds the available stock.');
-    Swal.fire(
-  'Warning!',
-  'The quantity exceeds the available stock.',
-  'Warning'
-)
-    $('.quantity-input').val(maxQuantity); // Reset the input value to the stockValue
-  }
-  updateSubtotal(row);
-  updateValues();
-});
-  // Bind the increase and decrease button click events to update quantity and subtotal
-  tableBody.find('.increase-quantity').off('click').on('click', function() {
-    var row = $(this).closest('tr');
-    var quantityInput = row.find('.quantity-input');
-    var currentQuantity = parseInt(quantityInput.val());
-    quantityInput.val(currentQuantity + 1);
-    var maxQuantity = parseInt($('.quantity-input').attr('max'));
-//console.log(maxQuantity); // Output the value of the max attribute
-if (currentQuantity >= maxQuantity) {
-   // alert('The quantity exceeds the available stock.');
-    Swal.fire(
-  'Alert!',
-  'The quantity exceeds the available stock.',
-  'error'
-)
-    $('.quantity-input').val(maxQuantity); // Reset the input value to the stockValue
-  }
-    updateSubtotal(row);
-    updateValues();
-  });
-  
+ 
   tableBody.find('.decrease-quantity').off('click').on('click', function() {
     var row = $(this).closest('tr');
     var quantityInput = row.find('.quantity-input');

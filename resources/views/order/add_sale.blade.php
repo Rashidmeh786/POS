@@ -323,7 +323,9 @@
                                                 '<td>' +
                                                 '<div class="d-flex align-items-center">' +
                                                 '<button type="button" class="btn btn-lg btn-primary increase-quantity" id="increaseqty"><i class="fas fa-plus"></i></button>' +
-                                                '<input type="text" min="1" value="1" max="" name="qty[]" class="form-control quantity-input update-quantity" placeholder="Qty" style="width: 59px; height: 44px;">' +
+                                                // '<input type="text" min="1" value="1" max="" name="qty[]" class="form-control quantity-input update-quantity" placeholder="Qty" style="width: 59px; height: 44px;">' +
+                                                `<input type="text" min="1" value="1" max="`+productDetails.stock+`" name="qty[]" class="form-control update-quantity quantity-input" placeholder="Qty" style="width: 70px; height: 35px; margin-bottom: 3px">` +
+                                            
                                                 '<button type="button" class="btn btn-lg btn-primary decrease-quantity" id="decreaseqty"><i class="fas fa-minus"></i></button>' +
                                                 '</div>' +
                                                 '</td>' +
@@ -332,7 +334,7 @@
                                                 '<td id="subtotal" style="font-size: 16px; font-weight:bold">0.00</td>' +
                                                 '<td style="font-size: 16px;">' +
                                                 '<a href="#" class="action-icon text-danger deleterow" id="deleterow">' +
-                                                '<i class="mdi mdi-delete"></i>' +
+                                                '<i class="mdi mdi-close-outline"></i>' +
                                                 '</a>' +
                                                 '</td>' +
                                               '<input type="hidden" name="product_id[]" value="' + productDetails.id + '">' +
@@ -346,10 +348,7 @@
                         
                                             // Append the new row to the table
                                             tableBody.append(newRow);
-                                            var stockValue = productDetails.stock; // Replace with your actual stock value
-                                             var quantityInput = $('.quantity-input');
-                                             quantityInput.attr('max', stockValue);
-
+                                          
                                             // Hide the search results container
                                             searchResults.html('');
                                             searchResults.hide();
@@ -369,29 +368,33 @@
 
                 
                 tableBody.on('input', '.update-quantity', function() {
-                var quantity = parseInt($(this).val(), 10);
+                  var row = $(this).closest('tr');
+    var quantityInput = row.find('.quantity-input');
+    var currentQuantity = parseInt(quantityInput.val());
+    quantityInput.val(currentQuantity + 1);
+    var maxQuantity = quantityInput.attr('max');
+  
+if (currentQuantity >= maxQuantity) {
+  
+    Swal.fire(
+  'Alert!',
+  'The quantity exceeds the available stock.',
 
-                  var maxQuantity = parseInt($('.quantity-input').attr('max'));
-
-                  if (quantity >= maxQuantity) {
-                  // alert('The quantity exceeds the available stock.');
-                  Swal.fire(
-                  'Alert!',
-                  'The quantity exceeds the available stock.',
-                  'error'
-                  )
-                  $('.quantity-input').val(maxQuantity); // Reset the input value to the stockValue
-                  }
+)
+    quantityInput.val(maxQuantity); // Reset the input value to the stockValue
+  }
   // Update subtotal
-  var price = parseFloat($(this).closest('tr').find('td:eq(2)').text());
-  var subtotal = quantity * price;
-  $(this).closest('tr').find('td#subtotal').text(subtotal.toFixed(2));
+                  var price = parseFloat($(this).closest('tr').find('td:eq(2)').text());
+                  var subtotal = quantity * price;
+                  $(this).closest('tr').find('td#subtotal').text(subtotal.toFixed(2));
 
-  updateGrandTotal();
-}); 
+                  updateGrandTotal();
+
+                  
+                }); 
                 tableBody.on('click', '.increase-quantity', function() {
-                  var input = $(this).siblings('.quantity-input');
-                  var quantity = parseInt(input.val(), 10);
+                  var input = $(this).closest('tr').find('.quantity-input');
+                  var quantity = parseInt(input.val());
                   input.val(quantity + 1);
               
                   // Update subtotal
@@ -399,16 +402,16 @@
                   var subtotal = (quantity + 1) * price;
                   $(this).closest('tr').find('td#subtotal').text(subtotal.toFixed(2));
                   updateGrandTotal();
-                  var maxQuantity = parseInt($('.quantity-input').attr('max'));
+                  var maxQuantity = input.attr('max');
 
                   if (quantity >= maxQuantity) {
    // alert('The quantity exceeds the available stock.');
     Swal.fire(
   'Alert!',
   'The quantity exceeds the available stock.',
-  'error'
+ 
 )
-    $('.quantity-input').val(maxQuantity); // Reset the input value to the stockValue
+    input.val(maxQuantity); // Reset the input value to the stockValue
   }
 
                 });

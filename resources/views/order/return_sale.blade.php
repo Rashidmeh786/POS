@@ -55,10 +55,10 @@
             <div class="col-12">
                 <div class="page-title-box">
                     <div class="page-title-right">
-                      <a href="{{ route('all.purchase') }}" class="btn btn-outline-primary btn-lg "> Back  </a>  
+                      <a href="{{ route('all.sales') }}" class="btn btn-outline-primary btn-lg "> Back  </a>  
 
                     </div>
-                    <h2 class="page-title">Purchase  Return</h2>
+                    <h2 class="page-title">Sale  Return</h2>
                 </div>
             </div>
         </div> 
@@ -66,7 +66,7 @@
 
     <div class="container mt-3 p-5 bg-white"  style="border-radius: 10px">
         
-        <form method="POST" action="{{ route('store.purchase') }}">
+        <form method="POST" action="">
           @csrf
           <!-- First Row -->
           <div class="row mb-3">
@@ -79,22 +79,22 @@
             </div>
            
             <div class="col-md-4">
-              <label for="supplier" class="form-label">Supplier:<span class="text text-danger">*</span></label>
-              <select class="form-select   @error('supplier_id') is-invalid @enderror" id="supplier_id" name="supplier_id">
+              <label for="customer" class="form-label">Customer:<span class="text text-danger">*</span></label>
+              <select class="form-select   @error('customer_id') is-invalid @enderror" id="customer_id" name="customer_id">
               
                
-                <option value="{{ $order->supplier->id }}" selected>{{ $order->supplier->name }}</option>
+                <option value="{{ $order->customer->id }}" selected>{{ $order->customer->name }}</option>
             
               </select> 
               
            
-              @error('supplier_id')
+              @error('customer_id')
               <span class="text-danger"> {{ $message }} </span>
               @enderror
             </div>
 
             <div class="col-md-4">
-              <label for="supplier" class="form-label">  Invoice No :<span class="text text-danger">*</span></label>
+              <label for="" class="form-label">  Invoice No :<span class="text text-danger">*</span></label>
               <select class="form-select bg-light @error('del_status') is-invalid @enderror" id="del_status" name="del_status">
                 <option value="{{ $order->invoice_no }}" selected>{{ $order->invoice_no }}</option>
 
@@ -111,7 +111,7 @@
        
           <div class="row mt-2">
             <div class="col-md-12 mt-2">
-            <label for="items" class="form-label">Purchase Items <span class="text text-danger">*</span></label>
+            <label for="items" class="form-label">Sale Items <span class="text text-danger">*</span></label>
 
                 <div class="table-responsive table-sm">
                     <table class="table table-borderless table-nowrap table-centered mb-0" style="height: 150px" id="basic-table">
@@ -120,7 +120,7 @@
                             <th>#</th>
                             <th>Product</th>
                             <th>Price</th>
-                            <th>Purchased qty</th>
+                            <th>Sale qty</th>
                             <th>Return Qty</th>
                             <th>Discount</th>
                             <th>Tax</th>
@@ -139,7 +139,7 @@
                             <td>
                               <div class="d-flex align-items-center">
                                 <button type="button" class="btn btn-lg btn-primary increase-quantity"><i class="fas fa-plus"></i></button>
-                                <input type="text" min="0" max="{{ $item->quantity }}" value="0" name="quantity" class="form-control quantity-input update-qty" placeholder="Qty" style="width: 59px; height: 44px; "> {{--   style="width: 59px; height: 44px; "--}}
+                                <input type="text" min="0" value="0" max="{{ $item->quantity }}" name="quantity" class="form-control update-qty quantity-input" placeholder="Qty" style="width: 59px; height: 44px; "> {{--   style="width: 59px; height: 44px; "--}}
                                 <button type="button" class="btn btn-lg btn-primary decrease-quantity"><i class="fas fa-minus"></i></button>
                               </div>
                             </td>                                                                                                          
@@ -283,7 +283,7 @@
                         // alert('The quantity exceeds the available stock.');
                         Swal.fire(
                         'Alert!',
-                        'The quantity exceeds the total Purchased Qty.',
+                        'The quantity exceeds the sale Qty.',
                        
                         )
                        input.val(maxQuantity); // Reset the input value to the stockValue
@@ -292,7 +292,6 @@
                       
 
                       });
-
 
                       $(document).on('input', '.update-qty', function() {
                         var input = $(this).closest('tr').find('.quantity-input');
@@ -305,7 +304,7 @@
                         // alert('The quantity exceeds the available stock.');
                         Swal.fire(
                         'Alert!',
-                        'The quantity exceeds the Total Purchased Qty.',
+                        'The quantity exceeds the sale Qty.',
                        
                         )
                        input.val(maxQuantity); // Reset the input value to the stockValue
@@ -314,7 +313,6 @@
                       
 
                       });
-
                   
                       // Decrease quantity
                       $(document).on('click', '.decrease-quantity', function() {
@@ -328,6 +326,9 @@
                   </script>
                   
 
+
+
+                  
 
 
 @endsection

@@ -328,7 +328,7 @@
                                                 '<td id="subtotal" style="font-size: 16px; font-weight:bold">0.00</td>' +
                                                 '<td style="font-size: 16px;">' +
                                                 '<a href="#" class="action-icon text-danger deleterow" id="deleterow">' +
-                                                '<i class="mdi mdi-delete"></i>' +
+                                                '<i class=" mdi mdi-close-outline"></i>' +
                                                 '</a>' +
                                                 '</td>' +
                                               '<input type="hidden" name="product_id[]" value="' + productDetails.id + '">' +
