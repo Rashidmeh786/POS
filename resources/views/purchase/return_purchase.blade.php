@@ -297,7 +297,7 @@
                       $(document).on('input', '.update-qty', function() {
                         var input = $(this).closest('tr').find('.quantity-input');
                         var quantity = parseInt(input.val());
-                        input.val(quantity + 1);
+                        // input.val(quantity + 1);
 
                         var maxQuantity = input.attr('max');
 

@@ -191,7 +191,7 @@
                   </tr>
                   <tr>
                     <td>Discount</td> 
-                    <td id="discountvalue">{{ $order->discount }}</td> 
+                    <td id="discountvalue">{{ $order->discount}}</td> 
                  
                   </tr>
                   <tr>
@@ -296,7 +296,7 @@
                       $(document).on('input', '.update-qty', function() {
                         var input = $(this).closest('tr').find('.quantity-input');
                         var quantity = parseInt(input.val());
-                        input.val(quantity + 1);
+                        // input.val(quantity + 1);
 
                         var maxQuantity = input.attr('max');
 
@@ -323,6 +323,35 @@
                         }
                       });
                     });
+
+
+     
+                    $('#tax').on('input', function() {
+                  var taxAmount = $(this).val();
+                  $('#taxvalue').text(taxAmount);
+               
+                });
+                
+                $('#discount').on('input', function() {
+                  var discountAmount = $(this).val();
+                  $('#discountvalue').text(discountAmount);
+                });
+
+                $('#shippingcharges').on('input', function() {
+                  var shippingcharges = $(this).val();
+                  $('#shippingvalue').text(shippingcharges);
+                });
+
+
+
+
+
+
+
+
+
+
+                
                   </script>
                   
 

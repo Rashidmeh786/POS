@@ -324,7 +324,7 @@
                                                 '<div class="d-flex align-items-center">' +
                                                 '<button type="button" class="btn btn-lg btn-primary increase-quantity" id="increaseqty"><i class="fas fa-plus"></i></button>' +
                                                 // '<input type="text" min="1" value="1" max="" name="qty[]" class="form-control quantity-input update-quantity" placeholder="Qty" style="width: 59px; height: 44px;">' +
-                                                `<input type="text" min="1" value="1" max="`+productDetails.stock+`" name="qty[]" class="form-control update-quantity quantity-input" placeholder="Qty" style="width: 70px; height: 35px; margin-bottom: 3px">` +
+                                                `<input type="text" min="1" value="1" max="`+productDetails.stock+`" name="qty[]" class="form-control update-quantity quantity-input" placeholder="Qty" style="width: 70px; height: 43px; margin-bottom: 1px">` +
                                             
                                                 '<button type="button" class="btn btn-lg btn-primary decrease-quantity" id="decreaseqty"><i class="fas fa-minus"></i></button>' +
                                                 '</div>' +
@@ -368,10 +368,14 @@
 
                 
                 tableBody.on('input', '.update-quantity', function() {
+
+
+         
+
                   var row = $(this).closest('tr');
     var quantityInput = row.find('.quantity-input');
     var currentQuantity = parseInt(quantityInput.val());
-    quantityInput.val(currentQuantity + 1);
+    // quantityInput.val(currentQuantity + 1);
     var maxQuantity = quantityInput.attr('max');
   
 if (currentQuantity >= maxQuantity) {

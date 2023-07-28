@@ -32,7 +32,8 @@ class OrderController extends Controller
         $data['order_status'] = $request->order_status;
         $data['total_products'] = $request->total_products;
         $data['sub_total'] = $request->sub_total;
-        // $data['vat'] = $request->vat;
+        $data['vat'] = $request->vat;
+        $data['discount'] = $request->totaldiscountv;
 
         $data['invoice_no'] = 'INV'.mt_rand(10000000,99999999);
         $data['total'] = $request->total;

@@ -42,7 +42,7 @@ class SaleController extends Controller
         // You can modify the product details based on your requirements
         $productDetails = [
             'name' => $product->product_name,
-            'price' => $product->buying_price,
+            'price' => $product->selling_price,
             'stock' => $product->stock ?? 0,
             'id'=>$product->id,
             'product_code'=>$product->product_code

@@ -191,10 +191,11 @@
                             <th style="font-weight: bold">Image</th>
                             <th style="font-weight: bold">Name</th>
                            <th style="font-weight: bold"> Price</th>
-                           <th style="font-weight: bold"> Stock</th>
 
                             <th hidden>Category</th>
                             <th hidden>Brand</th>
+                           <th style="font-weight: bold"> Stock</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -225,13 +226,14 @@
                                   <p class="product-name" style="margin: 0; font-size: 16px; font-weight: ; color: #212529;">{{ $item->selling_price }}</p>
                               
                                 </td>
-                                <td>
-                                  <p class="product-name badge " style="margin: 0; font-size: 16px; font-weight: ; color: #212529;">{{ $item->stock }}</p>
                               
-                                </td>
                           
                             <td hidden>{{ $item->category->id ?? "" }}</td>
                             <td hidden>{{ $item->brand->id ?? "" }}</td>
+                            <td>
+                              <p class="product-name badge " style="margin: 0; font-size: 16px; font-weight: ; color: #212529;">{{ $item->stock }}</p>
+                          
+                            </td>
                         </tr>
                         @endforeach
                      
@@ -361,25 +363,48 @@ if (currentQuantity >= maxQuantity) {
   var subtotalElement = row.find('.subtotal');
   var discountInput = row.find('.discount-input');
 
-  quantityInput.on('input', function() {
-    var row = $(this).closest('tr');
-    var quantityInput = row.find('.quantity-input');
-    var currentQuantity = parseInt(quantityInput.val());
-    quantityInput.val(currentQuantity + 1);
-    var maxQuantity = quantityInput.attr('max');
+//   quantityInput.off('input').on('input', function() {
+//     var row = $(this).closest('tr');
+//     var quantityInput = row.find('.quantity-input');
+//     var currentQuantity = parseInt(quantityInput.val());
+//     quantityInput.val(currentQuantity + 1);
+//     var maxQuantity = quantityInput.attr('max');
   
-if (currentQuantity >= maxQuantity) {
+// if (currentQuantity >= maxQuantity) {
   
-    Swal.fire(
-  'Alert!',
-  'The quantity exceeds the available stock.',
+//     Swal.fire(
+//   'Alert!',
+//   'The quantity exceeds the available stock.',
 
+// )
+//     quantityInput.val(maxQuantity); // Reset the input value to the stockValue
+//   }
+//     updateSubtotal(row);
+//     updateValues();
+//   });
+
+
+tableBody.find('.quantity-input').off('input').on('input', function() {
+  var row = $(this).closest('tr');
+  var quantityInput = row.find('.quantity-input');
+  var currentQuantity = parseInt(quantityInput.val());
+
+  var maxQuantity = quantityInput.attr('max');
+//console.log(maxQuantity); // Output the value of the max attribute
+if (currentQuantity >= maxQuantity) {
+   // alert('The quantity exceeds the available stock.');
+    Swal.fire(
+  'Warning!',
+  'The quantity exceeds the available stock.',
+  'Warning'
 )
-    quantityInput.val(maxQuantity); // Reset the input value to the stockValue
+quantityInput.val(maxQuantity); // Reset the input value to the stockValue
   }
-    updateSubtotal(row);
-    updateValues();
-  });
+  updateSubtotal(row);
+  updateValues();
+});
+
+
 
   discountInput.on('input', function() {
     var quantity = parseInt(quantityInput.val());
@@ -643,7 +668,7 @@ $(document).ready(function() {
             var selectbrand = $('#brandFilter').val();
           
 
-            dataTable.column(2).search(selectedcategory).column(3).search(selectbrand).draw();
+            dataTable.column(3).search(selectedcategory).column(4).search(selectbrand).draw();
         });
     });
 </script>
