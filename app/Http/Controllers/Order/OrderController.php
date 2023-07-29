@@ -6,10 +6,12 @@ use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Customer;
+use App\Models\OrderReturn;
 use App\Models\Orderdetails;
 use App\Models\OrderPayment;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\OrderReturnDetails;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -144,7 +146,13 @@ class OrderController extends Controller
 
        $orderItem = Orderdetails::with('product')->where('order_id',$order_id)->orderBy('id','DESC')->get();
 
-       $pdf = Pdf::loadView('order.order_invoice', compact('order','orderItem'))->setPaper('a4')->setOption([
+       $orderreturnid = OrderReturn::where('order_id',$order_id)->pluck('id');
+
+       $orderreturn = OrderReturn::where('order_id',$order_id)->first();
+
+       $orderreturnItem = OrderReturnDetails::with('product')->where('return_id',$orderreturnid)->pluck('quantity_return');
+
+       $pdf = Pdf::loadView('order.order_invoice', compact('order','orderItem','orderreturn','orderreturnItem'))->setPaper('a4')->setOption([
                'tempDir' => public_path(),
                'chroot' => public_path(),
 

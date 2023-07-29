@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Invoice</title>
@@ -9,104 +10,124 @@
         * {
             font-family: Arial, sans-serif;
         }
+
         body {
             margin: 0;
             padding: 0;
             /* background-color: #f5f5f5; */
         }
+
         .container {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
+
         .content {
             flex-grow: 1;
             padding: 20px;
             background-color: #ffffff;
         }
+
         .header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 20px;
         }
+
         .header h2 {
             color: #1a936f;
             font-size: 26px;
             margin: 0;
         }
+
         .customer-details {
             font-size: 14px;
             line-height: 1.5;
         }
+
         .invoice-details {
             font-size: 14px;
             line-height: 1.5;
             text-align: right;
         }
+
         .invoice-details h3 {
             color: #1a936f;
             font-size: 20px;
             margin: 0 0 10px;
         }
+
         .product-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
+
         .product-table th,
         .product-table td {
             padding: 10px;
             border-bottom: 1px solid #dddddd;
             text-align: left;
         }
+
         .product-table th {
             background-color: #1a936f;
             color: #ffffff;
         }
+
         .totals {
             text-align: right;
             font-size: 16px;
             line-height: 1.5;
         }
+
         .thanks {
             color: #1a936f;
             font-size: 16px;
             font-weight: bold;
             margin-top: 20px;
         }
+
         .signature {
             text-align: right;
             margin-top: 40px;
         }
+
         .signature p {
             margin: 0;
         }
+
         .signature h5 {
             color: #1a936f;
             margin: 10px 0 0;
         }
-       
+
         .container {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
-    .content {
-        flex-grow: 1;
-        padding: 20px;
-        background-color: #ffffff;
-        margin-bottom: 0; /* Remove the default margin-bottom */
-    }
-    .footer {
-        font-size: 14px;
-        color: #111111;
-        text-align: center;
-        /* background-color: lightgray; */
-        padding: 10px;
-        margin-top: auto; /* Push the footer to the bottom of the container */
-    }
-</style>
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #ffffff;
+            margin-bottom: 0;
+            /* Remove the default margin-bottom */
+        }
+
+        .footer {
+            font-size: 14px;
+            color: #111111;
+            text-align: center;
+            /* background-color: lightgray; */
+            padding: 10px;
+            margin-top: auto;
+            /* Push the footer to the bottom of the container */
+        }
+    </style>
 
 
 
@@ -115,8 +136,9 @@
 
     </style>
 
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="container">
         <div class="content">
             <div class="header">
@@ -149,33 +171,38 @@
                     <tr>
                         <th>Sl</th>
                         <th>Product Name</th>
-                        <th>Quantity</th>
+                        <th> Quantity</th>
                         <th>Price</th>
-                        <th>Discount</th>
+                        <th>Return</th>
                         <th>Total </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($orderItem as $index => $item)
-    <tr>
-        <td>{{ $index + 1 }}</td> <!-- Add this line to display the sno -->
-        <td>{{ $item->product->product_name }}</td>
-        
-        <td>{{ $item->quantity }}</td>
-        <td>Rs. {{ $item->product->selling_price }}</td>
-        <td></td>
-        <td>Rs. {{ $item->total }}</td>
-    </tr>
-@endforeach
+            
 
+                    @foreach($orderItem as $index => $item)
+                    <tr>
+                        <td>{{ $index + 1 }}</td> <!-- Add this line to display the sno -->
+                        <td>{{ $item->product->product_name }}</td>
+            
+                        <td>{{ $item->quantity }}</td>
+                        <td>Rs. {{ $item->product->selling_price }}</td>
+                        <td></td>
+            
+                        <td>Rs. {{ $item->total }}</td>
+                    </tr>
+                    @endforeach
+            
                 </tbody>
             </table>
 
             <div class="totals">
                 <p>Subtotal: Rs {{ ($order->sub_total) }}</p>
 
-                <p>Discount: Rs {{ ($order->sub_total-$order->total) }}</p>
+                <p>Discount: Rs </p>
                 <h4>Total: Rs {{ $order->total }}</h4>
+                <p>Returned Amount: Rs {{ $orderreturn->total ?? 0}} </p>
+                <h4>Grand Total: Rs {{ ($order->total ?? 0 )- ($orderreturn->total ?? 0)}}</h4>
             </div>
 
             <div class="thanks">
@@ -193,5 +220,6 @@
             <p>EasyShop Head Office | Email: support@easylearningbd.com | Mob: 1245454545 | Dhaka 1207, Dhanmondi:#4</p>
         </div>
     </div>
-  </body>
+</body>
+
 </html>

@@ -132,7 +132,7 @@
                   <button type="button" class="btn btn-primary text-capitalize " data-bs-toggle="modal" data-bs-target="#purchase-modal"
                     style="background-color:#60bdf3 ; ">Pay Now</button>
                     
-                    <a  href="{{ route('add.purchase') }}" class="btn btn-primary text-capitalize bg-warning" >Cancel</a>
+                    <a  href="{{ route('add.sale') }}" class="btn btn-primary text-capitalize bg-warning" >Cancel</a>
                     
                 </div>
               </div>

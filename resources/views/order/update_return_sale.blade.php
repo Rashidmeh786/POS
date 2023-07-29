@@ -2,7 +2,15 @@
 @section('admin')
 <style>
 
+.maintbody
+{
+  font-weight: ;
+  
+        font-family:'Times New Roman', Times, serif;
+     
+        color: black;
 
+}
     input,select
     {
         height: 45px;
@@ -24,7 +32,7 @@
         left: 0;
         width: 100%;
         padding: 20px;
-        
+        color: black;
         background-color: #f8f9fa;
         border: 1px solid #dee2e6;
         border-radius: 4px;
@@ -57,10 +65,10 @@
             <div class="col-12">
                 <div class="page-title-box">
                     <div class="page-title-right">
-                      <a href="{{ route('all.purchase') }}" class="btn btn-outline-primary btn-lg "> Back  </a>  
+                      <a href="{{ route('all.sales') }}" class="btn btn-outline-primary btn-lg "> Back  </a>  
 
                     </div>
-                    <h2 class="page-title">Product Sale</h2>
+                    <h2 class="page-title">Update Sale Return</h2>
                 </div>
             </div>
         </div> 
@@ -68,45 +76,45 @@
 
     <div class="container mt-3 p-5 bg-white"  style="border-radius: 10px">
         
-        <form method="POST" action="{{ route('store.sale') }}">
+        <form method="POST" action="{{ route('store.updatedsalereturn') }}">
           @csrf
           <!-- First Row -->
           <div class="row mb-3">
             <div class="col-md-4">
-              <label for="purchaseDate" class="form-label  @error('date') is-invalid @enderror">Date: <span class="text text-danger">*</span></label>
-              <input type="date" class="form-control" id="purchaseDate" name="date">
+              <label for="purchaseDate" class="form-label  @error('date') is-invalid @enderror">Ordered Date: <span class="text text-danger">*</span></label>
+              <input type="date" class="form-control" id="purchaseDate" name="date" value="{{ \Carbon\Carbon::parse($OrderReturn->order_date)->format('Y-m-d') }}">
               @error('date')
               <span class="text-danger"> {{ $message }} </span>
               @enderror
             </div>
-         @php
-        $visitor=app\Models\Customer::findorFail(1);
            
-         @endphp
+            <div class="col-md-4">
+              <label for="customer" class="form-label">Customer:<span class="text text-danger">*</span></label>
+              <select class="form-select   @error('customer_id') is-invalid @enderror" id="customer_id" name="customer_id">
+              
+               
+                <option value="{{ $OrderReturn->customer->id }}" selected>{{ $OrderReturn->customer->name }}</option>
+            
+              </select> 
+              
+           
+              @error('customer_id')
+              <span class="text-danger"> {{ $message }} </span>
+              @enderror
+            </div>
 
             <div class="col-md-4">
-                <label for="customer" class="form-label">Customer:<span class="text text-danger">*</span></label>
-                <select class="form-select  @error('customer_id') is-invalid @enderror" id="customer_id" name="customer_id">
-                  <option value="{{ $visitor->id }}">{{ $visitor->name }}</option>
+              <label for="" class="form-label">  Invoice No :<span class="text text-danger">*</span></label>
+              <select class="form-select bg-light @error('invoice_id') is-invalid @enderror" id="invoice_id" name="invoice_id">
+                <option value="{{ $OrderReturn->invoice_no }}" selected>{{ $OrderReturn->invoice_no }}</option>
 
-                  @foreach ($customers as $customer)
-                  <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                @endforeach
-                </select>
-                @error('customer_id')
-                <span class="text-danger"> {{ $message }} </span>
-                @enderror
-              </div>
-
-            <div class="col-md-4">
-              <label for="" class="form-label">Delivery Status:<span class="text text-danger">*</span></label>
-              <select class="form-select @error('del_status') is-invalid @enderror" id="del_status" name="del_status">
-                  <option value="pending" selected >Pending</option>
                  
               </select>
-              @error('del_status')
+              @error('invoice_id')
                   <span class="text-danger">{{ $message }}</span>
               @enderror
+
+              <input type="hidden" id="order_id" name="order_id" value="{{ $order->id}}">
           </div>
           
           </div>
@@ -129,7 +137,7 @@
 
           <div class="row mt-2">
             <div class="col-md-12 mt-2">
-            <label for="items" class="form-label">Purchase Items <span class="text text-danger">*</span></label>
+            <label for="items" class="form-label">Returned Items <span class="text text-danger">*</span></label>
 
                 <div class="table-responsive table-sm">
                     <table class="table table-borderless table-nowrap table-centered mb-0" style="height: 150px" id="basic-table">
@@ -140,7 +148,7 @@
                           <th>Product</th>
                           <th>Price</th>
                           <th>Stock</th>
-                          <th>Quantity</th>
+                          <th> return Qty</th>
                           <th> Discount </th>
                           <th> Tax </th>
       
@@ -148,8 +156,8 @@
                           <th style="width: 50px;"></th>
                         </tr>
                       </thead>
-                      <tbody>   
-                        
+                      <tbody class="maintbody">   
+                     
                       </tbody>
                     </table>
                   </div>
@@ -201,6 +209,8 @@
                   <tr>
                     <td> Grand Total </td> 
                     <td id="grandtotal">0.000</td> 
+                    <input type="hidden" name="gtotal" >
+
                   </tr>
                 </tbody>
               </table>
@@ -266,22 +276,106 @@
                 </div> <!-- content -->
 
 
+
+
+
+
+<script>
+
+$(document).ready(function () {
+    var order_id = $('#order_id').val();
+
+    $.ajax({
+        url: '/get/saleproduct/return/' + order_id,
+        type: 'GET',
+        success: function (productDetails) {
+            console.log(productDetails);
+
+            // Assuming the data structure is correct as mentioned before
+            var tableBody = $('#basic-table tbody');
+            tableBody.empty(); // Clear the existing rows
+
+            $.each(productDetails.productDetails, function (index, product) {
+                var qty = productDetails.qty[index];
+                var returnedqty = productDetails.returnedqty[index];
+
+                // Calculate subtotal
+                var price = parseFloat(product.price);
+                var subtotal = parseFloat(returnedqty == '' ? 0 : returnedqty) * price;
+
+                var newRow = '<tr>' +
+                    '<td>' + (index + 1) + '</td>' +
+                    '<td style="font-size: 16px;">' + product.name + '</td>' +
+                    '<td style="font-size: 16px;">' + product.price + '</td>' +
+                    '<td style="font-size: 16px;">' + qty + '</td>' +
+                    '<td>' +
+                    '<div class="d-flex align-items-center">' +
+                    '<button type="button" class="btn btn-lg btn-primary increase-quantity" id="increaseqty"><i class="fas fa-plus"></i></button>' +
+                    '<input type="text" min="1" value="' + (returnedqty == '' ? 0 : returnedqty) + '" max="' + qty + '" name="qty[]" class="form-control update-quantity quantity-input" placeholder="Qty" style="width: 70px; height: 43px; margin-bottom: 1px">' +
+                    '<button type="button" class="btn btn-lg btn-primary decrease-quantity" id="decreaseqty"><i class="fas fa-minus"></i></button>' +
+                    '</div>' +
+                    '</td>' +
+                    '<td style="font-size: 16px;">0.00</td>' +
+                    '<td style="font-size: 16px;">0.00</td>' +
+                    '<td id="subtotal" style="font-size: 16px; font-weight:bold">' + subtotal.toFixed(2) + '</td>' +
+                    '<td style="font-size: 16px;">' +
+                    '<a href="#" class="action-icon text-danger deleterow" id="deleterow">' +
+                    '<i class="mdi mdi-close-outline"></i>' +
+                    '</a>' +
+                    '</td>' +
+                    '<input type="hidden" name="product_id[]" value="' + product.id + '">' +
+                    '<input type="hidden" name="name[]" value="' + product.name + '">' +
+                    '<input type="hidden" name="price[]" value="' + product.price + '">' +
+                    '<input type="hidden" name="totalqty[]" value="' + qty + '">' +
+                    '</tr>' +
+                    '<tr class="row-separator">' +
+                    '<td colspan="6"></td>' +
+                    '</tr>';
+
+                tableBody.append(newRow);
+                 // Manually trigger the input event for quantity input fields
+        $('.quantity-input').trigger('input');
+            });
+
+            updateGrandTotal();
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText);
+        }
+    });
+
+  
+});
+
+
+
+</script>
+
+
+              
+
                 <script>
                   $(document).ready(function() {
                       var searchResults = $('#searchResults');
                         var tableBody = $('#basic-table tbody');
+
+                        var invoice_id=$('#invoice_id').val();
+                        var order_id=$('#order_id').val();
                 
                       $('#searchProduct').on('input', function() {
                           var searchTerm = $(this).val();
                 
                           if (searchTerm !== '') {
                               $.ajax({
-                                  url: "{{ url('searchSaleProduct') }}",
+                                  url: "{{ url('UpdateReturnSaleProduct') }}",
                                   type: "GET",
                                   data: {
-                                      term: searchTerm
+                                      term: searchTerm,
+                                      'invoice_id':invoice_id,
+                                      'order_id':order_id
                                   },
                                   success: function(response) {
+                                   console.log(response);
                                       var results = '';
                 
                                       $.each(response, function(index, product) {
@@ -305,26 +399,36 @@
                  // Add event listener for the dynamically generated search result items
                  searchResults.on('click', '.searchResult', function() {
                   var selectedProductId = $(this).data('product-id');
+                  console.log(selectedProductId);
+                  // var invoice_number=$('#invoice_id').val();
+                  var order_id=$('#order_id').val();
+
                 
                   $.ajax({
-                    url: '/saleproduct/details/' + selectedProductId,
+                    url: '/update/saleproduct/return/' + selectedProductId + '/' +order_id,
                     type: 'GET',
+                    
                     success: function(productDetails) {
-                      // Handle the success response and update the UI accordingly
+                      
+                      // var discount=productDetails.order.discount;
+                      // var discount=productDetails.order.vat;
+                      // var discount=productDetails.order.shipping;
+
+                  //    console.log(discount);
                       console.log(productDetails); // Check the response in the console
                 
                
                   // Construct the new row HTML using the product details
                   var newRow = '<tr>' +
                                                 '<td>' + (tableBody.children().length + 1) + '</td>' +
-                                                '<td style="font-size: 16px;">' + productDetails.name + '</td>' +
-                                                '<td style="font-size: 16px;"> ' + productDetails.price + '</td>' +
-                                                '<td style="font-size: 16px;">' + productDetails.stock + '</td>' +
+                                                '<td style="font-size: 16px;">' + productDetails.productDetails.name + '</td>' +
+                                                '<td style="font-size: 16px;"> ' + productDetails.productDetails.price + '</td>' +
+                                                '<td style="font-size: 16px;">' + productDetails.qty[0] + '</td>' +
                                                 '<td>' +
                                                 '<div class="d-flex align-items-center">' +
                                                 '<button type="button" class="btn btn-lg btn-primary increase-quantity" id="increaseqty"><i class="fas fa-plus"></i></button>' +
                                                 // '<input type="text" min="1" value="1" max="" name="qty[]" class="form-control quantity-input update-quantity" placeholder="Qty" style="width: 59px; height: 44px;">' +
-                                                `<input type="text" min="1" value="1" max="`+productDetails.stock+`" name="qty[]" class="form-control update-quantity quantity-input" placeholder="Qty" style="width: 70px; height: 43px; margin-bottom: 1px">` +
+                                                `<input type="text" min="1" value="`+(productDetails.returnedqty == '' ? 0 :productDetails.returnedqty )+`" max="`+productDetails.qty+`" name="qty[]" class="form-control update-quantity quantity-input" placeholder="Qty" style="width: 70px; height: 43px; margin-bottom: 1px">` +
                                             
                                                 '<button type="button" class="btn btn-lg btn-primary decrease-quantity" id="decreaseqty"><i class="fas fa-minus"></i></button>' +
                                                 '</div>' +
@@ -337,9 +441,11 @@
                                                 '<i class="mdi mdi-close-outline"></i>' +
                                                 '</a>' +
                                                 '</td>' +
-                                              '<input type="hidden" name="product_id[]" value="' + productDetails.id + '">' +
-                                              '<input type="hidden" name="name[]" value="' + productDetails.name + '">' +
-                                              '<input type="hidden" name="price[]" value="' + productDetails.price + '">' +
+                                              '<input type="hidden" name="product_id[]" value="' + productDetails.productDetails.id + '">' +
+                                              '<input type="hidden" name="name[]" value="' + productDetails.productDetails.name + '">' +
+                                              '<input type="hidden" name="price[]" value="' + productDetails.productDetails.price + '">' +
+                                              '<input type="hidden" name="totalqty[]" value="' + productDetails.qty[0] + '">' +
+
                                               '</tr>' +
                                               '<tr class="row-separator">' +
                                               '<td colspan="6"></td>' +
@@ -360,10 +466,14 @@
                     }
                   });
                 });
+                
+
+
+               
+ 
 
                 
                 tableBody.on('input', '.update-quantity', function() {
-
                   var row = $(this).closest('tr');
     var quantityInput = row.find('.quantity-input');
     var currentQuantity = parseInt(quantityInput.val());
@@ -488,8 +598,8 @@ if (currentQuantity >= maxQuantity) {
 
   grandTotal -= tax + discount + shippingCharges;
 
-  $('#grandtotal').text(grandTotal.toFixed(3));
-
+ $('#grandtotal').text(grandTotal.toFixed(3));
+ $('input[name="gtotal"]').val(grandTotal);
   var totalamount = $('#total-amount').text();
   $('input[name="totalamountv"]').val(totalamount);
 }

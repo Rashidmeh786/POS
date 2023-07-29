@@ -239,7 +239,15 @@ Route::controller(EmployeeController::class)->group(function(){
         Route::get('/searchSaleProduct', 'searchproduct')->name('saleproduct.search');
         Route::post('/final-invoice/sale','FinalInvoice');
         Route::get('/sale/return/{id}','saleReturn')->name('return.saleorder');
-       
+
+
+        Route::get('/returnSaleProduct', 'searchsaleproduct')->name('returnsaleproduct.search');
+        Route::post('/store/sale/return','createreturn')->name('store.salereturn');
+            // update return
+        Route::get('/sale/update/return/{id}','UpdatesaleReturn')->name('return.updatesaleorder');
+        Route::get('/UpdateReturnSaleProduct', 'UpdateSearchSaleProduct')->name('updatereturnsaleproduct.search');
+        Route::post('/update/sale/return','updatereturn')->name('store.updatedsalereturn');
+
         
 
        });
@@ -359,5 +367,8 @@ Route::controller(EmployeeController::class)->group(function(){
             //    Route::get('/product/details/{productId}',[PurchaseController::class],'searchproduct'  )->name('product.details');
                Route::get('/product/details/{productId}', [PurchaseController::class, 'productDetails'])->name('product.details');
                Route::get('/saleproduct/details/{productId}', [SaleController::class, 'productDetails'])->name('product.details');
+                           //   for return 
+               Route::get('/saleproduct/return/{productId}/{InvoiceId}', [SaleController::class, 'productreturnDetails'])->name('product.returndetails');
+               Route::get('/get/saleproduct/return/{orderId}', [SaleController::class, 'getproductreturnDetails'])->name('product.Updatereturndetails');
 
-
+               Route::get('/update/saleproduct/return/{productId}/{InvoiceId}', [SaleController::class, 'updateproductreturnDetails'])->name('product.Updatereturndetails');

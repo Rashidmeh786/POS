@@ -1,7 +1,14 @@
 @extends('admin.admin_dashboard')
 @section('admin')
 <style>
+.maintbody
+{
+  font-weight: bold;
+  
+        font-family:'Times New Roman', Times, serif;
+        color: black;
 
+}
 
     input,select
     {
@@ -14,6 +21,8 @@
     #searchContainer {
         position: relative;
         margin-bottom: 20px;
+        font-size: 20px;font-weight: bold;
+        font-family:'Times New Roman', Times, serif
     }
 
     #searchResults {
@@ -58,7 +67,7 @@
                       <a href="{{ route('all.sales') }}" class="btn btn-outline-primary btn-lg "> Back  </a>  
 
                     </div>
-                    <h2 class="page-title">Sale  Return</h2>
+                    <h2 class="page-title">Product Sale</h2>
                 </div>
             </div>
         </div> 
@@ -66,7 +75,7 @@
 
     <div class="container mt-3 p-5 bg-white"  style="border-radius: 10px">
         
-        <form method="POST" action="">
+        <form method="POST" action="{{ route('store.salereturn') }}">
           @csrf
           <!-- First Row -->
           <div class="row mb-3">
@@ -95,65 +104,61 @@
 
             <div class="col-md-4">
               <label for="" class="form-label">  Invoice No :<span class="text text-danger">*</span></label>
-              <select class="form-select bg-light @error('del_status') is-invalid @enderror" id="del_status" name="del_status">
+              <select class="form-select bg-light @error('invoice_id') is-invalid @enderror" id="invoice_id" name="invoice_id">
                 <option value="{{ $order->invoice_no }}" selected>{{ $order->invoice_no }}</option>
 
                  
               </select>
-              @error('del_status')
+              @error('invoice_id')
                   <span class="text-danger">{{ $message }}</span>
               @enderror
+
+              <input type="hidden" name="order_id" value="{{ $order->id }}">
           </div>
           
           </div>
       
           <!-- Second Row -->
-       
+          <label for="searchProduct" class="form-label">Search by Product:<span class="text text-danger">*</span></label>
+
+          <div id="searchContainer">
+
+            <div class="row mb-1">
+                <div class="col-md-12">
+                    <input type="text" class="form-control  @error('qty') is-invalid @enderror " id="searchProduct" name="product" placeholder=" Enter Product name to search" style="font-family: 'Font Awesome 5 Free';">
+                </div>
+            </div>
+            @error('qty')
+<span class="text-danger">{{ $message }}</span>
+@enderror
+            <div id="searchResults" style=""></div>
+        </div>
+
           <div class="row mt-2">
             <div class="col-md-12 mt-2">
-            <label for="items" class="form-label">Sale Items <span class="text text-danger">*</span></label>
+            <label for="items" class="form-label">Return Items <span class="text text-danger">*</span></label>
 
                 <div class="table-responsive table-sm">
                     <table class="table table-borderless table-nowrap table-centered mb-0" style="height: 150px" id="basic-table">
-                        <thead class="table-light">
-                          <tr>
-                            <th>#</th>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Sale qty</th>
-                            <th>Return Qty</th>
-                            <th>Discount</th>
-                            <th>Tax</th>
-                            <th>Sub Total</th>
-                            <th style="width: 50px;"></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($orderItem as $item)
-                          <tr>
+                      <thead class="table-light">
+                        <tr>
+                          <th>#</th>
 
-                            <td>1</td>
-                            <td>{{ $item->product->product_name }}</td>
-                            <td>{{ $item->product->selling_price }}</td>
-                            <td> <span class="badge bg-pink p-2 text-lg text-bold">{{ $item->quantity }}</span></td>
-                            <td>
-                              <div class="d-flex align-items-center">
-                                <button type="button" class="btn btn-lg btn-primary increase-quantity"><i class="fas fa-plus"></i></button>
-                                <input type="text" min="0" value="0" max="{{ $item->quantity }}" name="quantity" class="form-control update-qty quantity-input" placeholder="Qty" style="width: 59px; height: 44px; "> {{--   style="width: 59px; height: 44px; "--}}
-                                <button type="button" class="btn btn-lg btn-primary decrease-quantity"><i class="fas fa-minus"></i></button>
-                              </div>
-                            </td>                                                                                                          
-                            <td>0.00</td>
-                            <td>0.00</td>
-                            <td>{{ $item->product->selling_price *  $item->quantity }}  </td>
-                            <td>
-                              <a href="#" class="action-icon text-danger"><i class="mdi mdi-close-outline"></i></a>
-                            </td>
-                          </tr>
-                          @endforeach
-                        </tbody>
-                      </table>
-                      
+                          <th>Product</th>
+                          <th>Price</th>
+                          <th>Sold Qty</th>
+                          <th>Return Qty</th>
+                          <th> Discount </th>
+                          <th> Tax </th>
+      
+                          <th>Sub Total</th>
+                          <th style="width: 50px;"></th>
+                        </tr>
+                      </thead>
+                      <tbody class="maintbody">   
+                        
+                      </tbody>
+                    </table>
                   </div>
             </div>
           </div>
@@ -177,7 +182,7 @@
               
                   <tr>
                     <td>Total Amount</td> 
-                    <td id="total-amount">{{ $order->sub_total }}</td> 
+                    <td id="total-amount">0.000</td> 
                     <input type="hidden" name="totalamountv" >
 
 
@@ -185,24 +190,26 @@
 
                   <tr>
                     <td>order Tax</td> 
-                    <td id="taxvalue">{{ $order->vat }}</td> 
+                    <td id="taxvalue">0.000</td> 
                   
 
                   </tr>
                   <tr>
                     <td>Discount</td> 
-                    <td id="discountvalue">{{ $order->discount}}</td> 
+                    <td id="discountvalue">0.000</td> 
                  
                   </tr>
                   <tr>
                     <td>Shipping</td> 
-                    <td id="shippingvalue">{{ $order->shipping }}</td> 
+                    <td id="shippingvalue">0.000</td> 
                   
 
                   </tr>
                   <tr>
                     <td> Grand Total </td> 
-                    <td id="grandtotal">{{ $order->total }}</td> 
+                    <td id="grandtotal">0.000</td> 
+                    <input type="hidden" name="gtotal" >
+
                   </tr>
                 </tbody>
               </table>
@@ -215,14 +222,14 @@
             <div class="col-md-4">
                 <label for="tax" class="form-label">Tax:</label>
                 <div class="input-group">
-                  <input type="text" class="form-control" id="tax" name="text"  value="{{ $order->vat }}" placeholder="Enter tax amount">
+                  <input type="text" class="form-control" id="tax" name="text" placeholder="Enter tax amount">
                   <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                 </div>
               </div>
               <div class="col-md-4">
                 <label for="discount" class="form-label">Discount:</label>
                 <div class="input-group">
-                  <input type="text" class="form-control" id="discount" value="{{ $order->discount }}" name="discount" placeholder="Enter discount">
+                  <input type="text" class="form-control" id="discount"  name="discount" placeholder="Enter discount">
                   <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                 </div>
               </div>
@@ -231,7 +238,7 @@
               <div class="col-md-4">
                 <label for="shipping" class="form-label">Shipping Charges:</label>
                 <div class="input-group">
-                  <input type="text"  class="form-control" id="shippingcharges"  value="{{ $order->shipping }}"  name="shipping" placeholder="Enter shipping charges">
+                  <input type="text"  class="form-control" id="shippingcharges"  name="shipping" placeholder="Enter shipping charges">
                   <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                 </div>
               </div>
@@ -266,67 +273,206 @@
       </div>
     
                 </div> <!-- content -->
-             
 
 
                 <script>
-                    $(document).ready(function() {
-                      // Increase quantity
-                      $(document).on('click', '.increase-quantity', function() {
-                        var input = $(this).closest('tr').find('.quantity-input');
-                        var quantity = parseInt(input.val());
-                        input.val(quantity + 1);
+                  $(document).ready(function() {
+                      var searchResults = $('#searchResults');
+                        var tableBody = $('#basic-table tbody');
 
-                        var maxQuantity = input.attr('max');
+                        var invoice_id=$('#invoice_id').val();
+                
+                      $('#searchProduct').on('input', function() {
+                          var searchTerm = $(this).val();
+                
+                          if (searchTerm !== '') {
+                              $.ajax({
+                                  url: "{{ url('returnSaleProduct') }}",
+                                  type: "GET",
+                                  data: {
+                                      term: searchTerm,
+                                      'invoice_id':invoice_id,
 
-                        if (quantity >= maxQuantity) {
-                        // alert('The quantity exceeds the available stock.');
-                        Swal.fire(
-                        'Alert!',
-                        'The quantity exceeds the sale Qty.',
-                       
-                        )
-                       input.val(maxQuantity); // Reset the input value to the stockValue
-                        }
-
-                      
-
+                                  },
+                                  success: function(response) {
+                                   console.log(response);
+                                      var results = '';
+                
+                                      $.each(response, function(index, product) {
+                                         results += '<div class="searchResult" data-product-id="' + product['id'] + '">' + product['product_name'] + '</div>';
+                                          
+                                      });
+                
+                                      // Display the search results
+                                      searchResults.html(results);
+                                      searchResults.show(); // Show the results container
+                                      updateGrandTotal();
+                                  }
+                              });
+                          } else {
+                              // Clear the search results if search term is empty
+                              searchResults.html('');
+                              searchResults.hide(); // Hide the results container
+                          }
                       });
+                
+                 // Add event listener for the dynamically generated search result items
+                 searchResults.on('click', '.searchResult', function() {
+                  var selectedProductId = $(this).data('product-id');
+                  console.log(selectedProductId);
+                  var invoice_number=$('#invoice_id').val();
+                
+                  $.ajax({
+                    url: '/saleproduct/return/' + selectedProductId + '/' +invoice_number,
+                    type: 'GET',
+                    data: {
+                           'invoice_id':invoice_id,
+                                  },
+                    success: function(productDetails) {
+                      // Handle the success response and update the UI accordingly
+                      // var discount=productDetails.order.discount;
+                      // var discount=productDetails.order.vat;
+                      // var discount=productDetails.order.shipping;
 
-                      $(document).on('input', '.update-qty', function() {
-                        var input = $(this).closest('tr').find('.quantity-input');
-                        var quantity = parseInt(input.val());
-                        // input.val(quantity + 1);
+                  //    console.log(discount);
+                      console.log(productDetails); // Check the response in the console
+                
+               
+                  // Construct the new row HTML using the product details
+                  var newRow = '<tr>' +
+                                                '<td>' + (tableBody.children().length + 1) + '</td>' +
+                                                '<td style="font-size: 16px;">' + productDetails.productDetails.name + '</td>' +
+                                                '<td style="font-size: 16px;"> ' + productDetails.productDetails.price + '</td>' +
+                                                '<td style="font-size: 16px;">' + productDetails.qty[0] + '</td>' +
+                                                '<td>' +
+                                                '<div class="d-flex align-items-center">' +
+                                                '<button type="button" class="btn btn-lg btn-primary increase-quantity" id="increaseqty"><i class="fas fa-plus"></i></button>' +
+                                                // '<input type="text" min="1" value="1" max="" name="qty[]" class="form-control quantity-input update-quantity" placeholder="Qty" style="width: 59px; height: 44px;">' +
+                                                `<input type="text" min="1" value="1" max="`+productDetails.qty+`" name="qty[]" class="form-control update-quantity quantity-input" placeholder="Qty" style="width: 70px; height: 43px; margin-bottom: 1px">` +
+                                            
+                                                '<button type="button" class="btn btn-lg btn-primary decrease-quantity" id="decreaseqty"><i class="fas fa-minus"></i></button>' +
+                                                '</div>' +
+                                                '</td>' +
+                                                '<td style="font-size: 16px;">0.00</td>' +
+                                                '<td style="font-size: 16px;">0.00</td>' +
+                                                '<td id="subtotal" style="font-size: 16px; font-weight:bold">0.00</td>' +
+                                                '<td style="font-size: 16px;">' +
+                                                '<a href="#" class="action-icon text-danger deleterow" id="deleterow">' +
+                                                '<i class="mdi mdi-close-outline"></i>' +
+                                                '</a>' +
+                                                '</td>' +
+                                              '<input type="hidden" name="product_id[]" value="' + productDetails.productDetails.id + '">' +
+                                              '<input type="hidden" name="name[]" value="' + productDetails.productDetails.name + '">' +
+                                              '<input type="hidden" name="price[]" value="' + productDetails.productDetails.price + '">' +
+                                              '<input type="hidden" name="totalqty[]" value="' + productDetails.qty[0] + '">' +
 
-                        var maxQuantity = input.attr('max');
+                                              '</tr>' +
+                                              '<tr class="row-separator">' +
+                                              '<td colspan="6"></td>' +
+                                              '</tr>';
 
-                        if (quantity >= maxQuantity) {
-                        // alert('The quantity exceeds the available stock.');
-                        Swal.fire(
-                        'Alert!',
-                        'The quantity exceeds the sale Qty.',
-                       
-                        )
-                       input.val(maxQuantity); // Reset the input value to the stockValue
-                        }
+                        
+                                            // Append the new row to the table
+                                            tableBody.append(newRow);
+                                          
+                                            // Hide the search results container
+                                            searchResults.html('');
+                                            searchResults.hide();
+                                            updateGrandTotal();
+                    },
+                    error: function(xhr, status, error) {
+                      // Handle the error response
+                      console.log(xhr.responseText); // Check the error message in the console
+                    }
+                  });
+                });
+                
 
-                      
 
-                      });
+               
+ 
+
+                
+                tableBody.on('input', '.update-quantity', function() {
+                  var row = $(this).closest('tr');
+    var quantityInput = row.find('.quantity-input');
+    var currentQuantity = parseInt(quantityInput.val());
+    // quantityInput.val(currentQuantity + 1);
+    var maxQuantity = quantityInput.attr('max');
+  
+if (currentQuantity >= maxQuantity) {
+  
+    Swal.fire(
+  'Alert!',
+  'The quantity exceeds the available stock.',
+
+)
+    quantityInput.val(maxQuantity); // Reset the input value to the stockValue
+  }
+  // Update subtotal
+                  var price = parseFloat($(this).closest('tr').find('td:eq(2)').text());
+                  var subtotal = currentQuantity * price;
+                  $(this).closest('tr').find('td#subtotal').text(subtotal.toFixed(2));
+
+                  updateGrandTotal();
+
                   
-                      // Decrease quantity
-                      $(document).on('click', '.decrease-quantity', function() {
-                        var input = $(this).siblings('.quantity-input');
-                        var quantity = parseInt(input.val(), 10);
-                        if (quantity > 0) {
-                          input.val(quantity - 1);
-                        }
-                      });
-                    });
+                }); 
+                tableBody.on('click', '.increase-quantity', function() {
+                  var input = $(this).closest('tr').find('.quantity-input');
+                  var quantity = parseInt(input.val());
+                  input.val(quantity + 1);
+              
+                  // Update subtotal
+                  var price = parseFloat($(this).closest('tr').find('td:eq(2)').text());
+                  var subtotal = (quantity + 1) * price;
+                  $(this).closest('tr').find('td#subtotal').text(subtotal.toFixed(2));
+                  updateGrandTotal();
+                  var maxQuantity = input.attr('max');
 
+                  if (quantity >= maxQuantity) {
+   // alert('The quantity exceeds the available stock.');
+    Swal.fire(
+  'Alert!',
+  'The quantity exceeds the available stock.',
+ 
+)
+    input.val(maxQuantity); // Reset the input value to the stockValue
+  }
 
-     
-                    $('#tax').on('input', function() {
+                });
+                
+                // Event listener for decreasing quantity
+                tableBody.on('click', '.decrease-quantity', function() {
+                  var input = $(this).siblings('.quantity-input');
+                  var quantity = parseInt(input.val(), 10);
+                  if (quantity > 1) {
+                    input.val(quantity - 1);
+                
+                    // Update subtotal
+                    var price = parseFloat($(this).closest('tr').find('td:eq(2)').text());
+                    var subtotal = (quantity - 1) * price;
+                    $(this).closest('tr').find('td#subtotal').text(subtotal.toFixed(2));
+                  }
+                  updateGrandTotal();
+                });
+                
+                
+                tableBody.on('click', '.deleterow', function() {
+                  $(this).closest('tr').next('.row-separator').remove();
+                  $(this).closest('tr').remove();
+                  $('#tax').val('');
+  $('#discount').val('');
+  $('#shippingcharges').val('');
+  $('#taxvalue').text(0);
+  $('#discountvalue').text(0);
+  $('#shippingvalue').text(0);
+                  updateGrandTotal();
+                });
+                
+                
+                
+                $('#tax').on('input', function() {
                   var taxAmount = $(this).val();
                   $('#taxvalue').text(taxAmount);
                
@@ -341,23 +487,64 @@
                   var shippingcharges = $(this).val();
                   $('#shippingvalue').text(shippingcharges);
                 });
+                
+                
+                
+                function updateGrandTotal() {
+  var grandTotal = 0;
+  var amountTotal = 0;
 
+  // Iterate over each row
+  $('#basic-table tbody tr').each(function() {
+    var quantity = parseInt($(this).find('input[name="qty[]"]').val(), 10);
+    var price = parseFloat($(this).find('td:eq(2)').text());
+    var subtotal = quantity * price;
+    if (isNaN(subtotal)) subtotal = 0;
 
+    grandTotal += subtotal;
+    amountTotal += subtotal;
 
+    $(this).find('td#subtotal').text(subtotal.toFixed(2));
+  });
 
+  $('#total-amount').text(grandTotal.toFixed(3));
 
+  var tax = parseFloat($('#taxvalue').text());
+  var discount = parseFloat($('#discountvalue').text());
+  var shippingCharges = parseFloat($('#shippingvalue').text());
+  if (isNaN(tax)) tax = 0;
+  if (isNaN(discount)) discount = 0;
+  if (isNaN(shippingCharges)) shippingCharges = 0;
 
+  grandTotal -= tax + discount + shippingCharges;
 
-
-
+ $('#grandtotal').text(grandTotal.toFixed(3));
+ $('input[name="gtotal"]').val(grandTotal);
+  var totalamount = $('#total-amount').text();
+  $('input[name="totalamountv"]').val(totalamount);
+}
 
                 
-                  </script>
-                  
+                
+                $('#tax, #discount, #shippingcharges').on('input', function() {
+                  updateGrandTotal();
+                });
+      
+                        // selected currentdata
+              var currentDate = new Date().toISOString().split('T')[0];
+              $('#purchaseDate').val(currentDate);
+    
+                  });
+
+
+                </script>
+                
 
 
 
-                  
+
+
+
 
 
 @endsection

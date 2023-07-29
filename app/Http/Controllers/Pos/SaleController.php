@@ -6,9 +6,11 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Customer;
 use App\Models\Supplier;
+use App\Models\OrderReturn;
 use App\Models\OrderDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Models\OrderReturnDetails;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -174,6 +176,352 @@ class SaleController extends Controller
 
         return view('order.return_sale',compact('order','orderItem'));
     }  
+
+    public function searchsaleproduct(Request $request)
+    {
+     //  $product_id=[];
+        $searchTerm = $request->input('term');
+       $invoice_id=$request->input('invoice_id');
+      $order_id=Order::where('invoice_no',$invoice_id)->pluck('id');
+      $product_id=Orderdetails::where('order_id',$order_id)->pluck('product_id');
+
+        $products = Product::where('product_name', 'LIKE', '%' . $searchTerm . '%')
+            ->where('stock', '>', 0)
+           // ->where('id','=',$product_id)
+           ->wherein('id',$product_id)
+
+            // ->whereNotNull('stock')
+            ->latest()
+            ->get();
+
+    
+     return response()->json($products);
+      //  return response()->json($product_id);
+
+    }
+
+    public function productreturnDetails( $productId,$invoice_id)
+    {
+
+      //  dd($productId);
+        $product = Product::findOrFail($productId);
+        
+        $order_id=Order::where('invoice_no',$invoice_id)->pluck('id');
+        $order=Order::where('invoice_no',$invoice_id)->first();
+
+    
+$qty = Orderdetails::with('product')
+->where('order_id',$order_id)
+->where('product_id',$productId)
+->orderBy('id','DESC')->pluck('quantity');
+
+        $productDetails = [
+            'name' => $product->product_name,
+            'price' => $product->selling_price,
+            'stock' => $product->stock ?? 0,
+            'id'=>$product->id,
+            'product_code'=>$product->product_code
+        ];
+
+      // return response()->json(['productDetails'=>$productDetails]);
+       return response()->json(['productDetails'=>$productDetails,'qty'=>$qty,'order'=>$order]);
+     
+    }
+
+    public function createreturn(Request $request){
+
+        
+        $validator = Validator::make($request->all(), [
+        
+            'qty' => 'required',
+        ], [
+            'qty.required' => 'At least one product is required.',
+        
+        ]);
+        
+        if ($validator->fails()) {
+            toast()->error('Wait.. Something Mandatory is Missing');
+        
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $itemDetails = [
+            'id' => $request->product_id,
+            'name' => $request->name,
+            'qty' => $request->qty,
+            'price' => $request->price,
+            'totalqty'=>$request->totalqty
+        ];
+        $qtyCount = count($itemDetails['qty']);
+        
+  
+    $data = array();
+    $data['customer_id'] = $request->customer_id;
+    $data['order_id'] = $request->order_id;
+    
+    $data['order_date'] = $request->date;
+    // $data['order_status'] = 'pending';
+     $data['total_products'] = $qtyCount;
+    $data['sub_total'] = $request->totalamountv;
+    $data['vat'] = $request->tax;
+    $data['note'] = $request->note;
+
+    $data['discount'] = $request->discount;
+    $data['shipping'] = $request->shipping;
+    // $data['ref_no'] =$refcode ;
+    $data['user_id']= Auth::id();
+    $data['invoice_no'] = 'INVR'.mt_rand(10000000,99999999);
+    $data['total'] = $request->gtotal;
+    // $data['payment_status'] = $request->payment_status;
+    // $data['pay'] = $request->pay;
+    // $data['due'] = $mtotal;
+    $data['created_at'] = Carbon::now(); 
+   
+    $order_id = OrderReturn::insertGetId($data);
+ 
+    
+       
+        // Loop through each product and save it to OrderReturnDetails
+        foreach ($itemDetails['id'] as $index => $product_id) {
+            $saleReturn = new OrderReturnDetails();
+            $saleReturn->return_id = $order_id;
+            $saleReturn->product_id = $product_id;
+            $saleReturn->quantity = $itemDetails['totalqty'][$index];
+
+            $saleReturn->quantity_return = $itemDetails['qty'][$index];
+            $saleReturn->unitcost = $itemDetails['price'][$index];
+            $saleReturn->total = $itemDetails['qty'][$index] * $itemDetails['price'][$index];
+            $saleReturn->save();
+        }
+    
+      
+      
+    $product = OrderReturnDetails::where('return_id',$order_id)->get();
+    foreach($product as $item){
+       Product::where('id',$item->product_id)
+            ->update(['stock' => DB::raw('stock+'.$item->quantity_return) ]);
+    }
+
+  
+    toast()->success('Sale  Returned Successfully ..');
+    return redirect()->route('all.sales');
+
+    
+    } 
+
+
+    public function UpdatesaleReturn($order_id)
+    {
+        $OrderReturn=OrderReturn::where('order_id',$order_id)->first();
+
+        $OrderReturnDetails = OrderReturnDetails::with('product')->where('return_id',$OrderReturn->id)->orderBy('id','DESC')->get();
+            $order=order::findorfail($order_id);
+
+       // dd($OrderReturnDetails);
+        return view('order.update_return_sale',compact('OrderReturn','OrderReturnDetails','order'));
+    }
+
+
+    public function UpdateSearchSaleProduct(Request $request)
+    {
+     //  $product_id=[];
+        $searchTerm = $request->input('term');
+       //$invoice_id=$request->input('invoice_id');
+       $saleorder_id=$request->input('order_id');
+    //   $order_id=Order::where('id',$saleorder_id)->pluck('id');
+      $product_id=Orderdetails::where('order_id',$saleorder_id)->pluck('product_id');
+
+
+
+
+        $products = Product::where('product_name', 'LIKE', '%' . $searchTerm . '%')
+            ->where('stock', '>', 0)
+           // ->where('id','=',$product_id)
+           ->wherein('id',$product_id)
+
+            // ->whereNotNull('stock')
+            ->latest()
+            ->get();
+
+    
+     return response()->json($products);
+      // return response()->json($product_id);
+
+    }
+    public function updateproductreturnDetails( $productId,$saleorder_id)
+    {
+
+      //  dd($productId);
+        $product = Product::findOrFail($productId);
+        
+        $order_id=OrderReturn::where('order_id',$saleorder_id)->pluck('id');
+        
+        // $order=Order::where('id',$saleorder_id)->pluck('invoice_no');
+
+    
+$qty = Orderdetails::with('product')
+->where('order_id',$saleorder_id)
+->where('product_id',$productId)
+->orderBy('id','DESC')->pluck('quantity');
+
+$returnedqty = OrderReturnDetails::with('product')
+->where('return_id',$order_id)
+->where('product_id',$productId)
+->orderBy('id','DESC')->pluck('quantity_return');
+
+
+        $productDetails = [
+            'name' => $product->product_name,
+            'price' => $product->selling_price,
+            'stock' => $product->stock ?? 0,
+            'id'=>$product->id,
+            'product_code'=>$product->product_code
+        ];
+
+      // return response()->json(['productDetails'=>$productDetails]);
+       return response()->json(['productDetails'=>$productDetails,'qty'=>$qty,'returnedqty'=>$returnedqty]);
+     
+    }
+
+
+    public function getproductreturnDetails($order_id)
+{
+    $return_id = OrderReturn::where('order_id', $order_id)->pluck('id');
+    $product_ids = OrderReturnDetails::where('return_id', $return_id)->pluck('product_id');
+
+    $products = Product::whereIn('id', $product_ids)->get();
+
+    $productDetails = [];
+    foreach ($products as $product) {
+        $productDetails[] = [
+            'name' => $product->product_name,
+            'price' => $product->selling_price,
+            'stock' => $product->stock ?? 0,
+            'id' => $product->id,
+            'product_code' => $product->product_code
+        ];
+    }
+
+    $qty = OrderReturndetails::with('product')
+        ->where('return_id', $return_id)
+        ->whereIn('product_id', $product_ids)
+        ->orderBy('id', 'DESC')
+        ->pluck('quantity');
+
+    $returnedqty = OrderReturnDetails::with('product')
+        ->where('return_id', $return_id)
+        ->whereIn('product_id', $product_ids)
+        ->orderBy('id', 'DESC')
+        ->pluck('quantity_return');
+
+    return response()->json(['productDetails' => $productDetails, 'qty' => $qty, 'returnedqty' => $returnedqty]);
+}
+
+
+
+
+
+
+
+        
+    public function updatereturn(Request $request){
+
+        
+
+
+        $validator = Validator::make($request->all(), [
+        
+            'qty' => 'required',
+        ], [
+            'qty.required' => 'At least one product is required.',
+        
+        ]);
+        
+        if ($validator->fails()) {
+            toast()->error('Wait.. Something Mandatory is Missing');
+        
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+
+$return_id=OrderReturn::where('order_id',$request->order_id)->pluck('id');
+        $product = OrderReturnDetails::where('return_id',$return_id)->get();
+        foreach($product as $item){
+           Product::where('id',$item->product_id)
+                ->update(['stock' => DB::raw('stock-'.$item->quantity_return) ]);
+        }
+
+        OrderReturn::where('order_id',$request->order_id)->delete();
+
+
+        $itemDetails = [
+            'id' => $request->product_id,
+            'name' => $request->name,
+            'qty' => $request->qty,
+            'price' => $request->price,
+            'totalqty'=>$request->totalqty
+        ];
+        $qtyCount = count($itemDetails['qty']);
+        
+  
+    $data = array();
+    $data['customer_id'] = $request->customer_id;
+    $data['order_id'] = $request->order_id;
+    
+    $data['order_date'] = $request->date;
+    // $data['order_status'] = 'pending';
+     $data['total_products'] = $qtyCount;
+    $data['sub_total'] = $request->totalamountv;
+    $data['vat'] = $request->tax;
+    $data['note'] = $request->note;
+
+    $data['discount'] = $request->discount;
+    $data['shipping'] = $request->shipping;
+    // $data['ref_no'] =$refcode ;
+    $data['user_id']= Auth::id();
+    $data['invoice_no'] = 'INVR'.mt_rand(10000000,99999999);
+    $data['total'] = $request->gtotal;
+    // $data['payment_status'] = $request->payment_status;
+    // $data['pay'] = $request->pay;
+    // $data['due'] = $mtotal;
+    $data['created_at'] = Carbon::now(); 
+   
+    $order_id = OrderReturn::insertGetId($data);
+ 
+    
+       
+        // Loop through each product and save it to OrderReturnDetails
+        foreach ($itemDetails['id'] as $index => $product_id) {
+            $saleReturn = new OrderReturnDetails();
+            $saleReturn->return_id = $order_id;
+            $saleReturn->product_id = $product_id;
+            $saleReturn->quantity = $itemDetails['totalqty'][$index];
+
+            $saleReturn->quantity_return = $itemDetails['qty'][$index];
+            $saleReturn->unitcost = $itemDetails['price'][$index];
+            $saleReturn->total = $itemDetails['qty'][$index] * $itemDetails['price'][$index];
+            $saleReturn->save();
+        }
+    
+      
+      
+    $product = OrderReturnDetails::where('return_id',$order_id)->get();
+    foreach($product as $item){
+       Product::where('id',$item->product_id)
+            ->update(['stock' => DB::raw('stock+'.$item->quantity_return) ]);
+    }
+
+  
+    toast()->success('Sale  Returned Successfully ..');
+    return redirect()->route('all.sales');
+
+    
+    } 
+
+
 
 
 }

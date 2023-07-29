@@ -167,14 +167,27 @@
         
                             <!-- item-->
                            
-        
+                            @php
+                            $return = App\Models\OrderReturn::where('order_id',$item->id)->first();
+                          @endphp
+                      
                             <div class="dropdown-divider"></div>
         
+                          
+
+                                  @if (!empty($return))
+                                  <a href="{{ route('return.updatesaleorder',$item->id) }}" class="dropdown-item">
+                                    <i class="fe-edit-1 me-1 text-warning"></i>
+                                    <span>Update Return</span>
+                                </a>
+                                  @else
+                                  <a href="{{ route('return.saleorder',$item->id) }}" class="dropdown-item">
+                                    <i class="fe-repeat me-1 text-warning"></i>
+                                    <span>Return</span>
+                                </a>
+                                  @endif
                             <!-- item-->
-                            <a href="{{ route('return.saleorder',$item->id) }}" class="dropdown-item">
-                                <i class="fe-headphones me-1 text-warning"></i>
-                                <span>Return</span>
-                            </a>
+                           
         
                         </div>
                     </li>

@@ -176,7 +176,7 @@
             <div class="totals">
                 <p>Subtotal: Rs {{ ($order->sub_total) }}</p>
 
-                <p>Discount: Rs {{ ($order->sub_total-$order->total) }}</p>
+                <p>Discount: Rs </p>
                 <h4>Total: Rs {{ $order->total }}</h2>
             </div>
 
