@@ -73,8 +73,8 @@
            <div class=" " style="margin-top: 40px position: fixed;">
 
 
-              <div class="mb-2">
-                <div class="d-flex">
+              <div class="mb-2" >
+                <div class="d-flex ">
                 
                     <select name="customerid" class="form-select  @error('customerid') is-invalid @enderror " id="example-select">
                         <option value="{{ $visitor->id }}">{{ $visitor->name }}</option>
@@ -85,7 +85,7 @@
                     </select>
     
                     
-                    <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#customer-modal">
+                    <button class="btn btn-primary " type="button" data-bs-toggle="modal" data-bs-target="#customer-modal">
                         <span class="fas fa-plus-square p-1"></span>
                     </button>
                    
@@ -296,14 +296,14 @@ function updateProductTable(productData) {
       '<td>' + productData.price + '</td>' +
       '<td>' +
       '<div class="d-flex align-items-center">' +
-      '<button type="button" class="btn btn-sm btn-success p-1 increase-quantity" style="margin-top: -2px;"><i class="fas fa-plus"></i></button>' +
-      `<input type="text" min="1" value="1" max="`+productData.stock+`" name="qty[]" class="form-control quantity-input" placeholder="Qty" style="width: 70px; height: 35px; margin-bottom: 3px">` +
-      '<button type="button" class="btn btn-sm btn-success p-1 decrease-quantity" style="margin-top: -2px;"><i class="fas fa-minus"></i></button>' +
+      '<button type="button" class="btn btn-sm btn-primary p-1 increase-quantity" style="margin-top: -2px; height:40px; width:32px;"><i class="fas fa-plus"></i></button>' +
+      `<input type="text" min="1" value="1" max="`+productData.stock+`" name="qty[]" class="form-control quantity-input" placeholder="Qty" style="width: 70px; height: 40px; margin-bottom: 3px">` +
+      '<button type="button" class="btn btn-sm btn-primary p-1 decrease-quantity" style="margin-top: -2px;height:40px; width:32px;"><i class="fas fa-minus"></i></button>' +
       '</div>' +
       '</td>' +
       '<td>' +
       '<div class="d-flex align-items-center">' +
-        '<input type="text" value="" name="discount[]" class="form-control discount-input" toolti placeholder=" Enter .. " style="width: 80px; height: 34px;" data-row-id="' + productData.rowId + '">' +
+        '<input type="text" value="" name="discount[]" class="form-control discount-input" toolti placeholder=" 0 " style="width: 80px; height: 34px;" data-row-id="' + productData.rowId + '">' +
 
        '</div>' +
       '</td>' +

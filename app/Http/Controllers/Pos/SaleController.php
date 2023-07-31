@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\OrderReturn;
 use App\Models\OrderDetails;
+use App\Models\OrderPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\OrderReturnDetails;
@@ -123,11 +124,13 @@ class SaleController extends Controller
         $data['order_status'] = $request->del_status;
         $data['total_products'] = $request->total_products;
         $data['sub_total'] = $request->sub_total;
-        $data['vat'] = $request->tax;
+        // $data['vat'] = $request->tax;
+        $data['vat'] = $request->tax ?? 0;
+
         $data['note'] = $request->note;
 
-        $data['discount'] = $request->discount;
-        $data['shipping'] = $request->shipping;
+        $data['discount'] = $request->discount ?? 0;
+        $data['shipping'] = $request->shipping ?? 0;
         // $data['ref_no'] =$refcode ;
         $data['user_id']= Auth::id();
         $data['invoice_no'] = 'INV'.mt_rand(10000000,99999999);
@@ -138,6 +141,26 @@ class SaleController extends Controller
         $data['created_at'] = Carbon::now(); 
 
         $order_id = Order::insertGetId($data);
+
+
+        // for payment table 
+
+
+        $paydata = array();
+        $paydata['order_id'] = $order_id;
+        $paydata['total'] = $request->total;
+        $paydata['total_paid'] = $request->pay;
+        $paydata['remaining_due']=$mtotal;
+
+        $paydata['user_id']= Auth::id();
+        $paydata['created_at'] = Carbon::now(); 
+        
+         OrderPayment::insert($paydata); 
+        
+
+
+
+
         
         $itemDetails = session()->get('itemsaleDetails');
 
@@ -165,6 +188,24 @@ class SaleController extends Controller
         // return redirect()->route('dashboard');
 
     } 
+
+
+
+
+    public function Orderreceipt($order_id)
+    {
+ 
+
+     $order = Order::where('id',$order_id)->first();
+     $customer_id= $order->customer_id;
+     $customer = Customer::findOrFail($customer_id);
+        $productdetails=Orderdetails::where('order_id',$order_id)->get();
+  //   dd( $productdetails);
+
+     return view('invoice.thermalreceipt', compact('order', 'customer', 'productdetails'));
+    }
+
+
 
     public function saleReturn($id)
 

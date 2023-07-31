@@ -46,6 +46,21 @@ class OrderController extends Controller
         $data['user_id']= Auth::id();
 
         $order_id = Order::insertGetId($data);
+
+//for payment table entery
+$paydata = array();
+$paydata['order_id'] = $order_id;
+$paydata['total'] = $request->total;
+$paydata['remaining_due']=$mtotal;
+
+$paydata['total_paid'] = $request->pay;
+$paydata['user_id']= Auth::id();
+$paydata['created_at'] = Carbon::now(); 
+
+ OrderPayment::insert($paydata); 
+
+
+
         $contents = Cart::content();
 
         $pdata = array();
@@ -140,28 +155,42 @@ class OrderController extends Controller
     }
 
 
-    public function OrderInvoice($order_id){
 
-        $order = Order::where('id',$order_id)->first();
 
-       $orderItem = Orderdetails::with('product')->where('order_id',$order_id)->orderBy('id','DESC')->get();
-
-       $orderreturnid = OrderReturn::where('order_id',$order_id)->pluck('id');
-
+   public function OrderInvoice($order_id)
+   {
+       $order = Order::where('id', $order_id)->first();
+       $orderItem = Orderdetails::with('product')->where('order_id', $order_id)->orderBy('id', 'DESC')->get();
+       $orderreturnids = OrderReturn::where('order_id', $order_id)->pluck('id');
        $orderreturn = OrderReturn::where('order_id',$order_id)->first();
-
-       $orderreturnItem = OrderReturnDetails::with('product')->where('return_id',$orderreturnid)->pluck('quantity_return');
-
-       $pdf = Pdf::loadView('order.order_invoice', compact('order','orderItem','orderreturn','orderreturnItem'))->setPaper('a4')->setOption([
-               'tempDir' => public_path(),
-               'chroot' => public_path(),
-
+   
+       // Check if there are any return ids
+       if ($orderreturnids->isNotEmpty()) {
+           $orderreturnItem = OrderReturnDetails::with('product')->whereIn('return_id', $orderreturnids)->pluck('quantity_return');
+       } else {
+           // If there are no return items, assign an empty array to $orderreturnItem
+           $orderreturnItem = [];
+       }
+   
+       $pdf = Pdf::loadView('order.order_invoice', compact('order', 'orderItem', 'orderreturnItem','orderreturn'))->setPaper('a4')->setOption([
+           'tempDir' => public_path(),
+           'chroot' => public_path(),
        ]);
+   
        $date = Carbon::now()->format('Y-m-d'); // Get the current date in the desired format
        $fileName = 'invoice_' . $date . '.pdf';
    
        return $pdf->download($fileName);
    }
+   
+
+
+
+ 
+   
+
+   
+
 
     public function StockManage(){
 
@@ -193,6 +222,19 @@ class OrderController extends Controller
         }
 
 
+        public function OrderPaymentHistory($id){
+
+            // $order = Order::findOrFail($id);
+
+        $payhistory=OrderPayment::with('user')->where('order_id',$id)->get();
+// $user=OrderPayment::wherewhere('order_id',$id)->pluck('user_id');
+
+            return response()->json($payhistory);
+    
+        }
+
+
+
         public function UpdateDue(Request $request){
 
             $order_id = $request->id;
@@ -210,7 +252,25 @@ class OrderController extends Controller
                 'due' => $paid_due,
                 'pay' => $paid_pay, 
             ]);
-    
+
+            // for payment table
+            $paydata = array();
+            $paydata['order_id'] = $request->id;
+            $paydata['total'] = $request->total;
+            $paydata['total_paid'] = $request->due;
+        $paydata['remaining_due']= $request->previousdue-$request->due;
+
+            $paydata['user_id']= Auth::id();
+            $paydata['created_at'] = Carbon::now(); 
+            
+             OrderPayment::insert($paydata); 
+            
+
+
+
+
+
+
           
             toast()->success('Due Added Successfully ');
     

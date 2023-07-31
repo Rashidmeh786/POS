@@ -7,14 +7,10 @@
     <title>Invoice</title>
 
     <style type="text/css">
-        * {
-            font-family: Arial, sans-serif;
-        }
-
         body {
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            /* background-color: #f5f5f5; */
         }
 
         .container {
@@ -38,36 +34,35 @@
 
         .header h2 {
             color: #1a936f;
-            font-size: 26px;
+            font-size: 24px;
             margin: 0;
         }
 
-        .customer-details {
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
         .invoice-details {
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: 12px;
+            line-height: 1.4;
             text-align: right;
+        }
+        .customer-details {
+            font-size: 12px;
+            line-height: 1.4;
         }
 
         .invoice-details h3 {
             color: #1a936f;
-            font-size: 20px;
-            margin: 0 0 10px;
+            font-size: 18px;
+            margin: 0 0 8px;
         }
 
         .product-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            font-size: 15px;
         }
 
         .product-table th,
         .product-table td {
-            padding: 10px;
+            padding: 8px;
             border-bottom: 1px solid #dddddd;
             text-align: left;
         }
@@ -79,20 +74,26 @@
 
         .totals {
             text-align: right;
-            font-size: 16px;
-            line-height: 1.5;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 30px;
+        }
+
+        .totals p,
+        .totals h4 {
+            margin: 0;
         }
 
         .thanks {
             color: #1a936f;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 16px;
         }
 
         .signature {
             text-align: right;
-            margin-top: 40px;
+            margin-top: 32px;
         }
 
         .signature p {
@@ -101,41 +102,19 @@
 
         .signature h5 {
             color: #1a936f;
-            margin: 10px 0 0;
-        }
-
-        .container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: #ffffff;
-            margin-bottom: 0;
-            /* Remove the default margin-bottom */
+            margin: 8px 0 0;
         }
 
         .footer {
-            font-size: 14px;
+            font-size: 12px;
             color: #111111;
             text-align: center;
-            /* background-color: lightgray; */
-            padding: 10px;
-            margin-top: auto;
-            /* Push the footer to the bottom of the container */
+            padding: 8px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
         }
     </style>
-
-
-
-
-
-
-    </style>
-
 </head>
 
 <body>
@@ -144,7 +123,7 @@
             <div class="header">
                 <h2>EasyShop</h2>
                 <div class="invoice-details">
-                    <h3>Invoice: #{{ $order->invoice_no }}</h3>
+                    <h3>Invoice: {{ $order->invoice_no }}</h3>
                     <p>
                         Order Date: {{ $order->order_date }}<br>
                         Order Status: {{ $order->order_status }}<br>
@@ -155,14 +134,16 @@
                 </div>
             </div>
 
-            <div class="customer-details">
-                <p>
-                    <strong>Customer Name:</strong> {{ $order->customer->name }}<br>
-                    <strong>Customer Email:</strong> {{ $order->customer->email }}<br>
-                    <strong>Customer Phone:</strong> {{ $order->customer->phone }}<br>
-                    <strong>Address:</strong> {{ $order->customer->address }}<br>
-                    <strong>Shop Name:</strong> {{ $order->customer->shopname }}
-                </p>
+            <div class="customer-details" style="display: flex; justify-content: space-between;">
+                <div>
+                    <p>
+                        <span>Customer Name:</span>  {{ $order->customer->name }}<br>
+                        <span>Customer Email:</span> {{ $order->customer->email }}<br>
+                        <span>Customer Phone:</span> {{ $order->customer->phone }}<br>
+                        <span>Address:</span> {{ $order->customer->address }}<br>
+                        <span>Shop Name:</span> {{ $order->customer->shopname }}
+                    </p>
+                </div>
             </div>
 
             <h3>Products</h3>
@@ -171,37 +152,41 @@
                     <tr>
                         <th>Sl</th>
                         <th>Product Name</th>
-                        <th> Quantity</th>
+                        <th>Quantity</th>
                         <th>Price</th>
                         <th>Return</th>
-                        <th>Total </th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
-            
-
                     @foreach($orderItem as $index => $item)
                     <tr>
-                        <td>{{ $index + 1 }}</td> <!-- Add this line to display the sno -->
+                        <td>{{ $index + 1 }}</td>
                         <td>{{ $item->product->product_name }}</td>
-            
                         <td>{{ $item->quantity }}</td>
                         <td>Rs. {{ $item->product->selling_price }}</td>
-                        <td></td>
-            
+                        <td>
+                            <!-- Access the corresponding value from $orderreturnItem using the $index -->
+                            @if(isset($orderreturnItem[$index]))
+                                {{ $orderreturnItem[$index] }}
+                            @else
+                                0
+                            @endif
+                        </td>
                         <td>Rs. {{ $item->total }}</td>
                     </tr>
                     @endforeach
-            
                 </tbody>
             </table>
 
             <div class="totals">
                 <p>Subtotal: Rs {{ ($order->sub_total) }}</p>
+                <p>Discount: Rs {{ $order->discount ?? 0.00 }} </p>
+                <p>Tax Chg: Rs {{ $order->vat ?? 0.00 }} </p>
+                <p>Shipping Chg: Rs {{ $order->shipping ?? 0.00 }} </p>
 
-                <p>Discount: Rs </p>
                 <h4>Total: Rs {{ $order->total }}</h4>
-                <p>Returned Amount: Rs {{ $orderreturn->total ?? 0}} </p>
+                <p>Returned: Rs {{ $orderreturn->total ?? 0}} </p>
                 <h4>Grand Total: Rs {{ ($order->total ?? 0 )- ($orderreturn->total ?? 0)}}</h4>
             </div>
 
@@ -217,7 +202,7 @@
 
         <div class="footer">
             <p>This invoice is not replaceable and does not include any warranty.</p>
-            <p>EasyShop Head Office | Email: support@easylearningbd.com | Mob: 1245454545 | Dhaka 1207, Dhanmondi:#4</p>
+            <p>EasyShop Head Office | Email: support@abc.com | Mob: 1245454545 | Hayatabad 1207, Peshawar:#4</p>
         </div>
     </div>
 </body>

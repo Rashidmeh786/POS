@@ -238,6 +238,8 @@ Route::controller(EmployeeController::class)->group(function(){
 
         Route::get('/searchSaleProduct', 'searchproduct')->name('saleproduct.search');
         Route::post('/final-invoice/sale','FinalInvoice');
+        Route::get('/order/receipt/{order_id}','Orderreceipt')->name('order.receiptprint');
+
         Route::get('/sale/return/{id}','saleReturn')->name('return.saleorder');
 
 
@@ -341,6 +343,9 @@ Route::controller(EmployeeController::class)->group(function(){
 
                 Route::get('/order/due/{id}','OrderDueAjax');
                 Route::post('/update/due','UpdateDue')->name('update.due');
+
+                Route::get('/payment/history/{id}','OrderPaymentHistory');
+
                
                });
 

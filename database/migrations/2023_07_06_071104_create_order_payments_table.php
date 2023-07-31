@@ -14,7 +14,15 @@ return new class extends Migration
         Schema::create('order_payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->string('amount')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('total_paid')->nullable();
+            $table->string('remaining_due')->nullable();
+            $table->string('ref_no')->nullable();
+            $table->string('type')->nullable();
+
+            $table->string('total')->nullable();
+
             $table->timestamps();
         });
     }
