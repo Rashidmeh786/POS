@@ -1,6 +1,12 @@
 @extends('admin.admin_dashboard')
 @section('admin')
-
+<style>
+  /* Add border-bottom to each tr element */
+  table.table-borderless tr {
+    border-bottom: 1px solid #dee2e6;
+  }
+ 
+</style>
 <script src="{{ asset('backend/assets/js/jquery-3.6.0.min.js') }}"></script>
 
 <div class="content">
@@ -36,56 +42,49 @@
                     <input type="hidden" name="id" value="{{ $order->id }}">
 
                 <h5 class="mb-4 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Order Details</h5>
-
+              
+                 <div class="card">
+                  <div class="card-body">
                 <div class="table-responsive">
                   <table class="table table-borderless">
                     <tbody>
                       <tr>
                         <td><strong>Customer Image</strong></td>
                         <td>
-                          <img style="height: 40px; width: 40px" src="{{ (!empty($order->customer->image)) ? url('upload/customer/'.$order->customer->image) : url('upload/no_image.jpg') }}" class="rounded-circle avatar-lg img-thumbnail">
+                          <img style="height: 40px; width: 40px" src="{{ (!empty($order->customer->image)) ? url('upload/customer/'.$order->customer->image) : url('upload/no_image.jpg') }}" class=" avatar-lg img-thumbnail">
                         </td>
-                      </tr>
-                      <tr>
                         <td><strong>Customer Name</strong></td>
                         <td><p class="text-danger">{{ $order->customer->name }}</p></td>
                       </tr>
                       <tr>
                         <td><strong>Customer Email</strong></td>
                         <td><p class="text-danger">{{ $order->customer->email }}</p></td>
-                      </tr>
-                      <tr>
                         <td><strong>Customer Phone</strong></td>
                         <td><p class="text-danger">{{ $order->customer->phone }}</p></td>
                       </tr>
                       <tr>
                         <td><strong>Order Date</strong></td>
                         <td><p class="text-danger">{{ $order->order_date }}</p></td>
-                      </tr>
-                      <tr>
                         <td><strong>Order Invoice</strong></td>
                         <td><p class="text-danger">{{ $order->invoice_no }}</p></td>
                       </tr>
                       <tr>
                         <td><strong>Order Status</strong></td>
                         <td><p id="order_status" class="text-danger">{{ $order->order_status }}</p></td>
-                      </tr>
-                      <tr>
                         <td><strong>Payment Status</strong></td>
                         <td><p class="text-danger">{{ $order->payment_status }}</p></td>
                       </tr>
                       <tr>
                         <td><strong>Paid Amount</strong></td>
                         <td><p class="text-danger">{{ $order->pay }}</p></td>
-                      </tr>
-                      <tr>
                         <td><strong>Due Amount</strong></td>
                         <td><p class="text-danger">{{ $order->due }}</p></td>
                       </tr>
                     </tbody>
                   </table>
                 </div> <!-- end table-responsive -->
-
+                  </div>
+                 </div>        
                 <div class="text-end">
                   <button type="submit" class="btn btn-success waves-effect waves-light mt-2"
 

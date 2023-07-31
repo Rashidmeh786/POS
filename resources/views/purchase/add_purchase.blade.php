@@ -301,7 +301,24 @@
                  // Add event listener for the dynamically generated search result items
                  searchResults.on('click', '.searchResult', function() {
                   var selectedProductId = $(this).data('product-id');
-                
+                  var existingRow = tableBody.find('input[name="product_id[]"][value="' + selectedProductId + '"]').closest('tr');
+
+if (existingRow.length > 0) {
+    // Product already exists in the table, increase the quantity
+    // var quantityInput = existingRow.find('.update-quantity');
+    // var currentQuantity = parseInt(quantityInput.val());
+  
+    //     quantityInput.val(currentQuantity + 1);
+
+
+    Swal.fire(
+   'Alert!',
+   'The item is already present in the list.',
+       )
+       searchResults.html('');
+                                            searchResults.hide();
+    
+} else {
                   $.ajax({
                     url: '/product/details/' + selectedProductId,
                     type: 'GET',
@@ -319,7 +336,7 @@
                                                 '<td>' +
                                                 '<div class="d-flex align-items-center">' +
                                                 '<button type="button" class="btn btn-lg btn-primary increase-quantity" id="increaseqty"><i class="fas fa-plus"></i></button>' +
-                                                '<input type="text" min="1" value="1" name="qty[]" class="form-control quantity-input update-quantity" placeholder="Qty" style="width: 59px; height: 44px;">' +
+                                                '<input type="text" min="1"  value="1" name="qty[]" class="form-control quantity-input update-quantity" placeholder="Qty" style="width: 59px; height: 44px;">' +
                                                 '<button type="button" class="btn btn-lg btn-primary decrease-quantity" id="decreaseqty"><i class="fas fa-minus"></i></button>' +
                                                 '</div>' +
                                                 '</td>' +
@@ -353,6 +370,7 @@
                       console.log(xhr.responseText); // Check the error message in the console
                     }
                   });
+                }
                 });
                 
                 

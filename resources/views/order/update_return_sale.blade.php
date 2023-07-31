@@ -399,24 +399,30 @@ $(document).ready(function () {
                  // Add event listener for the dynamically generated search result items
                  searchResults.on('click', '.searchResult', function() {
                   var selectedProductId = $(this).data('product-id');
-                  console.log(selectedProductId);
+                //  console.log(selectedProductId);
                   // var invoice_number=$('#invoice_id').val();
                   var order_id=$('#order_id').val();
+                 // var selectedProductId = $(this).data('product-id');
 
+// Check if the product is already present in the table
+var existingRow = tableBody.find('input[name="product_id[]"][value="' + selectedProductId + '"]').closest('tr');
+
+if (existingRow.length > 0) {
+    // Product already exists in the table, increase the quantity
+    Swal.fire(
+  'Alert!',
+  'The Item is already in the List.',
+
+      )
+      searchResults.html('');
+      searchResults.hide(); // Hide the results container
+} else {
                 
                   $.ajax({
                     url: '/update/saleproduct/return/' + selectedProductId + '/' +order_id,
                     type: 'GET',
                     
                     success: function(productDetails) {
-                      
-                      // var discount=productDetails.order.discount;
-                      // var discount=productDetails.order.vat;
-                      // var discount=productDetails.order.shipping;
-
-                  //    console.log(discount);
-                      console.log(productDetails); // Check the response in the console
-                
                
                   // Construct the new row HTML using the product details
                   var newRow = '<tr>' +
@@ -465,6 +471,7 @@ $(document).ready(function () {
                       console.log(xhr.responseText); // Check the error message in the console
                     }
                   });
+                }
                 });
                 
 

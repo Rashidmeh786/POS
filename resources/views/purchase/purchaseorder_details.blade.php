@@ -7,6 +7,9 @@
   .table tbody tr {
     border-bottom: 1px solid #ccc;
   }
+  table.table-borderless tr {
+                    border-bottom: 1px solid #dee2e6;
+                  }
 </style>
 
 <div class="content">
@@ -51,52 +54,39 @@
                           <tr>
                             <td><strong>Supplier Image</strong></td>
                             <td>
-                <img style="height: 40px; width: 40px" src="{{ (!empty($order->supplier->image)) ? url('upload/supplier/'.$order->supplier->image) : url('upload/no_image.jpg') }}" class="rounded-circle avatar-lg img-thumbnail">
-
+                              <img style="height: 40px; width: 40px" src="{{ (!empty($order->supplier->image)) ? url('upload/supplier/'.$order->supplier->image) : url('upload/no_image.jpg') }}" class="rounded-circle avatar-lg img-thumbnail">
                             </td>
-                          </tr>
-                          <tr>
                             <td><strong>Supplier Name</strong></td>
                             <td><p class="text-danger">{{ $order->supplier->name }}</p></td>
                           </tr>
                           <tr>
                             <td><strong>Supplier Email</strong></td>
                             <td><p class="text-danger">{{ $order->supplier->email }}</p></td>
-                          </tr>
-                          <tr>
                             <td><strong>Supplier Phone</strong></td>
                             <td><p class="text-danger">{{ $order->supplier->phone }}</p></td>
                           </tr>
                           <tr>
                             <td><strong>Order Date</strong></td>
                             <td><p class="text-danger">{{ $order->order_date }}</p></td>
-                          </tr>
-                          <tr>
                             <td><strong>Order Invoice</strong></td>
                             <td><p class="text-danger">{{ $order->invoice_no }}</p></td>
                           </tr>
                           <tr>
                             <td><strong>Order Status</strong></td>
                             <td><p id="order_status" class="text-danger">{{ $order->order_status }}</p></td>
-                          </tr>
-                          <tr>
                             <td><strong>Payment Status</strong></td>
                             <td><p class="text-danger">{{ $order->payment_status }}</p></td>
                           </tr>
                           <tr>
                             <td><strong>Paid Amount</strong></td>
                             <td><p class="text-danger">{{ $order->pay }}</p></td>
-                          </tr>
-                          <tr>
                             <td><strong>Due Amount</strong></td>
                             <td><p class="text-danger">{{ $order->due }}</p></td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                  </div>
-                </div>
-                
+                    
                  <!-- end table-responsive -->
 
                 <div class="text-end">

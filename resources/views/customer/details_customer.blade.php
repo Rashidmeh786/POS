@@ -340,29 +340,55 @@
                                                             <i class="fas fa-dollar-sign text-warning me-1"></i>
                                                             <span> Pay Due </span>
                                                         </a>
+                            
+                                                        <a href=""data-bs-toggle="modal" data-bs-target="#payment-modal" id="{{ $item->id }}" onclick="paymenthistory(this.id)" class="dropdown-item">
+                                                            <i class="fas fa-eye text-warning me-1"></i>
+                                                            <span> Show Payments </span>
+                                                        </a>
+                            
+                            
                                     
                                                         <!-- item-->
                                                         <a href="{{ route('order.details',$item->id) }}" class="dropdown-item">
                                                             <i class="fe-eye text-warning me-1"></i>
                                                             <span> Order Details</span>
                                                         </a>
-                                    
-                                                        <!-- item-->
+                            
+                                                        <a href="{{ route('order.receiptprint', $item->id) }}" class="dropdown-item" target="_blank">
+                                                            <i class="mdi mdi-receipt me-1 text-warning"></i>
+                                                            <span>Receipt</span>
+                                                          </a>
                                                         <a href="{{ route('order.invoiceprint',$item->id)}}" class="dropdown-item">
-                                                            <i class="fe-bar-chart-line- me-1 text-warning"></i>
-                                                            <span>Print invoice</span>
+                                                            <i class=" mdi mdi-file-pdf-box me-1 text-warning"></i>
+                                                            <span>Pdf Invoice</span>
+                                                           
                                                         </a>
+                                                        <!-- item-->
+                                                     
                                     
                                                         <!-- item-->
                                                        
-                                    
+                                                        @php
+                                                        $return = App\Models\OrderReturn::where('order_id',$item->id)->first();
+                                                      @endphp
+                                                  
                                                         <div class="dropdown-divider"></div>
                                     
+                                                      
+                            
+                                                              @if (!empty($return))
+                                                              <a href="{{ route('return.updatesaleorder',$item->id) }}" class="dropdown-item">
+                                                                <i class="fe-edit-1 me-1 text-warning"></i>
+                                                                <span>Update Return</span>
+                                                            </a>
+                                                              @else
+                                                              <a href="{{ route('return.saleorder',$item->id) }}" class="dropdown-item">
+                                                                <i class="fe-repeat me-1 text-warning"></i>
+                                                                <span>Return</span>
+                                                            </a>
+                                                              @endif
                                                         <!-- item-->
-                                                        <a href="{{ route('return.saleorder',$item->id) }}" class="dropdown-item">
-                                                            <i class="fe-headphones me-1 text-warning"></i>
-                                                            <span>Return</span>
-                                                        </a>
+                                                       
                                     
                                                     </div>
                                                 </li>
@@ -393,8 +419,7 @@
 
 
 
-
-            <!-- Signup modal content -->
+            <!-- due modal content -->
             <div id="paydue-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
                    <div class="modal-content">
@@ -417,6 +442,10 @@
                                @csrf
                                <input type="hidden" name="id" id="order_id">
                                <input type="hidden" name="pay" id="pay">
+                               <input type="hidden" name="total" id="total">
+                               <input type="hidden" name="previousdue" id="previousdue">
+                
+                
                   <div class="mb-3">
                         <label for="username" class="form-label">Pay Now</label>
                 <input class="form-control" type="text" name="due" id="due"  >
@@ -435,6 +464,57 @@
                 </div><!-- /.modal -->
                 
                 
+                
+                
+                
+                {{-- payment modal --}}
+                
+                
+                
+                
+                <div id="payment-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Payment History</h5>
+                          <button type="button" class="close" data-dismiss="modal" id="cancel-btn-payment" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <table class="table paymentTable table-hover table-striped">
+                            <thead class="">
+                              <tr>
+                                  <th>#</th>
+                                <th>Date</th>
+                                <th>Orignal Amount</th>
+                                <th>Paid</th>
+                                <th>Remaining Due</th>
+                                <th>Received By</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <!-- Add your table rows here -->
+                              
+                              <!-- Add more rows as needed -->
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="modal-footer">
+                          <!-- Move the buttons to the modal footer -->
+                          <button class="btn btn-pink"><span class="fas fa-file-pdf">&nbsp;&nbsp;Print</span></button>
+                          <button class="btn btn-primary" id="cancel-payment-modal" data-dismiss="modal">Ok</button>
+                        </div>
+                      </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                  </div>    
+                
+                
+                
+                
+                
+                
                 <script type="text/javascript">
                    
                    function orderDue(id) {
@@ -447,17 +527,85 @@
                                $('#due').val(data.due);
                                $('#pay').val(data.pay);
                                $('#order_id').val(data.id);
+                               $('#total').val(data.total);
+                               $('#previousdue').val(data.due);
+                
+                               
+                
                            }
                        })
                    }
                 
+                   function paymenthistory(id) {
+                       $.ajax({
+                           type: 'GET',
+                           url: '/payment/history/'+id,
+                           dataType: 'json',
+                           success:function(data){
+                console.log(data);
+                            updateTableWithData(data);
+                           
+                           }
+                       })
+                   }
+                
+                
+                   function updateTableWithData(data) {
+                   // Get the table body element where we'll append the rows
+                   var tableBody = $('.paymentTable tbody');
+                   
+                   // Clear existing rows (optional, depending on your needs)
+                   tableBody.empty();
+                let sno = 1;
+                 
+                   // Iterate through the received data and add rows to the table
+                   data.forEach(function(payment) {
+                    var date = new Date(payment.created_at);
+                    var day = String(date.getDate()).padStart(2, '0');
+                    var month = String(date.getMonth() + 1).padStart(2, '0');
+                    var year = date.getFullYear();
+                    var formattedDate = `${day}/${month}/${year}`;
+                       var row = `<tr>
+                         <td>${sno}</td>
+                                     <td>${formattedDate}</td>
+                                     <td>${payment.total}</td>
+                                     <td>${payment.total_paid}</td>
+                                     <td>${payment.remaining_due}</td>
+                                     <td>${payment.user.name}</td>
+                                     <td>
+                                       <button class="btn btn-sm text-primary "><span class="fas fa-edit"></span></button>
+                                       <button class="btn btn-sm text-danger "><span class="fas fa-trash"></span></button>
+                                     </td>
+                                 </tr>`;
+                        sno++;
+                       // Append the row to the table
+                       tableBody.append(row);
+                   });
+                }
+                
+                   
                 
                    $('#cancel-btn-paydue').click(function(e) {
                         e.preventDefault(); // Prevent the form from submitting
                         $('#paydue-modal').modal('hide');
                         // $("#paydue-form")[0].reset();
                     });
+                
+                    $('#cancel-btn-payment').click(function(e) {
+                        e.preventDefault(); // Prevent the form from submitting
+                        $('#payment-modal').modal('hide');
+                        // $("#paydue-form")[0].reset();
+                    });
+                    
+                    $('#cancel-payment-modal').click(function(e) {
+                        e.preventDefault(); // Prevent the form from submitting
+                        $('#payment-modal').modal('hide');
+                        // $("#paydue-form")[0].reset();
+                    });
+                
+                   
                 </script>
+                
                 
 
 

@@ -319,9 +319,33 @@
                  // Add event listener for the dynamically generated search result items
                  searchResults.on('click', '.searchResult', function() {
                   var selectedProductId = $(this).data('product-id');
-                  console.log(selectedProductId);
+
+              //    console.log(selectedProductId);
                   var invoice_number=$('#invoice_id').val();
-                
+                  var existingRow = tableBody.find('input[name="product_id[]"][value="' + selectedProductId + '"]').closest('tr');
+
+if (existingRow.length > 0) {
+    // Product already exists in the table, increase the quantity
+  //   var quantityInput = existingRow.find('.update-quantity');
+  //   var currentQuantity = parseInt(quantityInput.val());
+  //   var maxQuantity = parseInt(quantityInput.attr('max'));
+  //   if (currentQuantity < maxQuantity) {
+  //       quantityInput.val(currentQuantity + 1);
+  //   }
+  //   else{
+  //     Swal.fire(
+  // 'Alert!',
+  // 'The quantity exceeds the total sold qty.',
+  //     )
+  //   }
+
+  Swal.fire(
+   'Alert!',
+   'The item is already present in the list.',
+       )
+       searchResults.html('');
+                                            searchResults.hide();
+} else {
                   $.ajax({
                     url: '/saleproduct/return/' + selectedProductId + '/' +invoice_number,
                     type: 'GET',
@@ -385,6 +409,7 @@
                       console.log(xhr.responseText); // Check the error message in the console
                     }
                   });
+                }
                 });
                 
 
@@ -404,7 +429,7 @@ if (currentQuantity >= maxQuantity) {
   
     Swal.fire(
   'Alert!',
-  'The quantity exceeds the available stock.',
+  'The quantity exceeds the total sold.',
 
 )
     quantityInput.val(maxQuantity); // Reset the input value to the stockValue

@@ -305,7 +305,29 @@
                  // Add event listener for the dynamically generated search result items
                  searchResults.on('click', '.searchResult', function() {
                   var selectedProductId = $(this).data('product-id');
-                
+                  var existingRow = tableBody.find('input[name="product_id[]"][value="' + selectedProductId + '"]').closest('tr');
+
+if (existingRow.length > 0) {
+    // Product already exists in the table, increase the quantity
+    // var quantityInput = existingRow.find('.update-quantity');
+    // var currentQuantity = parseInt(quantityInput.val());
+    // var maxQuantity = parseInt(quantityInput.attr('max'));
+    // if (currentQuantity < maxQuantity) {
+    //     quantityInput.val(currentQuantity + 1);
+    Swal.fire(
+   'Alert!',
+   'The item is already present in the list.',
+       )
+       searchResults.html('');
+                                            searchResults.hide();
+  //  }
+  //   else{
+  //     Swal.fire(
+  // 'Alert!',
+  // 'The quantity exceeds the available stock.',
+  //     )
+  //   }
+} else {
                   $.ajax({
                     url: '/saleproduct/details/' + selectedProductId,
                     type: 'GET',
@@ -359,6 +381,7 @@
                       console.log(xhr.responseText); // Check the error message in the console
                     }
                   });
+                }
                 });
 
                 

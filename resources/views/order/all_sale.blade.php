@@ -352,7 +352,7 @@
               <tr>
                   <th>#</th>
                 <th>Date</th>
-                <th>Total Amount</th>
+                <th>Orignal Amount</th>
                 <th>Paid</th>
                 <th>Remaining Due</th>
                 <th>Received By</th>
