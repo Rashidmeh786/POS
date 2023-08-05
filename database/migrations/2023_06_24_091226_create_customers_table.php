@@ -27,10 +27,7 @@ return new class extends Migration
             $table->string('city')->nullable(); 
             // $table->string('cnic')->unique();
             // Update the customers table
-
-    $table->string('cnic')->nullable();
-
-
+             $table->string('cnic')->nullable();
             // $table->decimal('total_due', 8, 2)->default(0.00);
             $table->timestamps();
         });

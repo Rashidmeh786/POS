@@ -149,7 +149,11 @@
         <!-- end row -->
 
         <div class="row">
-          
+
+            @php
+             $orders=App\models\Order::latest()->take(10)->get();
+            @endphp
+
 
             <div class="col-xl-12">
                 <div class="card">
@@ -168,156 +172,59 @@
                             </div>
                         </div>
 
-                        <h4 class="header-title mb-3">Revenue History</h4>
+                        <h4 class="header-title mb-3">Recent Sales</h4>
 
                         <div class="table-responsive">
                             <table class="table table-borderless table-nowrap table-hover table-centered m-0">
-
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Marketplaces</th>
+                                        <th>Customer</th>
                                         <th>Date</th>
-                                        <th>Payouts</th>
+                                        <th>Invoice</th>
+                                        <th>Total</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    @foreach ($orders as $order)
+                                        <tr>
+                                            <td>
+                                                <h5 class="m-0 fw-normal">{{ $order->customer->name }}</h5>
+                                            </td>
+                                            
+                                            <td>
+                                                {{ $order->order_date }}
+                                            </td>
+                                            <td>
+                                                <h5 class="m-0 fw-normal">{{$order->invoice_no }}</h5>
+                                            </td>
+                                            <td>
+                                                ${{ $order->total }}
+                                            </td>
+                                            @php
+                                            $paid = "Paid";
+                                            $unpaid = "fulldue";
+                                            $partial = "Partial";
+                                        @endphp
+                                        
                                         <td>
-                                            <h5 class="m-0 fw-normal">Themes Market</h5>
+                                            @if ($order->total == $order->pay)
+                                                <span class="badge bg-primary p-1">{{ $paid }}</span>
+                                            @elseif ($order->total == $order->due)
+                                                <span class="badge bg-danger p-1">{{ $unpaid }}</span>
+                                            @else
+                                                <span class="badge bg-danger p-1">{{ $partial }}</span>
+                                            @endif
                                         </td>
-
-                                        <td>
-                                            Oct 15, 2018
-                                        </td>
-
-                                        <td>
-                                            $5848.68
-                                        </td>
-
-                                        <td>
-                                            <span class="badge bg-soft-warning text-warning">Upcoming</span>
-                                        </td>
-
-                                        <td>
-                                            <a href="javascript: void(0);" class="btn btn-xs btn-light"><i class="mdi mdi-pencil"></i></a>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <h5 class="m-0 fw-normal">Freelance</h5>
-                                        </td>
-
-                                        <td>
-                                            Oct 12, 2018
-                                        </td>
-
-                                        <td>
-                                            $1247.25
-                                        </td>
-
-                                        <td>
-                                            <span class="badge bg-soft-success text-success">Paid</span>
-                                        </td>
-
-                                        <td>
-                                            <a href="javascript: void(0);" class="btn btn-xs btn-light"><i class="mdi mdi-pencil"></i></a>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <h5 class="m-0 fw-normal">Share Holding</h5>
-                                        </td>
-
-                                        <td>
-                                            Oct 10, 2018
-                                        </td>
-
-                                        <td>
-                                            $815.89
-                                        </td>
-
-                                        <td>
-                                            <span class="badge bg-soft-success text-success">Paid</span>
-                                        </td>
-
-                                        <td>
-                                            <a href="javascript: void(0);" class="btn btn-xs btn-light"><i class="mdi mdi-pencil"></i></a>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <h5 class="m-0 fw-normal">Envato's Affiliates</h5>
-                                        </td>
-
-                                        <td>
-                                            Oct 03, 2018
-                                        </td>
-
-                                        <td>
-                                            $248.75
-                                        </td>
-
-                                        <td>
-                                            <span class="badge bg-soft-danger text-danger">Overdue</span>
-                                        </td>
-
-                                        <td>
-                                            <a href="javascript: void(0);" class="btn btn-xs btn-light"><i class="mdi mdi-pencil"></i></a>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <h5 class="m-0 fw-normal">Marketing Revenue</h5>
-                                        </td>
-
-                                        <td>
-                                            Sep 21, 2018
-                                        </td>
-
-                                        <td>
-                                            $978.21
-                                        </td>
-
-                                        <td>
-                                            <span class="badge bg-soft-warning text-warning">Upcoming</span>
-                                        </td>
-
-                                        <td>
-                                            <a href="javascript: void(0);" class="btn btn-xs btn-light"><i class="mdi mdi-pencil"></i></a>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <h5 class="m-0 fw-normal">Advertise Revenue</h5>
-                                        </td>
-
-                                        <td>
-                                            Sep 15, 2018
-                                        </td>
-
-                                        <td>
-                                            $358.10
-                                        </td>
-
-                                        <td>
-                                            <span class="badge bg-soft-success text-success">Paid</span>
-                                        </td>
-
-                                        <td>
-                                            <a href="javascript: void(0);" class="btn btn-xs btn-light"><i class="mdi mdi-pencil"></i></a>
-                                        </td>
-                                    </tr>
-
+                                            <td>
+                                                <a href="{{ route('order.details',$order->id) }}" class="btn btn-xs btn-light"><i class="mdi mdi-eye"></i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
-                        </div> <!-- end .table-responsive-->
+                                         </div> <!-- end .table-responsive-->
                     </div>
                 </div> <!-- end card-->
             </div> <!-- end col -->

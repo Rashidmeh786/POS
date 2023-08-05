@@ -17,7 +17,7 @@
                                         <ol class="breadcrumb m-0">
              <a href="{{ route('add.permission') }}" class="btn btn-primary rounded- pill waves-effect waves-light"> <span class="fas fa-plus-square"> </span> Add New</a>  
                                       
-                                   <</ol>
+                                   </ol>
                                     </div>
                                     <h4 class="page-title">All Permissions</h4>
                                 </div>

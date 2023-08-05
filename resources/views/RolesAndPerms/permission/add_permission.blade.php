@@ -54,13 +54,16 @@
                                                 <option value="supplier">Supplier</option>
                                                 <option value="salary">Salary</option>
                                                 <option value="attendence">Attendence</option>
-                                                <option value="category">Category</option>
+                                                {{-- <option value="category">Category</option> --}}
                                                 <option value="product">Product</option>
                                                 <option value="expense">Expense</option>
-                                                <option value="orders">Orders</option>
+                                                <option value="sale">Sale</option>
+                                                <option value="Purchase">Orders</option>
                                                 <option value="stock">Stock</option>
                                                 <option value="user">User Mgt</option>
-                                                <option value="roleand perms">Role & Perm</option>
+                                                <option value="role">Role</option>
+                                                <option value="permission">Permission</option>
+
 
                                             </select>
                                             @error('group_name')

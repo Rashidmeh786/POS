@@ -72,12 +72,16 @@
         <option value="supplier" {{ $permission->group_name == 'supplier' ? 'selected' : '' }}> Supplier</option>
         <option value="salary" {{ $permission->group_name == 'salary' ? 'selected' : '' }}> Salary </option>
         <option value="attendence" {{ $permission->group_name == 'attendence' ? 'selected' : '' }}> Attendence </option>
-        <option value="category" {{ $permission->group_name == 'category' ? 'selected' : '' }}> Category </option>
+        {{-- <option value="category" {{ $permission->group_name == 'category' ? 'selected' : '' }}> Category </option> --}}
         <option value="product" {{ $permission->group_name == 'product' ? 'selected' : '' }}> Product </option>
         <option value="expense" {{ $permission->group_name == 'expense' ? 'selected' : '' }}> Expense </option>
-        <option value="orders" {{ $permission->group_name == 'orders' ? 'selected' : '' }}> Orders</option>
+        <option value="sale" {{ $permission->group_name == 'sale' ? 'selected' : '' }}> Sale</option>
+        <option value="purchase" {{ $permission->group_name == 'purchase' ? 'selected' : '' }}> Purchase</option>
+
         <option value="stock" {{ $permission->group_name == 'stock' ? 'selected' : '' }}> Stock </option>
-        <option value="roles" {{ $permission->group_name == 'roles' ? 'selected' : '' }}> Roles</option> 
+        <option value="role" {{ $permission->group_name == 'role' ? 'selected' : '' }}> Roles</option> 
+        <option value="permission" {{ $permission->group_name == 'permission' ? 'selected' : '' }}> Roles</option> 
+
 
                 </select>
                 @error('group_name')

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
 class CreatePermissionTables extends Migration
@@ -35,6 +37,241 @@ class CreatePermissionTables extends Migration
 
             $table->unique(['name', 'guard_name']);
         });
+        $permissions = [
+            [
+                'name' => 'POS.MENU',
+                'guard_name' => 'web',
+                'group_name' => 'pos'
+            ],
+            [
+                'name' => ' PRODUCT.MENU',
+                'guard_name' => 'web',
+                'group_name' => 'product'
+            ],
+            [
+                'name' => ' PRODUCT.SHOW',
+                'guard_name' => 'web',
+                'group_name' => 'product'
+            ],
+            [
+                'name' => ' PRODUCT.CREATE',
+                'guard_name' => 'web',
+                'group_name' => 'product'
+            ],
+            [
+                'name' => ' PRODUCT.UPDATE',
+                'guard_name' => 'web',
+                'group_name' => 'product'
+            ],
+            [
+                'name' => ' PRODUCT.DELETE',
+                'guard_name' => 'web',
+                'group_name' => 'product'
+            ],
+            [
+                'name' => ' SUPPLIER.MENU',
+                'guard_name' => 'web',
+                'group_name' => 'supplier'
+            ],
+            [
+                'name' => ' SUPPLIER.SHOW',
+                'guard_name' => 'web',
+                'group_name' => 'supplier'
+            ],
+            [
+                'name' => ' SUPPLIER.CREATE',
+                'guard_name' => 'web',
+                'group_name' => 'supplier'
+            ],
+            [
+                'name' => ' SUPPLIER.UPDATE',
+                'guard_name' => 'web',
+                'group_name' => 'supplier'
+            ],
+            [
+                'name' => ' SUPPLIER.DELETE',
+                'guard_name' => 'web',
+                'group_name' => 'supplier'
+            ],
+            [
+                'name' => ' CUSTOMER.MENU',
+                'guard_name' => 'web',
+                'group_name' => 'customer'
+            ],
+            [
+                'name' => ' CUSTOMER.SHOW',
+                'guard_name' => 'web',
+                'group_name' => 'customer'
+            ],
+            [
+                'name' => ' CUSTOMER.INSERT',
+                'guard_name' => 'web',
+                'group_name' => 'customer'
+            ],
+            [
+                'name' => ' CUSTOMER.UPDATE',
+                'guard_name' => 'web',
+                'group_name' => 'customer'
+            ],
+            [
+                'name' => ' CUSTOMER.DELETE',
+                'guard_name' => 'web',
+                'group_name' => 'customer'
+            ],
+            [
+                'name' => ' STOCK.MENU',
+                'guard_name' => 'web',
+                'group_name' => 'stock'
+            ],
+            [
+                'name' => ' STOCK.VIEW',
+                'guard_name' => 'web',
+                'group_name' => 'stock'
+            ],
+            [
+                'name' => ' STOCK.ADJUSTMENT',
+                'guard_name' => 'web',
+                'group_name' => 'stock'
+            ],
+           
+            [
+                'name' => ' SALE.MENU',
+                'guard_name' => 'web',
+                'group_name' => 'sale'
+            ],
+            [
+                'name' => ' SALE.VIEW',
+                'guard_name' => 'web',
+                'group_name' => 'sale'
+            ],
+            [
+                'name' => ' SALE.CREATE',
+                'guard_name' => 'web',
+                'group_name' => 'sale'
+            ],
+            [
+                'name' => ' SALE.UPDATE',
+                'guard_name' => 'web',
+                'group_name' => 'sale'
+            ],
+            [
+                'name' => ' SALE.DELETE',
+                'guard_name' => 'web',
+                'group_name' => 'sale'
+            ],
+            [
+                'name' => ' PURCHASE.MENU',
+                'guard_name' => 'web',
+                'group_name' => 'Purchase'
+            ],
+            [
+                'name' => ' PURCHASE.VIEW',
+                'guard_name' => 'web',
+                'group_name' => 'Purchase'
+            ],
+            [
+                'name' => ' PURCHASE.CREATE',
+                'guard_name' => 'web',
+                'group_name' => 'Purchase'
+            ],
+            [
+                'name' => ' PURCHASE.UPDATE',
+                'guard_name' => 'web',
+                'group_name' => 'Purchase'
+            ],
+            [
+                'name' => ' PURCHASE.DELETE',
+                'guard_name' => 'web',
+                'group_name' => 'Purchase'
+            ],
+            [
+                'name' => ' USERS.MENU',
+                'guard_name' => 'web',
+                'group_name' => 'user'
+            ],
+            [
+                'name' => ' USERS.VIEW',
+                'guard_name' => 'web',
+                'group_name' => 'user'
+            ],
+            [
+                'name' => ' USERS.INSERT',
+                'guard_name' => 'web',
+                'group_name' => 'user'
+            ],
+            [
+                'name' => ' USERS.UPDATE',
+                'guard_name' => 'web',
+                'group_name' => 'user'
+            ],
+            [
+                'name' => ' USERS.DELETE',
+                'guard_name' => 'web',
+                'group_name' => 'user'
+            ],
+            [
+                'name' => ' ROLE.MENU',
+                'guard_name' => 'web',
+                'group_name' => 'role'
+            ],
+            [
+                'name' => ' ROLE.VIEW',
+                'guard_name' => 'web',
+                'group_name' => 'role'
+            ],
+            [
+                'name' => ' ROLE.INSERT',
+                'guard_name' => 'web',
+                'group_name' => 'role'
+            ],
+            [
+                'name' => ' ROLE.UPDATE',
+                'guard_name' => 'web',
+                'group_name' => 'role'
+            ],
+            [
+                'name' => ' ROLE.DELETE',
+                'guard_name' => 'web',
+                'group_name' => 'role'
+            ],
+            [
+                'name' => ' PERMISSIONS.MENU',
+                'guard_name' => 'web',
+                'group_name' => 'permission'
+            ],
+            [
+                'name' => ' PERMISSIONS.VIEW',
+                'guard_name' => 'web',
+                'group_name' => 'permission'
+            ],
+            [
+                'name' => ' PERMISSIONS.INSERT',
+                'guard_name' => 'web',
+                'group_name' => 'permission'
+            ],
+            [
+                'name' => ' PERMISSIONS.UPDATE',
+                'guard_name' => 'web',
+                'group_name' => 'permission'
+            ],
+            [
+                'name' => ' PERMISSIONS.DELETE',
+                'guard_name' => 'web',
+                'group_name' => 'permission'
+            ],
+          
+
+
+
+            
+            // Add more permissions as needed
+        ];
+        
+        // Insert the array of permissions into the database
+        Permission::insert($permissions);
+
+
+
 
         Schema::create($tableNames['roles'], function (Blueprint $table) use ($teams, $columnNames) {
             $table->bigIncrements('id'); // role id
@@ -51,6 +288,30 @@ class CreatePermissionTables extends Migration
                 $table->unique(['name', 'guard_name']);
             }
         });
+
+        $Roles = [
+            [
+                'name' => 'Super Admin',
+                'guard_name' => 'web',
+               
+            ],
+            [
+                'name' => 'Admin',
+                'guard_name' => 'web',
+               
+            ],
+            [
+                'name' => 'User',
+                'guard_name' => 'web',
+               
+            ],
+           
+           
+            // Add more permissions as needed
+        ];
+        
+        // Insert the array of permissions into the database
+        Role::insert($Roles);
 
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames, $columnNames, $teams) {
             $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
@@ -119,6 +380,7 @@ class CreatePermissionTables extends Migration
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
             ->forget(config('permission.cache.key'));
+            
     }
 
     /**

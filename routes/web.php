@@ -43,6 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+  
+      
 });
 
 require __DIR__.'/auth.php';
@@ -212,10 +214,43 @@ Route::controller(EmployeeController::class)->group(function(){
 
 
 
+     Route::controller(ExpenseController::class)->group(function(){
+
+        Route::get('/all/category','AllCategory')->name('all.category'); 
+        Route::post('/store/category','Storecategory')->name('category.store');
+
+        Route::get('edit_Category/{id}','Editcategory')->name('edit.category');
+        Route::post('/update/category/{id}','Updatecategory')->name('category.update');
+        Route::get('delete_category/{id}','Deletecategory')->name('delete.category');
+
+
+
+        Route::get('/all/expenses','AllExpenses')->name('all.expenses');
+        Route::get('/add/expense','AddExpense')->name('add.expense');
+        Route::post('/store/expense','StoreExpense')->name('expense.store');
+        Route::get('/edit/expense/{id}','EditExpense')->name('edit.expense');
+        Route::get('/show/expense/{id}','ShowExpense')->name('show.expense');
+        Route::post('/update/expense/{id}','UdateExpense')->name('expense.update');
+        Route::get('/delete/expense/{id}','DeleteExpense')->name('delete.expense');
+        // Route::get('/barcode/product/{id}','BarcodeProduct')->name('barcode.product');
+        // Route::post('ajaxcategory/store','Storecategoryajax')->name('ajaxcategory.store');  //--ajax request
+       
+
+
+
+        
+        });
+
+
+
+
+
+
      Route::controller(PosController::class)->group(function(){
 
         // Route::get('/pos','Pos')->name('pos')->middleware('permission:pos.menu');
         Route::get('/pos','Pos')->name('pos');
+        Route::get('/get/products', 'fetchProducts')->name('get.products');
 
         Route::post('/add-cart','AddCart');
         Route::get('/allitem','AllItem');
@@ -329,7 +364,12 @@ Route::controller(EmployeeController::class)->group(function(){
                Route::controller(OrderController::class)->group(function(){
 
                 Route::post('/final-invoice','FinalInvoice');
-               
+                Route::post('/hold-order','HoldOrder')->name('holdorder.hold');
+                Route::get('/get-hold-orders', 'getHoldOrders')->name('get.hold.orders');
+                Route::post('/delete/holdorder', 'deleteholdOrder')->name('delete.holdorder');
+       
+                Route::post('/final-invoice-new','FinalInvoiceNew');
+
                 Route::get('/pending/order','PendingOrder')->name('pending.order');
                 Route::get('/order/details/{order_id}','OrderDetails')->name('order.details');
                 Route::post('/order/status/update','OrderStatusUpdate')->name('order.status.update');
@@ -375,5 +415,6 @@ Route::controller(EmployeeController::class)->group(function(){
                            //   for return 
                Route::get('/saleproduct/return/{productId}/{InvoiceId}', [SaleController::class, 'productreturnDetails'])->name('product.returndetails');
                Route::get('/get/saleproduct/return/{orderId}', [SaleController::class, 'getproductreturnDetails'])->name('product.Updatereturndetails');
+               Route::get('/get/holdorder/{orderId}', [OrderController::class, 'getholdorderDetails'])->name('holdorder.details');
 
                Route::get('/update/saleproduct/return/{productId}/{InvoiceId}', [SaleController::class, 'updateproductreturnDetails'])->name('product.Updatereturndetails');

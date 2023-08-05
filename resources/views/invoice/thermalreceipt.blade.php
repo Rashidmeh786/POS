@@ -1,5 +1,5 @@
-@extends('admin.admin_dashboard')
-@section('admin')
+{{-- @extends('admin.admin_dashboard')
+@section('admin') --}}
 <!DOCTYPE html>
 <html>
 <head>
@@ -246,4 +246,4 @@
   </script>
 
 
-  @endsection
+  {{-- @endsection --}}

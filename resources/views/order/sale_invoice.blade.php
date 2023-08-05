@@ -19,16 +19,9 @@
           <div class="container mb-5 mt-3">
             <div class="row d-flex align-items-baseline">
               <div class="col-xl-9">
-                <p style="color: #7e8d9f;font-size: 20px;">Invoice >> <strong>{{ $invoice_no }}</strong></p>
+                <p style="color: #7e8d9f;font-size: 20px;">Invoice : <strong>{{ $invoice_no }}</strong></p>
               </div>
-              <div class="col-xl-3 float-end">
-                {{-- <a class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark"><i
-                    class="fas fa-print text-primary"></i> Print</a> --}}
-                    <a href="javascript:window.print()" class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark"><i  class="fas fa-print text-primary"></i> Print</a>
-
-                <a class="btn btn-light text-capitalize" data-mdb-ripple-color="dark"><i
-                    class="far fa-file-pdf text-danger"></i> Export</a>
-              </div>
+            
               <hr>
             </div>
       
@@ -176,7 +169,7 @@ $qtyCount = count($itemDetails['qty']);
                     {{-- <option selected disabled>Select Payment</option> --}}
                     <option selected value="HandCash">Cash</option>
                     <option value="Cheque">Cheque</option>
-                    <option value="Due">Due</option>
+                   
                   </select>
                 </div>
       
@@ -184,13 +177,21 @@ $qtyCount = count($itemDetails['qty']);
                   <div class="col-md-8">
                     <div class="mb-3">
                       <label for="username" class="form-label">Pay Now</label>
-                      <input id="payamount" class="form-control" type="text" name="pay" placeholder="Enter Amount to Pay..">
+                      @if ( $customer->id==1)
+                      <input id="payamount" readonly value="{{ $amounTtoPay }}" class="form-control" type="text" name="pay" placeholder="Enter Amount to Pay..">
+                    @else
+                    <input id="payamount" class="form-control" value="{{ $amounTtoPay }}" type="text" name="pay" placeholder="Enter Amount to Pay..">
+                    @endif
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="mb-3">
                       <label for="username" class="form-label">Pay All</label>
-                      <button id="payall" class="form-control btn btn-info" type="button" name="payall">Full Payment</button>
+                      @if ( $customer->id==1)
+                      <button id="payall" disabled class="form-control btn btn-info" type="button" name="payall">Full Payment</button>
+                   @else
+                   <button id="payall" class="form-control btn btn-info" type="button" name="payall">Full Payment</button>
+                  @endif
                     </div>
                   </div>
                 </div>
@@ -199,7 +200,12 @@ $qtyCount = count($itemDetails['qty']);
                   <div class="col-md-8">
                     <div class="mb-3">
                       <label for="username" class="form-label">Due</label>
-                      <input id="due" class="form-control" disabled type="text" name="due" placeholder="Due amount..">
+                      @if ( $customer->id==1)
+                      <input id="due" readonly class="form-control" value=0 disabled type="text" name="due" placeholder="Due amount..">
+                    @else
+                    <input id="due" class="form-control" disabled type="text" name="due" placeholder="Due amount..">
+
+                    @endif
                     </div>
                   </div>
                  
@@ -222,7 +228,11 @@ $qtyCount = count($itemDetails['qty']);
                   <div class="col-md-4">
                     <div class="mb-3">
                       <label for="username" class="form-label">Due All</label>
-                      <button id="dueall" class="form-control btn btn-info" type="button" name="payall">Full Due</button>
+                      @if ( $customer->id==1)
+                      <button id="dueall" disabled class="form-control btn btn-info" type="button" name="payall">Full Due</button>
+                  @else
+                  <button id="dueall" class="form-control btn btn-info" type="button" name="payall">Full Due</button>
+                  @endif
                     </div>
                   </div>
                 </div>

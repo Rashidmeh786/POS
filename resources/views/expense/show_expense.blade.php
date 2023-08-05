@@ -42,7 +42,7 @@
 
                         </ol>
                     </div>
-                    <h4 class="page-title">Add Expense</h4>
+                    <h4 class="page-title">Edit Expense</h4>
                 </div>
             </div>
         </div>   
@@ -51,14 +51,13 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('expense.store') }}" method="post">    
-                            @csrf
+                     
                         <div class="row">
                      
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
-                                    <label for="date">Date <span class="text text-danger">*</span></label>
-                                    <input type="date" id="date" name="date" class="form-control">
+                                    <label for="date">Date <span class="text text-danger" >*</span></label>
+                                    <input type="date" id="date" name="date" readonly class="form-control" value="{{ $Expense->date }}">
                                 </div>
                             </div>
                             
@@ -67,7 +66,7 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="expense_title">Expense Title <span class="text text-danger">*</span></label>
-                                    <input type="text" id="expense_title" class="form-control @error('title') is-invalid @enderror"  name="title" placeholder="Enter Title .." value="{{ old('title') }}">
+                                    <input type="text" id="expense_title" readonly class="form-control @error('title') is-invalid @enderror"  name="title" placeholder="Enter Title .." value="{{ $Expense->title }}">
                                     @error('title')
                                     <span class="text-danger"> {{ $message }} </span>
                                         
@@ -79,19 +78,26 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="expense_category">Expense Category <span class="text text-danger">*</span></label>
-                                    <select id="expense_category" class="form-control form-select @error('category_id') is-invalid @enderror" name="category_id" >
-                                        @foreach($category as $cat)
-                                        <option value="">select</option>
-                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                        @endforeach
-                                    </select>
+                                   
+                                <select name="category_id" class="form-select" id="example-select" readonly>
+                                    <option selected disabled >Select Category </option>
+                                    @foreach($category as $cat)
+                        <option value="{{ $cat->id }}"  {{ $cat->id == $Expense->category_id ? 'selected' : ''  }}>{{ $cat->name }}</option>
+                                     @endforeach
+                                </select> 
+                                {{-- <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#signup-modal"><span class="fas fa-plus-square"></span></button> --}}
+
+                
+                                @error('category_id')
+                                <span class="text-danger"> {{ $message }} </span>
+                                @enderror
                                 </div>
                             </div>
                             
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="amount">Amount <span class="text text-danger  @error('amount') is-invalid @enderror"  name="amount" >*</span></label>
-                                    <input type="number" id="amount" name="amount" class="form-control" value="{{ old('amount') }}">
+                                    <input type="number" id="amount" readonly name="amount" class="form-control" value="{{ $Expense->amount }}">
                                     @error('amount')
                                     <span class="text-danger"> {{ $message }} </span>
                                         
@@ -102,7 +108,7 @@
                         <div class="row mb-3">
                             <div class="col-md-12 mt-2">
                                 <label for="description" class="form-label"> Details  <span class="text-danger">*</span></label>
-                                <textarea class="ckeditor form-control @error('details') is-invalid @enderror"  cols="3"  name="details" value="{{ old('details') }}"  ></textarea>
+                                <textarea readonly class="ckeditor form-control @error('details') is-invalid @enderror"  cols="3"  name="details" value="{{ old('details') }}"  >{{ $Expense->details }}</textarea>
                                 @error('details')
                                 <span class="text-danger"> {{ $message }} </span>
                                 @enderror
@@ -110,13 +116,12 @@
                           </div>
                         <div class="row">
                             <div class="col-md-12 d-flex justify-content-end">
-                                <button type="button" class="btn btn-secondary me-2">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Create</button>
+                             
                             </div>
                         </div>
                     
                     </div>
-                    <form>
+                   
                 </div>
             </div>
         </div>

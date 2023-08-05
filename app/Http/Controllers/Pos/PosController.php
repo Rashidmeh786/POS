@@ -38,10 +38,45 @@ $today=Carbon::now();
     //    return view('pos.pos_page',compact('product','customer','category','brand'));
 
                             //  pos_page1        
-     return view('pos.pos_page1',compact('product','customers','category','brand','visitor'));
+     return view('pos.pos_page_adv',compact('product','customers','category','brand','visitor'));
+    //  return view('pos.pos_page1',compact('product','customers','category','brand','visitor'));
 
 
     }
+                // posadvance code
+                public function fetchProducts(Request $request)
+{
+    $searchQuery = $request->input('search', '');
+    $categoryFilter = $request->input('category_id', '');
+    $brandFilter = $request->input('brand_id', '');
+
+    $query = Product::query();
+
+    // Apply filters
+    if (!empty($categoryFilter)) {
+        $query->where('category_id', $categoryFilter);
+    }
+
+    if (!empty($brandFilter)) {
+        $query->where('brand_id', $brandFilter);
+    }
+
+    // Apply search
+    if (!empty($searchQuery)) {
+        $query->where('product_name', 'like', '%' . $searchQuery . '%');
+    }
+
+    // Add condition to fetch products with stock greater than 0
+    $query->where('stock', '>', 0);
+
+    $products = $query->get();
+
+    return response()->json($products);
+}
+
+
+
+
 
     public function AddCart(Request $request)
 {
@@ -241,7 +276,8 @@ session()->forget('invoiceView');
 
         session(['invoiceView' => $invoiceView]);
 
-    return view('invoice.product_invoice1',compact('contents','customer','totaldiscountv'));
+  
+        return view('invoice.product_invoice1',compact('contents','customer','totaldiscountv'));
 
 }
 

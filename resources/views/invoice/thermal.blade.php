@@ -3,249 +3,150 @@
 
 <head>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'PT Sans', sans-serif;
-        }
+        @media print {
+            @page {
+                size: 80mm 297mm;
+                margin: 0;
+            }
 
-        @page {
-            size: 80mm 297mm; /* Thermal paper size */
-            margin: 2px;
-        }
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif; /* Change font family */
+            }
 
-        table {
-            width: 100%;
-        }
+            .invoice-container {
+                max-width: 320px;
+                margin: 0 auto;
+                padding: 20px;
+            }
 
-        tr {
-            width: 100%;
-        }
+            .invoice-title {
+                font-size: 26px; /* Increase font size */
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 10px; /* Add margin to separate title from details */
+            }
 
-        h1 {
-            text-align: center;
-            vertical-align: middle;
-        }
+            .invoice-details {
+                font-size: 14px; /* Increase font size */
+                text-align: center;
+                margin-bottom: 20px;
+            }
 
-        #logo {
-            width: 100%;
-            text-align: center;
-            padding: 5px;
-            margin: 2px;
-            display: block;
-            margin: 0 auto;
-        }
+            .item-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
 
-        header {
-            width: 100%;
-            text-align: center;
-            vertical-align: middle;
-        }
+            .item-table th,
+            .item-table td {
+                padding: 8px;
+                text-align: left;
+                border: 1px solid #ddd; /* Add border around table cells */
+            }
 
-        .items thead {
-            text-align: center;
-        }
+            .item-table th {
+                text-transform: uppercase;
+                font-size: 12px;
+            }
 
-        .center-align {
-            text-align: center;
-        }
+            .item-table td {
+                font-size: 14px;
+            }
 
-        .bill-details td {
-            font-size: 10px;
-        }
+            .total-row td {
+                text-align: right;
+                font-weight: bold;
+                font-size: 14px;
+            }
 
-        .receipt {
-            font-size: medium;
-        }
+            .thank-you {
+                font-size: 14px;
+                text-align: center;
+                margin-top: 20px;
+            }
 
-        .items .heading {
-            font-size: 10px;
-            text-transform: uppercase;
-            border-top: 1px solid black;
-            margin-bottom: 4px;
-            border-bottom: 1px solid black;
-            vertical-align: middle;
-        }
-
-        .items thead tr th:first-child,
-        .items tbody tr td:first-child {
-            width: 47%;
-            min-width: 47%;
-            max-width: 47%;
-            word-break: break-all;
-            text-align: left;
-        }
-
-        .items td {
-            font-size: 10px;
-            text-align: right;
-            vertical-align: bottom;
-        }
-
-        .price::before {
-            content: "Rs ";
-            font-family: Arial;
-            text-align: right;
-        }
-
-        .sum-up {
-            text-align: right !important;
-        }
-
-        .total {
-            font-size: 11px;
-            border-top: 1px dashed black !important;
-            border-bottom: 1px dashed black !important;
-        }
-
-        .total.text,
-        .total.price {
-            text-align: right;
-        }
-
-        .total.price::before {
-            content: "Rs ";
-        }
-
-        .line {
-            border-top: 1px solid black !important;
-        }
-
-        .heading.rate {
-            width: 20%;
-        }
-
-        .heading.amount {
-            width: 25%;
-        }
-
-        .heading.qty {
-            width: 5%
-        }
-
-        p {
-            padding: 1px;
-            margin: 0;
-        }
-
-        section,
-        footer {
-            font-size: 10px;
+            .technology-partner {
+                font-size: 10px;
+                text-align: center;
+                margin-top: 30px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <div id="logo">
-            <img src="logo.png" alt="Shop Logo" style="max-width: 100%; max-height: 80px;">
+    <div class="invoice-container">
+        <div class="invoice-title">Your Company Name</div> <!-- Change your company name here -->
+
+        <div class="invoice-details">
+            <p>Date: <span>{{ \Carbon\Carbon::now()->toDateString() }}</span></p>
+            <p>Invoice #: <span>{{ $order->invoice_no ?? 0 }}</span></p>
+            <p>Customer: <span>{{ $customer->name }}</span></p>
+            <p>Contact: <span>{{ $customer->phone }}</span></p>
         </div>
-    </header>
-   
-    <table class="bill-details">
-        <tbody>
-            <tr>
-                <td>Date: <span>{{ \Carbon\Carbon::now()->toDateString() }}</span></td>
-                <td>Time: <span> {{ now()->format('H:i:s') }}</span></td>
-            </tr>
-            <tr>
-                <td>Customer #: <span>{{ $customer->name }}</span></td>
-                <td>Contact #: <span>{{ $customer->phone }}</span></td>
-            </tr>
-            <tr>
-                <th class="center-align" colspan="2"><span class="receipt">Original Receipt</span></th>
-            </tr>
-        </tbody>
-    </table>
 
-    <table class="items">
-        <thead>
-            <tr>
-                <th class="heading qty">Sno.</th>
-                <th class="heading name">Item</th>
-                <th class="heading qty">Qty</th>
-                <th class="heading rate">Rate</th>
-                <th class="heading amount">Price</th>
-                <th class="heading rate">Discount</th>
+        <table class="item-table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($contents as $key => $item)
+                <tr>
+                    <td>{{ $item->product->product_name }}</td>
+                    <td>{{ $item->quantity }}</td>
+                    <td>{{ $item->unitcost }}</td>
+                    <td>{{ $item->unitcost * $item->quantity }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="3">Subtotal</td>
+                    <td>{{ $order->sub_total }}</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="3">Discount</td>
+                    <td>{{ $order->discount ?? 0 }}</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="3">Tax</td>
+                    <td>{{ $order->vat ?? 0 }}</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="3">Total</td>
+                    <td>{{ $order->total }}</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="3">Paid</td>
+                    <td>{{ $order->pay ?? 0 }}</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="3">Due</td>
+                    <td>{{ $order->due ?? 0 }}</td>
+                </tr>
+            </tfoot>
+        </table>
 
-            </tr>
-        </thead>
+        <div class="thank-you">Thank you for your business!</div> <!-- Customize the thank you message -->
 
-        <tbody>
-            @php
-            $sl = 1;
-            @endphp
+        <div class="technology-partner">Technology Partner: Your Company Name</div> <!-- Customize the technology partner details -->
+        <div class="technology-partner">Operator: {{ Auth::user()->name }} - {{ now()->format('Y-m-d H:i:s') }}</div>
 
-            @foreach($contents as $key=> $item)
-            <tr>
-                <td>{{ $loop->iteration  }}</td>
-                <td>{{ $item->name }}</td>
-                <td>{{ $item->qty }}</td>
-                <td class="price">{{ $item->price }}</td>
-
-                <td class="price">{{ $item->price * $item->qty }}</td>
-                <td class="price">{{ $item->options->discount  ?? 0 }}</td>
-
-            </tr>
-            @endforeach
-            <tr>
-                <td colspan="5"  class="sum-up line">Subtotal</td>
-                <td class="line price">{{ Cart::priceTotal() - 0 }}</td>
-            </tr>
-            <tr>
-                <td colspan="5"  class="sum-up">Discount</td>
-                <td class="price">{{ $totaldiscountv ?? 0 }}</td>
-            </tr>
-            <tr>
-                <td colspan="5"  class="sum-up">Tax</td>
-                <td class="price">0.00</td>
-            </tr>
-            <tr>
-                <td colspan="5"  class="sum-up">Other Charges</td>
-                <td class="price">0.00</td>
-            </tr>
-            <tr>
-                <th colspan="5"  class="total text">Total</th>
-                <th class="total price">{{ Cart::total()-$totaldiscountv }}</th>
-            </tr>
-            <tr>
-                <td colspan="5"  class="sum-up">Paid
-            </td>
-            <td class="price">{{ $order_id->pay ?? 0 }}</td>
-        </tr>
-        <tr>
-            <td colspan="5"  class="sum-up">Due</td>
-            <td class="price">{{ $order_id->due ?? 0 }}</td>
-        </tr>
-    </tbody>
-   
-  
-</table>
-<section>
-    <p>
-        Paid by: <span>CASH</span> 
-
-    </p>
-    <p style="text-align:center">
-        Thank you for your visit!
-    </p>
-</section>
-<footer style="text-align:center">
-    <p>Technology Partner Isoft Technologies</p>
-    <p>www.isoft.com</p>
-    Operator <span>{{ Auth::user()->name }}</span>- {{ now()->format('Y-m-d H:i:s') }}
-</footer>
+    </div>
 </body>
 
 </html>
+
 <script src="{{ asset('backend/assets/js/jquery-3.6.0.min.js') }}"></script>
 
 <script>
-    // In your invoice view file (invoice.thermal.blade.php)
-
-
     $(document).ready(function() {
         window.print();
-       
     });
 </script>

@@ -196,7 +196,7 @@
                                       // Display the search results
                                       searchResults.html(results);
                                       searchResults.show(); // Show the results container
-                                      updateGrandTotal();
+                                      // updateGrandTotal();
                                   }
                               });
                           } else {
@@ -209,6 +209,17 @@
                  // Add event listener for the dynamically generated search result items
                  searchResults.on('click', '.searchResult', function() {
                   var selectedProductId = $(this).data('product-id');
+                  var existingRow = tableBody.find('input[name="product_id[]"][value="' + selectedProductId + '"]').closest('tr');
+
+                  if (existingRow.length > 0) {
+   
+    Swal.fire(
+   'Alert!',
+   'The item is already present in the list.',
+       )
+       searchResults.html('');
+ 
+} else{
                 
                   $.ajax({
                     url: '/product/details/' + selectedProductId,
@@ -272,6 +283,7 @@
                       console.log(xhr.responseText); // Check the error message in the console
                     }
                   });
+                }
                 });
                 
                 

@@ -147,7 +147,7 @@
 
                           <th>Product</th>
                           <th>Price</th>
-                          <th>Stock</th>
+                          <th>Sale qty</th>
                           <th> return Qty</th>
                           <th> Discount </th>
                           <th> Tax </th>

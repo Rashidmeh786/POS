@@ -67,7 +67,7 @@ $category = Category::findOrFail($id);
 
 
 $validatedData = $request->validate([
-    'name' => 'required|unique:designations,name,' . $category->id,
+    'name' => 'required|unique:categories,name,' . $category->id,
 ]);
 
 

@@ -24,7 +24,7 @@
               <option value="{{ $role->id }}">{{ $role->name }}</option>
             @endforeach
           </select>
-          <button class="btn btn-success px-3 text-bold"> <span class="fas fa-check-circle">Save</span></button>
+          <button class="btn btn-success px-3 text-bold"> <span class="fas fa-save">&nbsp;Save</span></button>
         </div>
       
         <div class="col-md-6 d-flex align-items-end justify-content-end">

@@ -288,12 +288,17 @@
 <div id="paydue-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 <div class="modal-dialog">
    <div class="modal-content">
-    <div class="modal-header">
+    {{-- <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Pay Due</h5>
 
     <button type="button" class="close" data-dismiss="#paydue-modal" id="cancel-btn-paydue" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
+    </div> --}}
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create Invoice</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
        <div class="modal-body"> 
            <div class="text-center mt-2 mb-4 ">
@@ -340,12 +345,19 @@
 <div id="payment-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
+        {{-- <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Payment History</h5>
           <button type="button" class="close" data-dismiss="modal" id="cancel-btn-payment" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+        </div> --}}
+
+
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Payment History</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
         <div class="modal-body">
           <table class="table paymentTable table-hover table-striped">
             <thead class="">
@@ -434,7 +446,7 @@ let sno = 1;
          <td>${sno}</td>
                      <td>${formattedDate}</td>
                      <td>${payment.total}</td>
-                     <td>${payment.total_paid}</td>
+                     <td>${(payment.total_paid)?payment.total_paid:0}</td>
                      <td>${payment.remaining_due}</td>
                      <td>${payment.user.name}</td>
                      <td>

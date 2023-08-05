@@ -70,7 +70,7 @@
                     <a href="#" data-bs-toggle="collapse">
                      <i class="mdi mdi-account-arrow-left"></i>
 
-                        <span> Manage Students </span>
+                        <span>  Students </span>
                         <span class="menu-arrow"></span>
                     </a>
                     <div class="collapse" id="#">
@@ -319,17 +319,21 @@
                 {{-- <li class="menu-title mt-2">Custom</li> --}}
 
                 <li>
-                    <a href="#" data-bs-toggle="collapse">
+                    <a href="#expense" data-bs-toggle="collapse">
                      <i class="mdi mdi-account-circle-outline"></i>
                         <span> Expenses </span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <div class="collapse" id="">
+                    <div class="collapse" id="expense">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="{{ route('add.expense') }}">Expense</a>
+                                <a href="{{ route('all.category') }}">Expense Categories</a>
                             </li>
+                            
                             <li>
+                                <a href="{{ route('all.expenses') }}">Expense</a>
+                            </li>
+                        
                            
                             
                         </ul>
@@ -371,10 +375,10 @@
                                 <a href="{{ route('all.roles') }}">All Roles </a>
                             </li>
                             <li>
-                                <a href="{{ route('add.roles.permission') }}">Permission to Roles </a>
+                                <a href="{{ route('add.roles.permission') }}">Assign Permission to Roles </a>
                             </li>
                             <li>
-                                <a href="{{ route('all.roles.permission') }}">All Roles in Permission </a>
+                                <a href="{{ route('all.roles.permission') }}"> Roles Permissions </a>
                             </li>
                 
                 

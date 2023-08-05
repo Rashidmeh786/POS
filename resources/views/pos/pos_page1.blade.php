@@ -143,7 +143,7 @@
                      
 
                       <select name="category_id" class="form-select " id="categoryFilter" style="height: 42px;">
-                        <option value="">-All Categories-</option>
+                        <option value="" id="">All Categories</option>
                         @foreach($category as $cat)
                         <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                         @endforeach
@@ -164,7 +164,7 @@
                     <div class="d-flex">
                       <select name="brand_id" class="form-select" id="brandFilter" style="height: 42px;">
 
-                      <option value="">-All Brands-</option>
+                      <option value="">All Brands</option>
                       @foreach($brand as $br)
                       <option value="{{ $br->id }}">{{ $br->name ?? '' }}</option>
                       @endforeach
@@ -285,10 +285,14 @@ function updateProductTable(productData) {
   
   if (existingRow.length > 0) {
     // If an existing row exists, increment the quantity
-    var quantityInput = existingRow.find('.quantity-input');
-    var currentQuantity = parseInt(quantityInput.val());
-    quantityInput.val(currentQuantity + 1);
-    updateSubtotal(existingRow);
+    // var quantityInput = existingRow.find('.quantity-input');
+    // var currentQuantity = parseInt(quantityInput.val());
+    // quantityInput.val(currentQuantity + 1);
+    // updateSubtotal(existingRow);
+    Swal.fire(
+   'Alert!',
+   'The item is already present in the Cart list.',
+       )
   } else {
     // If no existing row exists, append a new row with the fetched product data
     var newRow = '<tr data-row-id="' + productData.rowId + '">' +

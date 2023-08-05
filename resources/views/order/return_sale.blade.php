@@ -67,7 +67,7 @@
                       <a href="{{ route('all.sales') }}" class="btn btn-outline-primary btn-lg "> Back  </a>  
 
                     </div>
-                    <h2 class="page-title">Product Sale</h2>
+                    <h2 class="page-title">Product Sale Return</h2>
                 </div>
             </div>
         </div> 

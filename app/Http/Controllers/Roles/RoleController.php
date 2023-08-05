@@ -26,11 +26,16 @@ class RoleController extends Controller
 
     }
     public function StorePermission(Request $request){
+        // $request->validate([
+        //     'name' => 'required',
+        //     'group_name' => 'required',
+
+        // ]);
         $request->validate([
-            'name' => 'required',
-            'group_name' => 'required',
+            'name' => 'required|unique:permissions,name,NULL,id,group_name,' . $request->group_name,
+            'group_name' => 'required|unique:permissions,group_name,NULL,id,name,' . $request->name,
         ]);
-        $role = Permission::create([
+        Permission::create([
             'name' => $request->name,
             'group_name' => $request->group_name,
 
@@ -54,10 +59,7 @@ class RoleController extends Controller
     public function UpdatePermission(Request $request){
 
         $per_id = $request->id;
-        $request->validate([
-            'name' => 'required',
-            'group_name' => 'required',
-        ]);
+       
 
         Permission::findOrFail($per_id)->update([
             'name' => $request->name,

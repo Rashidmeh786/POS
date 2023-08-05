@@ -5,6 +5,69 @@
     border-bottom: 1px solid #ccc;
     padding-bottom: 10px;
     margin-bottom: 10px;
+    /* Customize modal styles */
+.modal-dialog {
+  max-width: 400px;
+}
+
+.modal-content {
+  border-radius: 8px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  border-bottom: none;
+  background-color: #f8f8f8;
+  border-radius: 8px 8px 0 0;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.auth-logo {
+  margin-bottom: 30px;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #555;
+}
+
+.form-control {
+  border-radius: 5px;
+}
+
+.btn-info {
+  background-color: #5a78f4;
+  border-color: #5a78f4;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.btn-info:hover {
+  background-color: #4c6eeb;
+  border-color: #4c6eeb;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
   }
 </style>
 <script src="{{ asset('backend/assets/js/jquery-3.6.0.min.js') }}"></script>
@@ -18,16 +81,16 @@
     <div class="card-body">
       <div class="container mb-5 mt-3">
         <div class="row d-flex align-items-baseline">
-          <div class="col-xl-9">
+          {{-- <div class="col-xl-9">
             <p style="color: #7e8d9f;font-size: 20px;">Invoice >> <strong>ID: #123-123</strong></p>
-          </div>
-    <div class="col-xl-3 float-end">
+          </div> --}}
+    {{-- <div class="col-xl-3 float-end">
             <a class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark"><i
                 class="fas fa-print text-primary"></i> Print</a> 
            
             <a class="btn btn-light text-capitalize" data-mdb-ripple-color="dark"><i
                 class="far fa-file-pdf text-danger"></i> Export</a>
-          </div> 
+          </div>  --}}
           <hr>
         </div>
 
@@ -166,14 +229,19 @@
 <div id="signup-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      {{-- <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Create Invoice</h5>
         <button type="button" class="close" data-dismiss="#signup-modal" id="cancel-btn" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        {{-- <button class="btn btn-secondary" id="cancel-btn">Cancel</button> --}}
+      
 
-      </div>
+      </div> --}}
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create Invoice</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
       <div class="modal-body">
         <div class="text-center mt-2 mb-4">
           <div class="auth-logo">
@@ -189,7 +257,7 @@
               {{-- <option selected disabled>Select Payment</option> --}}
               <option selected value="HandCash">Cash</option>
               <option value="Cheque">Cheque</option>
-              <option value="Due">Due</option>
+             
             </select>
           </div>
 
@@ -197,13 +265,25 @@
             <div class="col-md-8">
               <div class="mb-3">
                 <label for="username" class="form-label">Pay Now</label>
-                <input id="payamount" class="form-control" type="text" name="pay" placeholder="Enter Amount to Pay..">
+                @if ( $customer->id==1)
+                  <input id="payamount" class="form-control" readonly type="text" value="{{ Cart::total()- $totaldiscountv }}" name="pay" placeholder="Enter Amount to Pay..">
+              @else
+              
+                <input id="payamount" class="form-control" type="text" name="pay" value="{{ Cart::total()- $totaldiscountv }}"  placeholder="Enter Amount to Pay..">
+
+              @endif
               </div>
             </div>
             <div class="col-md-4">
               <div class="mb-3">
                 <label for="username" class="form-label">Pay All</label>
-                <button id="payall" class="form-control btn btn-info" type="button" name="payall">Full Payment</button>
+               @if ( $customer->id==1)
+                <button id="payall" disabled class="form-control btn btn-info" type="button" name="payall">Full Payment</button>
+                   
+               @else
+                <button id="payall" class="form-control btn btn-info" type="button"  name="payall">Full Payment</button>
+                   
+               @endif
               </div>
             </div>
           </div>
@@ -212,7 +292,11 @@
             <div class="col-md-8">
               <div class="mb-3">
                 <label for="username" class="form-label">Due</label>
-                <input id="due" class="form-control" disabled type="text" name="due" placeholder="Due amount..">
+                @if ( $customer->id==1)
+                <input id="due" readonly class="form-control" disabled value=0 type="text" name="due" placeholder="Due amount..">
+                @else
+                <input id="due"  class="form-control" disabled type="text" name="due" placeholder="Due amount..">
+                @endif
               </div>
             </div>
 
@@ -229,7 +313,13 @@
             <div class="col-md-4">
               <div class="mb-3">
                 <label for="username" class="form-label">Due All</label>
+                @if ($customer->id==1)
+                <button id="dueall" class="form-control btn btn-info"  disabled type="button" name="payall">Full Due</button>
+                  
+                @else
                 <button id="dueall" class="form-control btn btn-info" type="button" name="payall">Full Due</button>
+                  
+                @endif
               </div>
             </div>
           </div>
